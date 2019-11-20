@@ -3,6 +3,7 @@ package org.xtext.example.mydsl.tests;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -18,6 +19,7 @@ import org.xtext.example.mydsl.mml.MMLModel;
 
 import com.google.common.io.Files;
 import com.google.inject.Inject;
+import org.apache.commons.io.FileUtils;
 
 @ExtendWith(InjectionExtension.class)
 @InjectWith(MmlInjectorProvider.class)
@@ -28,17 +30,18 @@ public class MmlParsingJavaTest {
 	
 	@Test
 	public void loadModel() throws Exception {
-		MMLModel result = parseHelper.parse("datainput \"foo.csv\"\n"
-				+ "mlframework scikit-learn\n"
-				+ "algorithm DT\n"
-				+ "TrainingTest { percentageTraining 70 }\n"
-				+ "recall\n"
-				+ "");
-		Assertions.assertNotNull(result);
-		EList<Resource.Diagnostic> errors = result.eResource().getErrors();
-		Assertions.assertTrue(errors.isEmpty(), "Unexpected errors");			
-		Assertions.assertEquals("foo.csv", result.getInput().getFilelocation());			
-		
+		for (int i = 1; i<11;i++) {
+			MMLModel result = parseHelper.parse(
+					FileUtils.readFileToString(
+							new File(
+									"src" + File.separator + "test" + File.separator + "resources" + File.separator + "test"+i+".mml")
+							, Charset.defaultCharset()));
+
+			Assertions.assertNotNull(result);
+			EList<Resource.Diagnostic> errors = result.eResource().getErrors();
+			Assertions.assertTrue(errors.isEmpty(), "Unexpected errors");			
+			Assertions.assertEquals("foo.csv", result.getInput().getFilelocation());
+		}
 	}		
 	
 	@Test
