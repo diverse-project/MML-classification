@@ -1,6 +1,6 @@
 datainput "iris.csv" separator ;
 mlframework scikit-learn algorithm DecisionTree
-CrossValidation	{
-	numRepetitionCross 10
+TrainingTest {
+	percentageTraining 20
 }
-precision
+F1

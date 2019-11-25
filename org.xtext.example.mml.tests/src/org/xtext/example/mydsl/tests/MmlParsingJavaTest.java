@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -27,9 +29,9 @@ public class MmlParsingJavaTest {
 
 	@Inject
 	ParseHelper<MMLModel> parseHelper;
-	
-	@Test
-	public void loadModel() throws Exception {
+
+	public List<MMLModel> loadModel() throws Exception {
+		ArrayList<MMLModel> list = new ArrayList<MMLModel>();
 		for (int i = 1; i<11;i++) {
 			MMLModel result = parseHelper.parse(
 					FileUtils.readFileToString(
@@ -40,52 +42,49 @@ public class MmlParsingJavaTest {
 			Assertions.assertNotNull(result);
 			EList<Resource.Diagnostic> errors = result.eResource().getErrors();
 			Assertions.assertTrue(errors.isEmpty(), "Unexpected errors");			
-			Assertions.assertEquals("foo.csv", result.getInput().getFilelocation());
+			Assertions.assertEquals("iris.csv", result.getInput().getFilelocation());
+			list.add(result);
 		}
+		return list;
 	}		
-	
+
 	@Test
 	public void compileDataInput() throws Exception {
-		MMLModel result = parseHelper.parse("datainput \"foo2.csv\" separator ;\n"
-				+ "mlframework scikit-learn\n"
-				+ "algorithm DT\n"
-				+ "TrainingTest { percentageTraining 70 }\n"
-				+ "recall\n"
-				+ "");
-		DataInput dataInput = result.getInput();
-		String fileLocation = dataInput.getFilelocation();
-	
-		
-		String pythonImport = "import pandas as pd\n"; 
-		String DEFAULT_COLUMN_SEPARATOR = ","; // by default
-		String csv_separator = DEFAULT_COLUMN_SEPARATOR;
-		CSVParsingConfiguration parsingInstruction = dataInput.getParsingInstruction();
-		if (parsingInstruction != null) {			
-			System.err.println("parsing instruction..." + parsingInstruction);
-			csv_separator = parsingInstruction.getSep().toString();
-		}
-		String csvReading = "mml_data = pd.read_csv(" + mkValueInSingleQuote(fileLocation) + ", sep=" + mkValueInSingleQuote(csv_separator) + ")";						
-		String pandasCode = pythonImport + csvReading;
-		
-		pandasCode += "\nprint (mml_data)\n"; 
-		
-		Files.write(pandasCode.getBytes(), new File("mml.py"));
-		// end of Python generation
-		
-		
-		/*
-		 * Calling generated Python script (basic solution through systems call)
-		 * we assume that "python" is in the path
-		 */
-		Process p = Runtime.getRuntime().exec("python mml.py");
-		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		String line; 
-		while ((line = in.readLine()) != null) {
-			System.out.println(line);
-	    }
+		ArrayList<MMLModel> list = (ArrayList<MMLModel>) loadModel();
+		for (MMLModel result : list)
+		{
+			DataInput dataInput = result.getInput();
+			String fileLocation = dataInput.getFilelocation();
 
-		
-		
+
+			String pythonImport = "import pandas as pd\n"; 
+			String DEFAULT_COLUMN_SEPARATOR = ","; // by default
+			String csv_separator = DEFAULT_COLUMN_SEPARATOR;
+			CSVParsingConfiguration parsingInstruction = dataInput.getParsingInstruction();
+			if (parsingInstruction != null) {			
+				System.err.println("parsing instruction..." + parsingInstruction);
+				csv_separator = parsingInstruction.getSep().toString();
+			}
+			String csvReading = "mml_data = pd.read_csv(" + mkValueInSingleQuote(fileLocation) + ", sep=" + mkValueInSingleQuote(csv_separator) + ")";						
+			String pandasCode = pythonImport + csvReading;
+
+			pandasCode += "\nprint (mml_data)\n"; 
+
+			Files.write(pandasCode.getBytes(), new File("mml.py"));
+			// end of Python generation
+
+
+			/*
+			 * Calling generated Python script (basic solution through systems call)
+			 * we assume that "python" is in the path
+			 */
+			Process p = Runtime.getRuntime().exec("python mml.py");
+			BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line; 
+			while ((line = in.readLine()) != null) {
+				System.out.println(line);
+			}
+		}
 	}
 
 	private String mkValueInSingleQuote(String val) {

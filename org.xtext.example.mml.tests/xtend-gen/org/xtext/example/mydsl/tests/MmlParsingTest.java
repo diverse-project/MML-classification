@@ -4,9 +4,15 @@
 package org.xtext.example.mydsl.tests;
 
 import com.google.inject.Inject;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
 import org.eclipse.xtext.testing.util.ParseHelper;
+import org.eclipse.xtext.xbase.lib.Exceptions;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.xtext.example.mydsl.mml.MMLModel;
@@ -21,11 +27,33 @@ public class MmlParsingTest {
   
   @Test
   public void loadModel() {
-    throw new Error("Unresolved compilation problems:"
-      + "\nno viable alternative at input \'Â\'"
-      + "\nmismatched input \'»\'\'\'\' expecting \'}\'"
-      + "\nThe method or field Â is undefined");
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("datainput \"foo.csv\"");
+      _builder.newLine();
+      _builder.append("mlframework scikit-learn");
+      _builder.newLine();
+      _builder.append("algorithm DT");
+      _builder.newLine();
+      _builder.append("TrainingTest { ");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("percentageTraining 70");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("recall");
+      _builder.newLine();
+      final MMLModel result = this.parseHelper.parse(_builder);
+      Assertions.assertNotNull(result);
+      final EList<Resource.Diagnostic> errors = result.eResource().getErrors();
+      boolean _isEmpty = errors.isEmpty();
+      String _join = IterableExtensions.join(errors, ", ");
+      String _plus = ("Unexpected errors: " + _join);
+      Assertions.assertTrue(_isEmpty, _plus);
+      Assertions.assertEquals("foo.csv", result.getInput().getFilelocation());
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
   }
-  
-  private Object result;
 }
