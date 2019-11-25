@@ -1,0 +1,7 @@
+datainput "iris.csv" separator ;
+mlframework scikit-learn algorithm LogisticRegression
+formula 1
+TrainingTest {
+	percentageTraining 80
+}
+accuracy
