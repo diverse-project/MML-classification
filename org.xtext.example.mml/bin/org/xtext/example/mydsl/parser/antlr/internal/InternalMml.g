@@ -99,22 +99,22 @@ ruleMMLModel returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getMMLModelAccess().getAlgorithmMLChoiceAlgorithmParserRuleCall_1_0());
+					newCompositeNode(grammarAccess.getMMLModelAccess().getAlgorithmsMLChoiceAlgorithmParserRuleCall_1_0());
 				}
-				lv_algorithm_1_0=ruleMLChoiceAlgorithm
+				lv_algorithms_1_0=ruleMLChoiceAlgorithm
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getMMLModelRule());
 					}
-					set(
+					add(
 						$current,
-						"algorithm",
-						lv_algorithm_1_0,
+						"algorithms",
+						lv_algorithms_1_0,
 						"org.xtext.example.mydsl.Mml.MLChoiceAlgorithm");
 					afterParserOrEnumRuleCall();
 				}
 			)
-		)
+		)+
 		(
 			(
 				{
@@ -455,10 +455,20 @@ ruleSVM returns [EObject current=null]
 			)
 		)?
 		(
-			otherlv_6='kernel='
-			{
-				newLeafNode(otherlv_6, grammarAccess.getSVMAccess().getKernelKeyword_4_0());
-			}
+			(
+				(
+					lv_kernelSpecified_6_0='kernel='
+					{
+						newLeafNode(lv_kernelSpecified_6_0, grammarAccess.getSVMAccess().getKernelSpecifiedKernelKeyword_4_0_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getSVMRule());
+						}
+						setWithLastConsumed($current, "kernelSpecified", true, "kernel=");
+					}
+				)
+			)
 			(
 				(
 					{
@@ -480,10 +490,20 @@ ruleSVM returns [EObject current=null]
 			)
 		)?
 		(
-			otherlv_8='classification'
-			{
-				newLeafNode(otherlv_8, grammarAccess.getSVMAccess().getClassificationKeyword_5_0());
-			}
+			(
+				(
+					lv_classificationSpecified_8_0='classification'
+					{
+						newLeafNode(lv_classificationSpecified_8_0, grammarAccess.getSVMAccess().getClassificationSpecifiedClassificationKeyword_5_0_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getSVMRule());
+						}
+						setWithLastConsumed($current, "classificationSpecified", true, "classification");
+					}
+				)
+			)
 			(
 				(
 					{
@@ -1261,34 +1281,74 @@ ruleValidationMetric returns [Enumerator current=null]
 }:
 	(
 		(
-			enumLiteral_0='recall'
+			enumLiteral_0='balanced_accuracy'
 			{
-				$current = grammarAccess.getValidationMetricAccess().getRECALLEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
-				newLeafNode(enumLiteral_0, grammarAccess.getValidationMetricAccess().getRECALLEnumLiteralDeclaration_0());
+				$current = grammarAccess.getValidationMetricAccess().getBALANCED_ACCURACYEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_0, grammarAccess.getValidationMetricAccess().getBALANCED_ACCURACYEnumLiteralDeclaration_0());
 			}
 		)
 		    |
 		(
-			enumLiteral_1='precision'
+			enumLiteral_1='recall'
 			{
-				$current = grammarAccess.getValidationMetricAccess().getPRECISIONEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
-				newLeafNode(enumLiteral_1, grammarAccess.getValidationMetricAccess().getPRECISIONEnumLiteralDeclaration_1());
+				$current = grammarAccess.getValidationMetricAccess().getRECALLEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_1, grammarAccess.getValidationMetricAccess().getRECALLEnumLiteralDeclaration_1());
 			}
 		)
 		    |
 		(
-			enumLiteral_2='F1'
+			enumLiteral_2='precision'
 			{
-				$current = grammarAccess.getValidationMetricAccess().getF1EnumLiteralDeclaration_2().getEnumLiteral().getInstance();
-				newLeafNode(enumLiteral_2, grammarAccess.getValidationMetricAccess().getF1EnumLiteralDeclaration_2());
+				$current = grammarAccess.getValidationMetricAccess().getPRECISIONEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_2, grammarAccess.getValidationMetricAccess().getPRECISIONEnumLiteralDeclaration_2());
 			}
 		)
 		    |
 		(
-			enumLiteral_3='accuracy'
+			enumLiteral_3='F1'
 			{
-				$current = grammarAccess.getValidationMetricAccess().getACCURACYEnumLiteralDeclaration_3().getEnumLiteral().getInstance();
-				newLeafNode(enumLiteral_3, grammarAccess.getValidationMetricAccess().getACCURACYEnumLiteralDeclaration_3());
+				$current = grammarAccess.getValidationMetricAccess().getF1EnumLiteralDeclaration_3().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_3, grammarAccess.getValidationMetricAccess().getF1EnumLiteralDeclaration_3());
+			}
+		)
+		    |
+		(
+			enumLiteral_4='accuracy'
+			{
+				$current = grammarAccess.getValidationMetricAccess().getACCURACYEnumLiteralDeclaration_4().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_4, grammarAccess.getValidationMetricAccess().getACCURACYEnumLiteralDeclaration_4());
+			}
+		)
+		    |
+		(
+			enumLiteral_5='macro_recall'
+			{
+				$current = grammarAccess.getValidationMetricAccess().getMACRO_RECALLEnumLiteralDeclaration_5().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_5, grammarAccess.getValidationMetricAccess().getMACRO_RECALLEnumLiteralDeclaration_5());
+			}
+		)
+		    |
+		(
+			enumLiteral_6='macro_precision'
+			{
+				$current = grammarAccess.getValidationMetricAccess().getMACRO_PRECISIONEnumLiteralDeclaration_6().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_6, grammarAccess.getValidationMetricAccess().getMACRO_PRECISIONEnumLiteralDeclaration_6());
+			}
+		)
+		    |
+		(
+			enumLiteral_7='macro_F1'
+			{
+				$current = grammarAccess.getValidationMetricAccess().getMACRO_F1EnumLiteralDeclaration_7().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_7, grammarAccess.getValidationMetricAccess().getMACRO_F1EnumLiteralDeclaration_7());
+			}
+		)
+		    |
+		(
+			enumLiteral_8='macro_accuracy'
+			{
+				$current = grammarAccess.getValidationMetricAccess().getMACRO_ACCURACYEnumLiteralDeclaration_8().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_8, grammarAccess.getValidationMetricAccess().getMACRO_ACCURACYEnumLiteralDeclaration_8());
 			}
 		)
 	)

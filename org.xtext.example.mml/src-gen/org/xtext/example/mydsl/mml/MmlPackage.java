@@ -78,13 +78,13 @@ public interface MmlPackage extends EPackage
   int MML_MODEL__INPUT = 0;
 
   /**
-   * The feature id for the '<em><b>Algorithm</b></em>' containment reference.
+   * The feature id for the '<em><b>Algorithms</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MML_MODEL__ALGORITHM = 1;
+  int MML_MODEL__ALGORITHMS = 1;
 
   /**
    * The feature id for the '<em><b>Formula</b></em>' containment reference.
@@ -263,13 +263,31 @@ public interface MmlPackage extends EPackage
   int SVM__C = ML_ALGORITHM_FEATURE_COUNT + 1;
 
   /**
+   * The feature id for the '<em><b>Kernel Specified</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SVM__KERNEL_SPECIFIED = ML_ALGORITHM_FEATURE_COUNT + 2;
+
+  /**
    * The feature id for the '<em><b>Kernel</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SVM__KERNEL = ML_ALGORITHM_FEATURE_COUNT + 2;
+  int SVM__KERNEL = ML_ALGORITHM_FEATURE_COUNT + 3;
+
+  /**
+   * The feature id for the '<em><b>Classification Specified</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SVM__CLASSIFICATION_SPECIFIED = ML_ALGORITHM_FEATURE_COUNT + 4;
 
   /**
    * The feature id for the '<em><b>Svmclassification</b></em>' attribute.
@@ -278,7 +296,7 @@ public interface MmlPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SVM__SVMCLASSIFICATION = ML_ALGORITHM_FEATURE_COUNT + 3;
+  int SVM__SVMCLASSIFICATION = ML_ALGORITHM_FEATURE_COUNT + 5;
 
   /**
    * The number of structural features of the '<em>SVM</em>' class.
@@ -287,7 +305,7 @@ public interface MmlPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SVM_FEATURE_COUNT = ML_ALGORITHM_FEATURE_COUNT + 4;
+  int SVM_FEATURE_COUNT = ML_ALGORITHM_FEATURE_COUNT + 6;
 
   /**
    * The meta object id for the '{@link org.xtext.example.mydsl.mml.impl.DTImpl <em>DT</em>}' class.
@@ -698,15 +716,15 @@ public interface MmlPackage extends EPackage
   EReference getMMLModel_Input();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.mml.MMLModel#getAlgorithm <em>Algorithm</em>}'.
+   * Returns the meta object for the containment reference list '{@link org.xtext.example.mydsl.mml.MMLModel#getAlgorithms <em>Algorithms</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Algorithm</em>'.
-   * @see org.xtext.example.mydsl.mml.MMLModel#getAlgorithm()
+   * @return the meta object for the containment reference list '<em>Algorithms</em>'.
+   * @see org.xtext.example.mydsl.mml.MMLModel#getAlgorithms()
    * @see #getMMLModel()
    * @generated
    */
-  EReference getMMLModel_Algorithm();
+  EReference getMMLModel_Algorithms();
 
   /**
    * Returns the meta object for the containment reference '{@link org.xtext.example.mydsl.mml.MMLModel#getFormula <em>Formula</em>}'.
@@ -858,6 +876,17 @@ public interface MmlPackage extends EPackage
   EAttribute getSVM_C();
 
   /**
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.mml.SVM#isKernelSpecified <em>Kernel Specified</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Kernel Specified</em>'.
+   * @see org.xtext.example.mydsl.mml.SVM#isKernelSpecified()
+   * @see #getSVM()
+   * @generated
+   */
+  EAttribute getSVM_KernelSpecified();
+
+  /**
    * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.mml.SVM#getKernel <em>Kernel</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -867,6 +896,17 @@ public interface MmlPackage extends EPackage
    * @generated
    */
   EAttribute getSVM_Kernel();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.mml.SVM#isClassificationSpecified <em>Classification Specified</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Classification Specified</em>'.
+   * @see org.xtext.example.mydsl.mml.SVM#isClassificationSpecified()
+   * @see #getSVM()
+   * @generated
+   */
+  EAttribute getSVM_ClassificationSpecified();
 
   /**
    * Returns the meta object for the attribute '{@link org.xtext.example.mydsl.mml.SVM#getSvmclassification <em>Svmclassification</em>}'.
@@ -1201,12 +1241,12 @@ public interface MmlPackage extends EPackage
     EReference MML_MODEL__INPUT = eINSTANCE.getMMLModel_Input();
 
     /**
-     * The meta object literal for the '<em><b>Algorithm</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Algorithms</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference MML_MODEL__ALGORITHM = eINSTANCE.getMMLModel_Algorithm();
+    EReference MML_MODEL__ALGORITHMS = eINSTANCE.getMMLModel_Algorithms();
 
     /**
      * The meta object literal for the '<em><b>Formula</b></em>' containment reference feature.
@@ -1331,12 +1371,28 @@ public interface MmlPackage extends EPackage
     EAttribute SVM__C = eINSTANCE.getSVM_C();
 
     /**
+     * The meta object literal for the '<em><b>Kernel Specified</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute SVM__KERNEL_SPECIFIED = eINSTANCE.getSVM_KernelSpecified();
+
+    /**
      * The meta object literal for the '<em><b>Kernel</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
     EAttribute SVM__KERNEL = eINSTANCE.getSVM_Kernel();
+
+    /**
+     * The meta object literal for the '<em><b>Classification Specified</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute SVM__CLASSIFICATION_SPECIFIED = eINSTANCE.getSVM_ClassificationSpecified();
 
     /**
      * The meta object literal for the '<em><b>Svmclassification</b></em>' attribute feature.

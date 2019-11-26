@@ -31,8 +31,8 @@ public class MmlGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cInputAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final RuleCall cInputDataInputParserRuleCall_0_0 = (RuleCall)cInputAssignment_0.eContents().get(0);
-		private final Assignment cAlgorithmAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cAlgorithmMLChoiceAlgorithmParserRuleCall_1_0 = (RuleCall)cAlgorithmAssignment_1.eContents().get(0);
+		private final Assignment cAlgorithmsAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cAlgorithmsMLChoiceAlgorithmParserRuleCall_1_0 = (RuleCall)cAlgorithmsAssignment_1.eContents().get(0);
 		private final Assignment cFormulaAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cFormulaRFormulaParserRuleCall_2_0 = (RuleCall)cFormulaAssignment_2.eContents().get(0);
 		private final Assignment cValidationAssignment_3 = (Assignment)cGroup.eContents().get(3);
@@ -40,12 +40,12 @@ public class MmlGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//MMLModel:
 		//	input=DataInput
-		//	algorithm=MLChoiceAlgorithm
+		//	algorithms+=MLChoiceAlgorithm+
 		//	formula=RFormula?
 		//	validation=Validation;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//input=DataInput algorithm=MLChoiceAlgorithm formula=RFormula? validation=Validation
+		//input=DataInput algorithms+=MLChoiceAlgorithm+ formula=RFormula? validation=Validation
 		public Group getGroup() { return cGroup; }
 		
 		//input=DataInput
@@ -54,11 +54,11 @@ public class MmlGrammarAccess extends AbstractGrammarElementFinder {
 		//DataInput
 		public RuleCall getInputDataInputParserRuleCall_0_0() { return cInputDataInputParserRuleCall_0_0; }
 		
-		//algorithm=MLChoiceAlgorithm
-		public Assignment getAlgorithmAssignment_1() { return cAlgorithmAssignment_1; }
+		//algorithms+=MLChoiceAlgorithm+
+		public Assignment getAlgorithmsAssignment_1() { return cAlgorithmsAssignment_1; }
 		
 		//MLChoiceAlgorithm
-		public RuleCall getAlgorithmMLChoiceAlgorithmParserRuleCall_1_0() { return cAlgorithmMLChoiceAlgorithmParserRuleCall_1_0; }
+		public RuleCall getAlgorithmsMLChoiceAlgorithmParserRuleCall_1_0() { return cAlgorithmsMLChoiceAlgorithmParserRuleCall_1_0; }
 		
 		//formula=RFormula?
 		public Assignment getFormulaAssignment_2() { return cFormulaAssignment_2; }
@@ -214,21 +214,23 @@ public class MmlGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cCAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
 		private final RuleCall cCFLOATParserRuleCall_3_1_0 = (RuleCall)cCAssignment_3_1.eContents().get(0);
 		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
-		private final Keyword cKernelKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
+		private final Assignment cKernelSpecifiedAssignment_4_0 = (Assignment)cGroup_4.eContents().get(0);
+		private final Keyword cKernelSpecifiedKernelKeyword_4_0_0 = (Keyword)cKernelSpecifiedAssignment_4_0.eContents().get(0);
 		private final Assignment cKernelAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
 		private final RuleCall cKernelSVMKernelEnumRuleCall_4_1_0 = (RuleCall)cKernelAssignment_4_1.eContents().get(0);
 		private final Group cGroup_5 = (Group)cGroup.eContents().get(5);
-		private final Keyword cClassificationKeyword_5_0 = (Keyword)cGroup_5.eContents().get(0);
+		private final Assignment cClassificationSpecifiedAssignment_5_0 = (Assignment)cGroup_5.eContents().get(0);
+		private final Keyword cClassificationSpecifiedClassificationKeyword_5_0_0 = (Keyword)cClassificationSpecifiedAssignment_5_0.eContents().get(0);
 		private final Assignment cSvmclassificationAssignment_5_1 = (Assignment)cGroup_5.eContents().get(1);
 		private final RuleCall cSvmclassificationSVMClassificationEnumRuleCall_5_1_0 = (RuleCall)cSvmclassificationAssignment_5_1.eContents().get(0);
 		
 		//SVM:
-		//	{SVM} 'SVM' ('gamma=' gamma=FLOAT)? ('C=' C=FLOAT)? ('kernel=' kernel=SVMKernel)? ('classification'
-		//	svmclassification=SVMClassification)?;
+		//	{SVM} 'SVM' ('gamma=' gamma=FLOAT)? ('C=' C=FLOAT)? (kernelSpecified?='kernel=' kernel=SVMKernel)?
+		//	(classificationSpecified?='classification' svmclassification=SVMClassification)?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{SVM} 'SVM' ('gamma=' gamma=FLOAT)? ('C=' C=FLOAT)? ('kernel=' kernel=SVMKernel)? ('classification'
-		//svmclassification=SVMClassification)?
+		//{SVM} 'SVM' ('gamma=' gamma=FLOAT)? ('C=' C=FLOAT)? (kernelSpecified?='kernel=' kernel=SVMKernel)?
+		//(classificationSpecified?='classification' svmclassification=SVMClassification)?
 		public Group getGroup() { return cGroup; }
 		
 		//{SVM}
@@ -261,11 +263,14 @@ public class MmlGrammarAccess extends AbstractGrammarElementFinder {
 		//FLOAT
 		public RuleCall getCFLOATParserRuleCall_3_1_0() { return cCFLOATParserRuleCall_3_1_0; }
 		
-		//('kernel=' kernel=SVMKernel)?
+		//(kernelSpecified?='kernel=' kernel=SVMKernel)?
 		public Group getGroup_4() { return cGroup_4; }
 		
+		//kernelSpecified?='kernel='
+		public Assignment getKernelSpecifiedAssignment_4_0() { return cKernelSpecifiedAssignment_4_0; }
+		
 		//'kernel='
-		public Keyword getKernelKeyword_4_0() { return cKernelKeyword_4_0; }
+		public Keyword getKernelSpecifiedKernelKeyword_4_0_0() { return cKernelSpecifiedKernelKeyword_4_0_0; }
 		
 		//kernel=SVMKernel
 		public Assignment getKernelAssignment_4_1() { return cKernelAssignment_4_1; }
@@ -273,11 +278,14 @@ public class MmlGrammarAccess extends AbstractGrammarElementFinder {
 		//SVMKernel
 		public RuleCall getKernelSVMKernelEnumRuleCall_4_1_0() { return cKernelSVMKernelEnumRuleCall_4_1_0; }
 		
-		//('classification' svmclassification=SVMClassification)?
+		//(classificationSpecified?='classification' svmclassification=SVMClassification)?
 		public Group getGroup_5() { return cGroup_5; }
 		
+		//classificationSpecified?='classification'
+		public Assignment getClassificationSpecifiedAssignment_5_0() { return cClassificationSpecifiedAssignment_5_0; }
+		
 		//'classification'
-		public Keyword getClassificationKeyword_5_0() { return cClassificationKeyword_5_0; }
+		public Keyword getClassificationSpecifiedClassificationKeyword_5_0_0() { return cClassificationSpecifiedClassificationKeyword_5_0_0; }
 		
 		//svmclassification=SVMClassification
 		public Assignment getSvmclassificationAssignment_5_1() { return cSvmclassificationAssignment_5_1; }
@@ -794,45 +802,88 @@ public class MmlGrammarAccess extends AbstractGrammarElementFinder {
 	public class ValidationMetricElements extends AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.Mml.ValidationMetric");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final EnumLiteralDeclaration cRECALLEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
-		private final Keyword cRECALLRecallKeyword_0_0 = (Keyword)cRECALLEnumLiteralDeclaration_0.eContents().get(0);
-		private final EnumLiteralDeclaration cPRECISIONEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
-		private final Keyword cPRECISIONPrecisionKeyword_1_0 = (Keyword)cPRECISIONEnumLiteralDeclaration_1.eContents().get(0);
-		private final EnumLiteralDeclaration cF1EnumLiteralDeclaration_2 = (EnumLiteralDeclaration)cAlternatives.eContents().get(2);
-		private final Keyword cF1F1Keyword_2_0 = (Keyword)cF1EnumLiteralDeclaration_2.eContents().get(0);
-		private final EnumLiteralDeclaration cACCURACYEnumLiteralDeclaration_3 = (EnumLiteralDeclaration)cAlternatives.eContents().get(3);
-		private final Keyword cACCURACYAccuracyKeyword_3_0 = (Keyword)cACCURACYEnumLiteralDeclaration_3.eContents().get(0);
+		private final EnumLiteralDeclaration cBALANCED_ACCURACYEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cBALANCED_ACCURACYBalanced_accuracyKeyword_0_0 = (Keyword)cBALANCED_ACCURACYEnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cRECALLEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cRECALLRecallKeyword_1_0 = (Keyword)cRECALLEnumLiteralDeclaration_1.eContents().get(0);
+		private final EnumLiteralDeclaration cPRECISIONEnumLiteralDeclaration_2 = (EnumLiteralDeclaration)cAlternatives.eContents().get(2);
+		private final Keyword cPRECISIONPrecisionKeyword_2_0 = (Keyword)cPRECISIONEnumLiteralDeclaration_2.eContents().get(0);
+		private final EnumLiteralDeclaration cF1EnumLiteralDeclaration_3 = (EnumLiteralDeclaration)cAlternatives.eContents().get(3);
+		private final Keyword cF1F1Keyword_3_0 = (Keyword)cF1EnumLiteralDeclaration_3.eContents().get(0);
+		private final EnumLiteralDeclaration cACCURACYEnumLiteralDeclaration_4 = (EnumLiteralDeclaration)cAlternatives.eContents().get(4);
+		private final Keyword cACCURACYAccuracyKeyword_4_0 = (Keyword)cACCURACYEnumLiteralDeclaration_4.eContents().get(0);
+		private final EnumLiteralDeclaration cMACRO_RECALLEnumLiteralDeclaration_5 = (EnumLiteralDeclaration)cAlternatives.eContents().get(5);
+		private final Keyword cMACRO_RECALLMacro_recallKeyword_5_0 = (Keyword)cMACRO_RECALLEnumLiteralDeclaration_5.eContents().get(0);
+		private final EnumLiteralDeclaration cMACRO_PRECISIONEnumLiteralDeclaration_6 = (EnumLiteralDeclaration)cAlternatives.eContents().get(6);
+		private final Keyword cMACRO_PRECISIONMacro_precisionKeyword_6_0 = (Keyword)cMACRO_PRECISIONEnumLiteralDeclaration_6.eContents().get(0);
+		private final EnumLiteralDeclaration cMACRO_F1EnumLiteralDeclaration_7 = (EnumLiteralDeclaration)cAlternatives.eContents().get(7);
+		private final Keyword cMACRO_F1Macro_F1Keyword_7_0 = (Keyword)cMACRO_F1EnumLiteralDeclaration_7.eContents().get(0);
+		private final EnumLiteralDeclaration cMACRO_ACCURACYEnumLiteralDeclaration_8 = (EnumLiteralDeclaration)cAlternatives.eContents().get(8);
+		private final Keyword cMACRO_ACCURACYMacro_accuracyKeyword_8_0 = (Keyword)cMACRO_ACCURACYEnumLiteralDeclaration_8.eContents().get(0);
 		
 		//enum ValidationMetric:
-		//	RECALL='recall' | PRECISION='precision' | F1 | ACCURACY='accuracy';
+		//	BALANCED_ACCURACY='balanced_accuracy' | RECALL='recall' | PRECISION='precision' | F1 | ACCURACY='accuracy' |
+		//	MACRO_RECALL='macro_recall' | MACRO_PRECISION='macro_precision' | MACRO_F1='macro_F1' |
+		//	MACRO_ACCURACY='macro_accuracy';
 		public EnumRule getRule() { return rule; }
 		
-		//RECALL='recall' | PRECISION='precision' | F1 | ACCURACY='accuracy'
+		//BALANCED_ACCURACY='balanced_accuracy' | RECALL='recall' | PRECISION='precision' | F1 | ACCURACY='accuracy' |
+		//MACRO_RECALL='macro_recall' | MACRO_PRECISION='macro_precision' | MACRO_F1='macro_F1' | MACRO_ACCURACY='macro_accuracy'
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
+		//BALANCED_ACCURACY='balanced_accuracy'
+		public EnumLiteralDeclaration getBALANCED_ACCURACYEnumLiteralDeclaration_0() { return cBALANCED_ACCURACYEnumLiteralDeclaration_0; }
+		
+		//'balanced_accuracy'
+		public Keyword getBALANCED_ACCURACYBalanced_accuracyKeyword_0_0() { return cBALANCED_ACCURACYBalanced_accuracyKeyword_0_0; }
+		
 		//RECALL='recall'
-		public EnumLiteralDeclaration getRECALLEnumLiteralDeclaration_0() { return cRECALLEnumLiteralDeclaration_0; }
+		public EnumLiteralDeclaration getRECALLEnumLiteralDeclaration_1() { return cRECALLEnumLiteralDeclaration_1; }
 		
 		//'recall'
-		public Keyword getRECALLRecallKeyword_0_0() { return cRECALLRecallKeyword_0_0; }
+		public Keyword getRECALLRecallKeyword_1_0() { return cRECALLRecallKeyword_1_0; }
 		
 		//PRECISION='precision'
-		public EnumLiteralDeclaration getPRECISIONEnumLiteralDeclaration_1() { return cPRECISIONEnumLiteralDeclaration_1; }
+		public EnumLiteralDeclaration getPRECISIONEnumLiteralDeclaration_2() { return cPRECISIONEnumLiteralDeclaration_2; }
 		
 		//'precision'
-		public Keyword getPRECISIONPrecisionKeyword_1_0() { return cPRECISIONPrecisionKeyword_1_0; }
+		public Keyword getPRECISIONPrecisionKeyword_2_0() { return cPRECISIONPrecisionKeyword_2_0; }
 		
 		//F1
-		public EnumLiteralDeclaration getF1EnumLiteralDeclaration_2() { return cF1EnumLiteralDeclaration_2; }
+		public EnumLiteralDeclaration getF1EnumLiteralDeclaration_3() { return cF1EnumLiteralDeclaration_3; }
 		
 		//'F1'
-		public Keyword getF1F1Keyword_2_0() { return cF1F1Keyword_2_0; }
+		public Keyword getF1F1Keyword_3_0() { return cF1F1Keyword_3_0; }
 		
 		//ACCURACY='accuracy'
-		public EnumLiteralDeclaration getACCURACYEnumLiteralDeclaration_3() { return cACCURACYEnumLiteralDeclaration_3; }
+		public EnumLiteralDeclaration getACCURACYEnumLiteralDeclaration_4() { return cACCURACYEnumLiteralDeclaration_4; }
 		
 		//'accuracy'
-		public Keyword getACCURACYAccuracyKeyword_3_0() { return cACCURACYAccuracyKeyword_3_0; }
+		public Keyword getACCURACYAccuracyKeyword_4_0() { return cACCURACYAccuracyKeyword_4_0; }
+		
+		//MACRO_RECALL='macro_recall'
+		public EnumLiteralDeclaration getMACRO_RECALLEnumLiteralDeclaration_5() { return cMACRO_RECALLEnumLiteralDeclaration_5; }
+		
+		//'macro_recall'
+		public Keyword getMACRO_RECALLMacro_recallKeyword_5_0() { return cMACRO_RECALLMacro_recallKeyword_5_0; }
+		
+		//MACRO_PRECISION='macro_precision'
+		public EnumLiteralDeclaration getMACRO_PRECISIONEnumLiteralDeclaration_6() { return cMACRO_PRECISIONEnumLiteralDeclaration_6; }
+		
+		//'macro_precision'
+		public Keyword getMACRO_PRECISIONMacro_precisionKeyword_6_0() { return cMACRO_PRECISIONMacro_precisionKeyword_6_0; }
+		
+		//MACRO_F1='macro_F1'
+		public EnumLiteralDeclaration getMACRO_F1EnumLiteralDeclaration_7() { return cMACRO_F1EnumLiteralDeclaration_7; }
+		
+		//'macro_F1'
+		public Keyword getMACRO_F1Macro_F1Keyword_7_0() { return cMACRO_F1Macro_F1Keyword_7_0; }
+		
+		//MACRO_ACCURACY='macro_accuracy'
+		public EnumLiteralDeclaration getMACRO_ACCURACYEnumLiteralDeclaration_8() { return cMACRO_ACCURACYEnumLiteralDeclaration_8; }
+		
+		//'macro_accuracy'
+		public Keyword getMACRO_ACCURACYMacro_accuracyKeyword_8_0() { return cMACRO_ACCURACYMacro_accuracyKeyword_8_0; }
 	}
 	
 	private final MMLModelElements pMMLModel;
@@ -924,7 +975,7 @@ public class MmlGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//MMLModel:
 	//	input=DataInput
-	//	algorithm=MLChoiceAlgorithm
+	//	algorithms+=MLChoiceAlgorithm+
 	//	formula=RFormula?
 	//	validation=Validation;
 	public MMLModelElements getMMLModelAccess() {
@@ -1006,8 +1057,8 @@ public class MmlGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//SVM:
-	//	{SVM} 'SVM' ('gamma=' gamma=FLOAT)? ('C=' C=FLOAT)? ('kernel=' kernel=SVMKernel)? ('classification'
-	//	svmclassification=SVMClassification)?;
+	//	{SVM} 'SVM' ('gamma=' gamma=FLOAT)? ('C=' C=FLOAT)? (kernelSpecified?='kernel=' kernel=SVMKernel)?
+	//	(classificationSpecified?='classification' svmclassification=SVMClassification)?;
 	public SVMElements getSVMAccess() {
 		return pSVM;
 	}
@@ -1185,7 +1236,9 @@ public class MmlGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//enum ValidationMetric:
-	//	RECALL='recall' | PRECISION='precision' | F1 | ACCURACY='accuracy';
+	//	BALANCED_ACCURACY='balanced_accuracy' | RECALL='recall' | PRECISION='precision' | F1 | ACCURACY='accuracy' |
+	//	MACRO_RECALL='macro_recall' | MACRO_PRECISION='macro_precision' | MACRO_F1='macro_F1' |
+	//	MACRO_ACCURACY='macro_accuracy';
 	public ValidationMetricElements getValidationMetricAccess() {
 		return eValidationMetric;
 	}

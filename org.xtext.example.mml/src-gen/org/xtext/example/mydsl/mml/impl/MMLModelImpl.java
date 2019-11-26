@@ -3,14 +3,21 @@
  */
 package org.xtext.example.mydsl.mml.impl;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.xtext.example.mydsl.mml.DataInput;
 import org.xtext.example.mydsl.mml.MLChoiceAlgorithm;
@@ -28,7 +35,7 @@ import org.xtext.example.mydsl.mml.Validation;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.mml.impl.MMLModelImpl#getInput <em>Input</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.mml.impl.MMLModelImpl#getAlgorithm <em>Algorithm</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.mml.impl.MMLModelImpl#getAlgorithms <em>Algorithms</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.mml.impl.MMLModelImpl#getFormula <em>Formula</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.mml.impl.MMLModelImpl#getValidation <em>Validation</em>}</li>
  * </ul>
@@ -48,14 +55,14 @@ public class MMLModelImpl extends MinimalEObjectImpl.Container implements MMLMod
   protected DataInput input;
 
   /**
-   * The cached value of the '{@link #getAlgorithm() <em>Algorithm</em>}' containment reference.
+   * The cached value of the '{@link #getAlgorithms() <em>Algorithms</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getAlgorithm()
+   * @see #getAlgorithms()
    * @generated
    * @ordered
    */
-  protected MLChoiceAlgorithm algorithm;
+  protected EList<MLChoiceAlgorithm> algorithms;
 
   /**
    * The cached value of the '{@link #getFormula() <em>Formula</em>}' containment reference.
@@ -154,48 +161,13 @@ public class MMLModelImpl extends MinimalEObjectImpl.Container implements MMLMod
    * @generated
    */
   @Override
-  public MLChoiceAlgorithm getAlgorithm()
+  public EList<MLChoiceAlgorithm> getAlgorithms()
   {
-    return algorithm;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetAlgorithm(MLChoiceAlgorithm newAlgorithm, NotificationChain msgs)
-  {
-    MLChoiceAlgorithm oldAlgorithm = algorithm;
-    algorithm = newAlgorithm;
-    if (eNotificationRequired())
+    if (algorithms == null)
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MmlPackage.MML_MODEL__ALGORITHM, oldAlgorithm, newAlgorithm);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      algorithms = new EObjectContainmentEList<MLChoiceAlgorithm>(MLChoiceAlgorithm.class, this, MmlPackage.MML_MODEL__ALGORITHMS);
     }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setAlgorithm(MLChoiceAlgorithm newAlgorithm)
-  {
-    if (newAlgorithm != algorithm)
-    {
-      NotificationChain msgs = null;
-      if (algorithm != null)
-        msgs = ((InternalEObject)algorithm).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MmlPackage.MML_MODEL__ALGORITHM, null, msgs);
-      if (newAlgorithm != null)
-        msgs = ((InternalEObject)newAlgorithm).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MmlPackage.MML_MODEL__ALGORITHM, null, msgs);
-      msgs = basicSetAlgorithm(newAlgorithm, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MmlPackage.MML_MODEL__ALGORITHM, newAlgorithm, newAlgorithm));
+    return algorithms;
   }
 
   /**
@@ -310,8 +282,8 @@ public class MMLModelImpl extends MinimalEObjectImpl.Container implements MMLMod
     {
       case MmlPackage.MML_MODEL__INPUT:
         return basicSetInput(null, msgs);
-      case MmlPackage.MML_MODEL__ALGORITHM:
-        return basicSetAlgorithm(null, msgs);
+      case MmlPackage.MML_MODEL__ALGORITHMS:
+        return ((InternalEList<?>)getAlgorithms()).basicRemove(otherEnd, msgs);
       case MmlPackage.MML_MODEL__FORMULA:
         return basicSetFormula(null, msgs);
       case MmlPackage.MML_MODEL__VALIDATION:
@@ -332,8 +304,8 @@ public class MMLModelImpl extends MinimalEObjectImpl.Container implements MMLMod
     {
       case MmlPackage.MML_MODEL__INPUT:
         return getInput();
-      case MmlPackage.MML_MODEL__ALGORITHM:
-        return getAlgorithm();
+      case MmlPackage.MML_MODEL__ALGORITHMS:
+        return getAlgorithms();
       case MmlPackage.MML_MODEL__FORMULA:
         return getFormula();
       case MmlPackage.MML_MODEL__VALIDATION:
@@ -347,6 +319,7 @@ public class MMLModelImpl extends MinimalEObjectImpl.Container implements MMLMod
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
@@ -355,8 +328,9 @@ public class MMLModelImpl extends MinimalEObjectImpl.Container implements MMLMod
       case MmlPackage.MML_MODEL__INPUT:
         setInput((DataInput)newValue);
         return;
-      case MmlPackage.MML_MODEL__ALGORITHM:
-        setAlgorithm((MLChoiceAlgorithm)newValue);
+      case MmlPackage.MML_MODEL__ALGORITHMS:
+        getAlgorithms().clear();
+        getAlgorithms().addAll((Collection<? extends MLChoiceAlgorithm>)newValue);
         return;
       case MmlPackage.MML_MODEL__FORMULA:
         setFormula((RFormula)newValue);
@@ -381,8 +355,8 @@ public class MMLModelImpl extends MinimalEObjectImpl.Container implements MMLMod
       case MmlPackage.MML_MODEL__INPUT:
         setInput((DataInput)null);
         return;
-      case MmlPackage.MML_MODEL__ALGORITHM:
-        setAlgorithm((MLChoiceAlgorithm)null);
+      case MmlPackage.MML_MODEL__ALGORITHMS:
+        getAlgorithms().clear();
         return;
       case MmlPackage.MML_MODEL__FORMULA:
         setFormula((RFormula)null);
@@ -406,8 +380,8 @@ public class MMLModelImpl extends MinimalEObjectImpl.Container implements MMLMod
     {
       case MmlPackage.MML_MODEL__INPUT:
         return input != null;
-      case MmlPackage.MML_MODEL__ALGORITHM:
-        return algorithm != null;
+      case MmlPackage.MML_MODEL__ALGORITHMS:
+        return algorithms != null && !algorithms.isEmpty();
       case MmlPackage.MML_MODEL__FORMULA:
         return formula != null;
       case MmlPackage.MML_MODEL__VALIDATION:

@@ -4,8 +4,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="MMLModel">
     <eStructuralFeatures xsi:type="ecore:EReference" name="input" eType="#//DataInput"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="algorithm" eType="#//MLChoiceAlgorithm"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="algorithms" upperBound="-1"
+        eType="#//MLChoiceAlgorithm" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="formula" eType="#//RFormula"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="validation" eType="#//Validation"
@@ -37,7 +37,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="SVM" eSuperTypes="#//MLAlgorithm">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="gamma" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="C" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="kernelSpecified" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="kernel" eType="#//SVMKernel"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="classificationSpecified"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="svmclassification" eType="#//SVMClassification"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="SVMKernel">
@@ -85,9 +88,14 @@
   <eClassifiers xsi:type="ecore:EClass" name="CrossValidation" eSuperTypes="#//StratificationMethod"/>
   <eClassifiers xsi:type="ecore:EClass" name="TrainingTest" eSuperTypes="#//StratificationMethod"/>
   <eClassifiers xsi:type="ecore:EEnum" name="ValidationMetric">
-    <eLiterals name="RECALL" literal="recall"/>
-    <eLiterals name="PRECISION" value="1" literal="precision"/>
-    <eLiterals name="F1" value="2" literal="F1"/>
-    <eLiterals name="ACCURACY" value="3" literal="accuracy"/>
+    <eLiterals name="BALANCED_ACCURACY" literal="balanced_accuracy"/>
+    <eLiterals name="RECALL" value="1" literal="recall"/>
+    <eLiterals name="PRECISION" value="2" literal="precision"/>
+    <eLiterals name="F1" value="3" literal="F1"/>
+    <eLiterals name="ACCURACY" value="4" literal="accuracy"/>
+    <eLiterals name="MACRO_RECALL" value="5" literal="macro_recall"/>
+    <eLiterals name="MACRO_PRECISION" value="6" literal="macro_precision"/>
+    <eLiterals name="MACRO_F1" value="7" literal="macro_F1"/>
+    <eLiterals name="MACRO_ACCURACY" value="8" literal="macro_accuracy"/>
   </eClassifiers>
 </ecore:EPackage>

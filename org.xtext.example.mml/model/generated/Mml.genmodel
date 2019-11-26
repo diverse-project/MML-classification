@@ -26,14 +26,19 @@
       <genEnumLiterals ecoreEnumLiteral="Mml.ecore#//SVMClassification/oneClass"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Mml.ecore#//ValidationMetric">
+      <genEnumLiterals ecoreEnumLiteral="Mml.ecore#//ValidationMetric/BALANCED_ACCURACY"/>
       <genEnumLiterals ecoreEnumLiteral="Mml.ecore#//ValidationMetric/RECALL"/>
       <genEnumLiterals ecoreEnumLiteral="Mml.ecore#//ValidationMetric/PRECISION"/>
       <genEnumLiterals ecoreEnumLiteral="Mml.ecore#//ValidationMetric/F1"/>
       <genEnumLiterals ecoreEnumLiteral="Mml.ecore#//ValidationMetric/ACCURACY"/>
+      <genEnumLiterals ecoreEnumLiteral="Mml.ecore#//ValidationMetric/MACRO_RECALL"/>
+      <genEnumLiterals ecoreEnumLiteral="Mml.ecore#//ValidationMetric/MACRO_PRECISION"/>
+      <genEnumLiterals ecoreEnumLiteral="Mml.ecore#//ValidationMetric/MACRO_F1"/>
+      <genEnumLiterals ecoreEnumLiteral="Mml.ecore#//ValidationMetric/MACRO_ACCURACY"/>
     </genEnums>
     <genClasses ecoreClass="Mml.ecore#//MMLModel">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mml.ecore#//MMLModel/input"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mml.ecore#//MMLModel/algorithm"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mml.ecore#//MMLModel/algorithms"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mml.ecore#//MMLModel/formula"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mml.ecore#//MMLModel/validation"/>
     </genClasses>
@@ -52,7 +57,9 @@
     <genClasses ecoreClass="Mml.ecore#//SVM">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mml.ecore#//SVM/gamma"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mml.ecore#//SVM/C"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mml.ecore#//SVM/kernelSpecified"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mml.ecore#//SVM/kernel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mml.ecore#//SVM/classificationSpecified"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mml.ecore#//SVM/svmclassification"/>
     </genClasses>
     <genClasses ecoreClass="Mml.ecore#//DT">

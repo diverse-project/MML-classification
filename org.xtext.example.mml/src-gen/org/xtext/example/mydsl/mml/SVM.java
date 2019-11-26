@@ -15,7 +15,9 @@ package org.xtext.example.mydsl.mml;
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.mml.SVM#getGamma <em>Gamma</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.mml.SVM#getC <em>C</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.mml.SVM#isKernelSpecified <em>Kernel Specified</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.mml.SVM#getKernel <em>Kernel</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.mml.SVM#isClassificationSpecified <em>Classification Specified</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.mml.SVM#getSvmclassification <em>Svmclassification</em>}</li>
  * </ul>
  *
@@ -70,6 +72,28 @@ public interface SVM extends MLAlgorithm
   void setC(String value);
 
   /**
+   * Returns the value of the '<em><b>Kernel Specified</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Kernel Specified</em>' attribute.
+   * @see #setKernelSpecified(boolean)
+   * @see org.xtext.example.mydsl.mml.MmlPackage#getSVM_KernelSpecified()
+   * @model
+   * @generated
+   */
+  boolean isKernelSpecified();
+
+  /**
+   * Sets the value of the '{@link org.xtext.example.mydsl.mml.SVM#isKernelSpecified <em>Kernel Specified</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Kernel Specified</em>' attribute.
+   * @see #isKernelSpecified()
+   * @generated
+   */
+  void setKernelSpecified(boolean value);
+
+  /**
    * Returns the value of the '<em><b>Kernel</b></em>' attribute.
    * The literals are from the enumeration {@link org.xtext.example.mydsl.mml.SVMKernel}.
    * <!-- begin-user-doc -->
@@ -93,6 +117,28 @@ public interface SVM extends MLAlgorithm
    * @generated
    */
   void setKernel(SVMKernel value);
+
+  /**
+   * Returns the value of the '<em><b>Classification Specified</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Classification Specified</em>' attribute.
+   * @see #setClassificationSpecified(boolean)
+   * @see org.xtext.example.mydsl.mml.MmlPackage#getSVM_ClassificationSpecified()
+   * @model
+   * @generated
+   */
+  boolean isClassificationSpecified();
+
+  /**
+   * Sets the value of the '{@link org.xtext.example.mydsl.mml.SVM#isClassificationSpecified <em>Classification Specified</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Classification Specified</em>' attribute.
+   * @see #isClassificationSpecified()
+   * @generated
+   */
+  void setClassificationSpecified(boolean value);
 
   /**
    * Returns the value of the '<em><b>Svmclassification</b></em>' attribute.

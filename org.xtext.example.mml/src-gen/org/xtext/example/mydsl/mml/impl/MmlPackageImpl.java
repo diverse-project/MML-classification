@@ -295,7 +295,7 @@ public class MmlPackageImpl extends EPackageImpl implements MmlPackage
    * @generated
    */
   @Override
-  public EReference getMMLModel_Algorithm()
+  public EReference getMMLModel_Algorithms()
   {
     return (EReference)mmlModelEClass.getEStructuralFeatures().get(1);
   }
@@ -460,7 +460,7 @@ public class MmlPackageImpl extends EPackageImpl implements MmlPackage
    * @generated
    */
   @Override
-  public EAttribute getSVM_Kernel()
+  public EAttribute getSVM_KernelSpecified()
   {
     return (EAttribute)svmEClass.getEStructuralFeatures().get(2);
   }
@@ -471,9 +471,31 @@ public class MmlPackageImpl extends EPackageImpl implements MmlPackage
    * @generated
    */
   @Override
-  public EAttribute getSVM_Svmclassification()
+  public EAttribute getSVM_Kernel()
   {
     return (EAttribute)svmEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getSVM_ClassificationSpecified()
+  {
+    return (EAttribute)svmEClass.getEStructuralFeatures().get(4);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getSVM_Svmclassification()
+  {
+    return (EAttribute)svmEClass.getEStructuralFeatures().get(5);
   }
 
   /**
@@ -806,7 +828,7 @@ public class MmlPackageImpl extends EPackageImpl implements MmlPackage
     // Create classes and their features
     mmlModelEClass = createEClass(MML_MODEL);
     createEReference(mmlModelEClass, MML_MODEL__INPUT);
-    createEReference(mmlModelEClass, MML_MODEL__ALGORITHM);
+    createEReference(mmlModelEClass, MML_MODEL__ALGORITHMS);
     createEReference(mmlModelEClass, MML_MODEL__FORMULA);
     createEReference(mmlModelEClass, MML_MODEL__VALIDATION);
 
@@ -826,7 +848,9 @@ public class MmlPackageImpl extends EPackageImpl implements MmlPackage
     svmEClass = createEClass(SVM);
     createEAttribute(svmEClass, SVM__GAMMA);
     createEAttribute(svmEClass, SVM__C);
+    createEAttribute(svmEClass, SVM__KERNEL_SPECIFIED);
     createEAttribute(svmEClass, SVM__KERNEL);
+    createEAttribute(svmEClass, SVM__CLASSIFICATION_SPECIFIED);
     createEAttribute(svmEClass, SVM__SVMCLASSIFICATION);
 
     dtEClass = createEClass(DT);
@@ -912,7 +936,7 @@ public class MmlPackageImpl extends EPackageImpl implements MmlPackage
     // Initialize classes and features; add operations and parameters
     initEClass(mmlModelEClass, MMLModel.class, "MMLModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getMMLModel_Input(), this.getDataInput(), null, "input", null, 0, 1, MMLModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMMLModel_Algorithm(), this.getMLChoiceAlgorithm(), null, "algorithm", null, 0, 1, MMLModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMMLModel_Algorithms(), this.getMLChoiceAlgorithm(), null, "algorithms", null, 0, -1, MMLModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMMLModel_Formula(), this.getRFormula(), null, "formula", null, 0, 1, MMLModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMMLModel_Validation(), this.getValidation(), null, "validation", null, 0, 1, MMLModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -932,7 +956,9 @@ public class MmlPackageImpl extends EPackageImpl implements MmlPackage
     initEClass(svmEClass, org.xtext.example.mydsl.mml.SVM.class, "SVM", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getSVM_Gamma(), ecorePackage.getEString(), "gamma", null, 0, 1, org.xtext.example.mydsl.mml.SVM.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getSVM_C(), ecorePackage.getEString(), "C", null, 0, 1, org.xtext.example.mydsl.mml.SVM.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getSVM_KernelSpecified(), ecorePackage.getEBoolean(), "kernelSpecified", null, 0, 1, org.xtext.example.mydsl.mml.SVM.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getSVM_Kernel(), this.getSVMKernel(), "kernel", null, 0, 1, org.xtext.example.mydsl.mml.SVM.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getSVM_ClassificationSpecified(), ecorePackage.getEBoolean(), "classificationSpecified", null, 0, 1, org.xtext.example.mydsl.mml.SVM.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getSVM_Svmclassification(), this.getSVMClassification(), "svmclassification", null, 0, 1, org.xtext.example.mydsl.mml.SVM.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(dtEClass, org.xtext.example.mydsl.mml.DT.class, "DT", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -990,10 +1016,15 @@ public class MmlPackageImpl extends EPackageImpl implements MmlPackage
     addEEnumLiteral(svmClassificationEEnum, SVMClassification.ONE_CLASS);
 
     initEEnum(validationMetricEEnum, ValidationMetric.class, "ValidationMetric");
+    addEEnumLiteral(validationMetricEEnum, ValidationMetric.BALANCED_ACCURACY);
     addEEnumLiteral(validationMetricEEnum, ValidationMetric.RECALL);
     addEEnumLiteral(validationMetricEEnum, ValidationMetric.PRECISION);
     addEEnumLiteral(validationMetricEEnum, ValidationMetric.F1);
     addEEnumLiteral(validationMetricEEnum, ValidationMetric.ACCURACY);
+    addEEnumLiteral(validationMetricEEnum, ValidationMetric.MACRO_RECALL);
+    addEEnumLiteral(validationMetricEEnum, ValidationMetric.MACRO_PRECISION);
+    addEEnumLiteral(validationMetricEEnum, ValidationMetric.MACRO_F1);
+    addEEnumLiteral(validationMetricEEnum, ValidationMetric.MACRO_ACCURACY);
 
     // Create resource
     createResource(eNS_URI);

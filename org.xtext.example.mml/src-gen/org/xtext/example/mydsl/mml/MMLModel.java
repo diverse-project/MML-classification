@@ -3,6 +3,8 @@
  */
 package org.xtext.example.mydsl.mml;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -15,7 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.mml.MMLModel#getInput <em>Input</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.mml.MMLModel#getAlgorithm <em>Algorithm</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.mml.MMLModel#getAlgorithms <em>Algorithms</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.mml.MMLModel#getFormula <em>Formula</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.mml.MMLModel#getValidation <em>Validation</em>}</li>
  * </ul>
@@ -49,26 +51,16 @@ public interface MMLModel extends EObject
   void setInput(DataInput value);
 
   /**
-   * Returns the value of the '<em><b>Algorithm</b></em>' containment reference.
+   * Returns the value of the '<em><b>Algorithms</b></em>' containment reference list.
+   * The list contents are of type {@link org.xtext.example.mydsl.mml.MLChoiceAlgorithm}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Algorithm</em>' containment reference.
-   * @see #setAlgorithm(MLChoiceAlgorithm)
-   * @see org.xtext.example.mydsl.mml.MmlPackage#getMMLModel_Algorithm()
+   * @return the value of the '<em>Algorithms</em>' containment reference list.
+   * @see org.xtext.example.mydsl.mml.MmlPackage#getMMLModel_Algorithms()
    * @model containment="true"
    * @generated
    */
-  MLChoiceAlgorithm getAlgorithm();
-
-  /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.mml.MMLModel#getAlgorithm <em>Algorithm</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Algorithm</em>' containment reference.
-   * @see #getAlgorithm()
-   * @generated
-   */
-  void setAlgorithm(MLChoiceAlgorithm value);
+  EList<MLChoiceAlgorithm> getAlgorithms();
 
   /**
    * Returns the value of the '<em><b>Formula</b></em>' containment reference.

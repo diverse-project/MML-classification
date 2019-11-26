@@ -850,27 +850,57 @@ rule__ValidationMetric__Alternatives
 	}
 :
 	(
-		{ before(grammarAccess.getValidationMetricAccess().getRECALLEnumLiteralDeclaration_0()); }
+		{ before(grammarAccess.getValidationMetricAccess().getBALANCED_ACCURACYEnumLiteralDeclaration_0()); }
+		('balanced_accuracy')
+		{ after(grammarAccess.getValidationMetricAccess().getBALANCED_ACCURACYEnumLiteralDeclaration_0()); }
+	)
+	|
+	(
+		{ before(grammarAccess.getValidationMetricAccess().getRECALLEnumLiteralDeclaration_1()); }
 		('recall')
-		{ after(grammarAccess.getValidationMetricAccess().getRECALLEnumLiteralDeclaration_0()); }
+		{ after(grammarAccess.getValidationMetricAccess().getRECALLEnumLiteralDeclaration_1()); }
 	)
 	|
 	(
-		{ before(grammarAccess.getValidationMetricAccess().getPRECISIONEnumLiteralDeclaration_1()); }
+		{ before(grammarAccess.getValidationMetricAccess().getPRECISIONEnumLiteralDeclaration_2()); }
 		('precision')
-		{ after(grammarAccess.getValidationMetricAccess().getPRECISIONEnumLiteralDeclaration_1()); }
+		{ after(grammarAccess.getValidationMetricAccess().getPRECISIONEnumLiteralDeclaration_2()); }
 	)
 	|
 	(
-		{ before(grammarAccess.getValidationMetricAccess().getF1EnumLiteralDeclaration_2()); }
+		{ before(grammarAccess.getValidationMetricAccess().getF1EnumLiteralDeclaration_3()); }
 		('F1')
-		{ after(grammarAccess.getValidationMetricAccess().getF1EnumLiteralDeclaration_2()); }
+		{ after(grammarAccess.getValidationMetricAccess().getF1EnumLiteralDeclaration_3()); }
 	)
 	|
 	(
-		{ before(grammarAccess.getValidationMetricAccess().getACCURACYEnumLiteralDeclaration_3()); }
+		{ before(grammarAccess.getValidationMetricAccess().getACCURACYEnumLiteralDeclaration_4()); }
 		('accuracy')
-		{ after(grammarAccess.getValidationMetricAccess().getACCURACYEnumLiteralDeclaration_3()); }
+		{ after(grammarAccess.getValidationMetricAccess().getACCURACYEnumLiteralDeclaration_4()); }
+	)
+	|
+	(
+		{ before(grammarAccess.getValidationMetricAccess().getMACRO_RECALLEnumLiteralDeclaration_5()); }
+		('macro_recall')
+		{ after(grammarAccess.getValidationMetricAccess().getMACRO_RECALLEnumLiteralDeclaration_5()); }
+	)
+	|
+	(
+		{ before(grammarAccess.getValidationMetricAccess().getMACRO_PRECISIONEnumLiteralDeclaration_6()); }
+		('macro_precision')
+		{ after(grammarAccess.getValidationMetricAccess().getMACRO_PRECISIONEnumLiteralDeclaration_6()); }
+	)
+	|
+	(
+		{ before(grammarAccess.getValidationMetricAccess().getMACRO_F1EnumLiteralDeclaration_7()); }
+		('macro_F1')
+		{ after(grammarAccess.getValidationMetricAccess().getMACRO_F1EnumLiteralDeclaration_7()); }
+	)
+	|
+	(
+		{ before(grammarAccess.getValidationMetricAccess().getMACRO_ACCURACYEnumLiteralDeclaration_8()); }
+		('macro_accuracy')
+		{ after(grammarAccess.getValidationMetricAccess().getMACRO_ACCURACYEnumLiteralDeclaration_8()); }
 	)
 ;
 finally {
@@ -922,9 +952,16 @@ rule__MMLModel__Group__1__Impl
 	}
 :
 (
-	{ before(grammarAccess.getMMLModelAccess().getAlgorithmAssignment_1()); }
-	(rule__MMLModel__AlgorithmAssignment_1)
-	{ after(grammarAccess.getMMLModelAccess().getAlgorithmAssignment_1()); }
+	(
+		{ before(grammarAccess.getMMLModelAccess().getAlgorithmsAssignment_1()); }
+		(rule__MMLModel__AlgorithmsAssignment_1)
+		{ after(grammarAccess.getMMLModelAccess().getAlgorithmsAssignment_1()); }
+	)
+	(
+		{ before(grammarAccess.getMMLModelAccess().getAlgorithmsAssignment_1()); }
+		(rule__MMLModel__AlgorithmsAssignment_1)*
+		{ after(grammarAccess.getMMLModelAccess().getAlgorithmsAssignment_1()); }
+	)
 )
 ;
 finally {
@@ -1516,9 +1553,9 @@ rule__SVM__Group_4__0__Impl
 	}
 :
 (
-	{ before(grammarAccess.getSVMAccess().getKernelKeyword_4_0()); }
-	'kernel='
-	{ after(grammarAccess.getSVMAccess().getKernelKeyword_4_0()); }
+	{ before(grammarAccess.getSVMAccess().getKernelSpecifiedAssignment_4_0()); }
+	(rule__SVM__KernelSpecifiedAssignment_4_0)
+	{ after(grammarAccess.getSVMAccess().getKernelSpecifiedAssignment_4_0()); }
 )
 ;
 finally {
@@ -1570,9 +1607,9 @@ rule__SVM__Group_5__0__Impl
 	}
 :
 (
-	{ before(grammarAccess.getSVMAccess().getClassificationKeyword_5_0()); }
-	'classification'
-	{ after(grammarAccess.getSVMAccess().getClassificationKeyword_5_0()); }
+	{ before(grammarAccess.getSVMAccess().getClassificationSpecifiedAssignment_5_0()); }
+	(rule__SVM__ClassificationSpecifiedAssignment_5_0)
+	{ after(grammarAccess.getSVMAccess().getClassificationSpecifiedAssignment_5_0()); }
 )
 ;
 finally {
@@ -2465,15 +2502,15 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__MMLModel__AlgorithmAssignment_1
+rule__MMLModel__AlgorithmsAssignment_1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getMMLModelAccess().getAlgorithmMLChoiceAlgorithmParserRuleCall_1_0()); }
+		{ before(grammarAccess.getMMLModelAccess().getAlgorithmsMLChoiceAlgorithmParserRuleCall_1_0()); }
 		ruleMLChoiceAlgorithm
-		{ after(grammarAccess.getMMLModelAccess().getAlgorithmMLChoiceAlgorithmParserRuleCall_1_0()); }
+		{ after(grammarAccess.getMMLModelAccess().getAlgorithmsMLChoiceAlgorithmParserRuleCall_1_0()); }
 	)
 ;
 finally {
@@ -2615,6 +2652,25 @@ finally {
 	restoreStackSize(stackSize);
 }
 
+rule__SVM__KernelSpecifiedAssignment_4_0
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getSVMAccess().getKernelSpecifiedKernelKeyword_4_0_0()); }
+		(
+			{ before(grammarAccess.getSVMAccess().getKernelSpecifiedKernelKeyword_4_0_0()); }
+			'kernel='
+			{ after(grammarAccess.getSVMAccess().getKernelSpecifiedKernelKeyword_4_0_0()); }
+		)
+		{ after(grammarAccess.getSVMAccess().getKernelSpecifiedKernelKeyword_4_0_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
 rule__SVM__KernelAssignment_4_1
 	@init {
 		int stackSize = keepStackSize();
@@ -2624,6 +2680,25 @@ rule__SVM__KernelAssignment_4_1
 		{ before(grammarAccess.getSVMAccess().getKernelSVMKernelEnumRuleCall_4_1_0()); }
 		ruleSVMKernel
 		{ after(grammarAccess.getSVMAccess().getKernelSVMKernelEnumRuleCall_4_1_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__SVM__ClassificationSpecifiedAssignment_5_0
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getSVMAccess().getClassificationSpecifiedClassificationKeyword_5_0_0()); }
+		(
+			{ before(grammarAccess.getSVMAccess().getClassificationSpecifiedClassificationKeyword_5_0_0()); }
+			'classification'
+			{ after(grammarAccess.getSVMAccess().getClassificationSpecifiedClassificationKeyword_5_0_0()); }
+		)
+		{ after(grammarAccess.getSVMAccess().getClassificationSpecifiedClassificationKeyword_5_0_0()); }
 	)
 ;
 finally {

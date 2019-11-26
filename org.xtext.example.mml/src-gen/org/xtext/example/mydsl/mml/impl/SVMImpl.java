@@ -24,7 +24,9 @@ import org.xtext.example.mydsl.mml.SVMKernel;
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.mml.impl.SVMImpl#getGamma <em>Gamma</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.mml.impl.SVMImpl#getC <em>C</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.mml.impl.SVMImpl#isKernelSpecified <em>Kernel Specified</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.mml.impl.SVMImpl#getKernel <em>Kernel</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.mml.impl.SVMImpl#isClassificationSpecified <em>Classification Specified</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.mml.impl.SVMImpl#getSvmclassification <em>Svmclassification</em>}</li>
  * </ul>
  *
@@ -73,6 +75,26 @@ public class SVMImpl extends MLAlgorithmImpl implements SVM
   protected String c = C_EDEFAULT;
 
   /**
+   * The default value of the '{@link #isKernelSpecified() <em>Kernel Specified</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isKernelSpecified()
+   * @generated
+   * @ordered
+   */
+  protected static final boolean KERNEL_SPECIFIED_EDEFAULT = false;
+
+  /**
+   * The cached value of the '{@link #isKernelSpecified() <em>Kernel Specified</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isKernelSpecified()
+   * @generated
+   * @ordered
+   */
+  protected boolean kernelSpecified = KERNEL_SPECIFIED_EDEFAULT;
+
+  /**
    * The default value of the '{@link #getKernel() <em>Kernel</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -91,6 +113,26 @@ public class SVMImpl extends MLAlgorithmImpl implements SVM
    * @ordered
    */
   protected SVMKernel kernel = KERNEL_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #isClassificationSpecified() <em>Classification Specified</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isClassificationSpecified()
+   * @generated
+   * @ordered
+   */
+  protected static final boolean CLASSIFICATION_SPECIFIED_EDEFAULT = false;
+
+  /**
+   * The cached value of the '{@link #isClassificationSpecified() <em>Classification Specified</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isClassificationSpecified()
+   * @generated
+   * @ordered
+   */
+  protected boolean classificationSpecified = CLASSIFICATION_SPECIFIED_EDEFAULT;
 
   /**
    * The default value of the '{@link #getSvmclassification() <em>Svmclassification</em>}' attribute.
@@ -189,6 +231,31 @@ public class SVMImpl extends MLAlgorithmImpl implements SVM
    * @generated
    */
   @Override
+  public boolean isKernelSpecified()
+  {
+    return kernelSpecified;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setKernelSpecified(boolean newKernelSpecified)
+  {
+    boolean oldKernelSpecified = kernelSpecified;
+    kernelSpecified = newKernelSpecified;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MmlPackage.SVM__KERNEL_SPECIFIED, oldKernelSpecified, kernelSpecified));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public SVMKernel getKernel()
   {
     return kernel;
@@ -206,6 +273,31 @@ public class SVMImpl extends MLAlgorithmImpl implements SVM
     kernel = newKernel == null ? KERNEL_EDEFAULT : newKernel;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, MmlPackage.SVM__KERNEL, oldKernel, kernel));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public boolean isClassificationSpecified()
+  {
+    return classificationSpecified;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setClassificationSpecified(boolean newClassificationSpecified)
+  {
+    boolean oldClassificationSpecified = classificationSpecified;
+    classificationSpecified = newClassificationSpecified;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MmlPackage.SVM__CLASSIFICATION_SPECIFIED, oldClassificationSpecified, classificationSpecified));
   }
 
   /**
@@ -247,8 +339,12 @@ public class SVMImpl extends MLAlgorithmImpl implements SVM
         return getGamma();
       case MmlPackage.SVM__C:
         return getC();
+      case MmlPackage.SVM__KERNEL_SPECIFIED:
+        return isKernelSpecified();
       case MmlPackage.SVM__KERNEL:
         return getKernel();
+      case MmlPackage.SVM__CLASSIFICATION_SPECIFIED:
+        return isClassificationSpecified();
       case MmlPackage.SVM__SVMCLASSIFICATION:
         return getSvmclassification();
     }
@@ -271,8 +367,14 @@ public class SVMImpl extends MLAlgorithmImpl implements SVM
       case MmlPackage.SVM__C:
         setC((String)newValue);
         return;
+      case MmlPackage.SVM__KERNEL_SPECIFIED:
+        setKernelSpecified((Boolean)newValue);
+        return;
       case MmlPackage.SVM__KERNEL:
         setKernel((SVMKernel)newValue);
+        return;
+      case MmlPackage.SVM__CLASSIFICATION_SPECIFIED:
+        setClassificationSpecified((Boolean)newValue);
         return;
       case MmlPackage.SVM__SVMCLASSIFICATION:
         setSvmclassification((SVMClassification)newValue);
@@ -297,8 +399,14 @@ public class SVMImpl extends MLAlgorithmImpl implements SVM
       case MmlPackage.SVM__C:
         setC(C_EDEFAULT);
         return;
+      case MmlPackage.SVM__KERNEL_SPECIFIED:
+        setKernelSpecified(KERNEL_SPECIFIED_EDEFAULT);
+        return;
       case MmlPackage.SVM__KERNEL:
         setKernel(KERNEL_EDEFAULT);
+        return;
+      case MmlPackage.SVM__CLASSIFICATION_SPECIFIED:
+        setClassificationSpecified(CLASSIFICATION_SPECIFIED_EDEFAULT);
         return;
       case MmlPackage.SVM__SVMCLASSIFICATION:
         setSvmclassification(SVMCLASSIFICATION_EDEFAULT);
@@ -321,8 +429,12 @@ public class SVMImpl extends MLAlgorithmImpl implements SVM
         return GAMMA_EDEFAULT == null ? gamma != null : !GAMMA_EDEFAULT.equals(gamma);
       case MmlPackage.SVM__C:
         return C_EDEFAULT == null ? c != null : !C_EDEFAULT.equals(c);
+      case MmlPackage.SVM__KERNEL_SPECIFIED:
+        return kernelSpecified != KERNEL_SPECIFIED_EDEFAULT;
       case MmlPackage.SVM__KERNEL:
         return kernel != KERNEL_EDEFAULT;
+      case MmlPackage.SVM__CLASSIFICATION_SPECIFIED:
+        return classificationSpecified != CLASSIFICATION_SPECIFIED_EDEFAULT;
       case MmlPackage.SVM__SVMCLASSIFICATION:
         return svmclassification != SVMCLASSIFICATION_EDEFAULT;
     }
@@ -344,8 +456,12 @@ public class SVMImpl extends MLAlgorithmImpl implements SVM
     result.append(gamma);
     result.append(", C: ");
     result.append(c);
+    result.append(", kernelSpecified: ");
+    result.append(kernelSpecified);
     result.append(", kernel: ");
     result.append(kernel);
+    result.append(", classificationSpecified: ");
+    result.append(classificationSpecified);
     result.append(", svmclassification: ");
     result.append(svmclassification);
     result.append(')');
