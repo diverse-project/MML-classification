@@ -74,8 +74,8 @@ public class MmlParsingJavaCompilerPython {
 		//Formula
 		RFormula f = model.getFormula();
 		if(f == null) {
-			y = "Y = mml_data.iloc[:,-1]\nprint('y:')\nprint(Y)\n";
-			x = "X = mml_data.iloc[:, :-1]\nprint('x:')\nprint(X)\n";
+			y = "Y = mml_data.iloc[:,-1]\n";
+			x = "X = mml_data.iloc[:, :-1]\n";
 		}else {
 			//Predictives
 			FormulaItem fi = f.getPredictive();
@@ -174,12 +174,12 @@ SVM defAlg = (SVM) al;
 		else if (al instanceof RandomForest) {
 			RandomForest defAlg = (RandomForest) al;
 			pythonImport+="from sklearn.ensemble import RandomForestClassifier \n";
-			algorithm+="clf = RandomForestClassifier()\n";
+			algorithm+="clf = RandomForestClassifier(n_estimators=100)\n";
 		}
 		else if (al instanceof LogisticRegression) {
 			LogisticRegression defAlg = (LogisticRegression) al;
 			pythonImport+="from sklearn.linear_model import LogisticRegression \n";
-			algorithm+="clf = LogisticRegression()\n";
+			algorithm+="clf = LogisticRegression(solver='lbfgs', multi_class='auto')\n";
 		}
 		
 		

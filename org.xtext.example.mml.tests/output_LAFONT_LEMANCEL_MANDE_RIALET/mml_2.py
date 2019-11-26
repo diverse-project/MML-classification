@@ -10,7 +10,7 @@ print(X)
 Y = mml_data.iloc[:,-1]
 print('y:')
 print(Y)
-clf = RandomForestClassifier()
+clf = RandomForestClassifier(n_estimators=100)
 scoring = ['accuracy'] 
 scores = cross_validate(clf,X, Y, scoring=scoring,cv=5)
 print('accuracy : ')

@@ -10,7 +10,7 @@ print(X)
 Y = mml_data.iloc[:,-1]
 print('y:')
 print(Y)
-clf = LogisticRegression()
+clf = LogisticRegression(solver='lbfgs', multi_class='auto')
 scoring = ['accuracy'] 
 scores = cross_validate(clf,X, Y, scoring=scoring,cv=5)
 print('accuracy : ')
