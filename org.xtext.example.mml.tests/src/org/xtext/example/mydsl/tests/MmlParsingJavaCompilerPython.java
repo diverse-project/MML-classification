@@ -189,25 +189,50 @@ SVM defAlg = (SVM) al;
 		ValidationMetric[] metriquesArray = (ValidationMetric[]) metric.toArray();
 		String stratificationAndMetrique = "";
 		int number; 
-		String metriques = "";
+		boolean macro, accuracy = false;
+		String metriques = "", metrique="";
 		String printScores = "";
 		
 		if (strat instanceof CrossValidation) {
 			number = strat.getNumber();
 			metriques = "scoring = [";
 			for(int i = 0; i < metriquesArray.length; i++) {
+				macro = false;
+				metrique = metriquesArray[i].getLiteral().toLowerCase();
+				if((metrique.equals("accuracy") || metrique.equals("macro_accuracy")) && accuracy) {
+					if(i == metriquesArray.length-1) {
+						metriques +="]\n";
+					}
+					continue;
+				}
+				if(metrique.equals("accuracy") || metrique.equals("macro_accuracy"))
+					accuracy = true;
+				if (metrique.contains("macro")){
+					metrique = metrique.substring(6, metrique.length());
+					macro = true;
+					if(!metrique.equals("accuracy")) {
+						metrique += "_macro";
+					}
+				}else {
+					if(!metrique.equals("accuracy") && !metrique.equals("balanced_accuracy")) {
+						metrique += "_micro";
+					}
+				}
 				if(i != metriquesArray.length-1)
-					metriques+= "'"+metriquesArray[i].getLiteral() + "',";
+					metriques+= "'"+metrique + "',";
 				else
-					metriques+= "'"+metriquesArray[i].getLiteral() + "'] \n";
-				printScores+="print('"+metriquesArray[i].getLiteral()+" : ')\n";
-				printScores+="print(scores['test_"+metriquesArray[i].getLiteral()+"'])\n";
+					metriques+= "'"+metrique + "'] \n";
+				if(macro)
+					printScores+="print('"+metriquesArray[i].getLiteral()+" : ')\n";
+				else
+					printScores+="print('"+metrique+" : ')\n";
+				printScores+="print(sum(scores['test_"+metrique+"']) / len(scores['test_"+metrique+"']))\n";
 			}
 			pythonImport+="from sklearn.model_selection import cross_validate\n";
 			stratificationAndMetrique = metriques+"scores = cross_validate(clf,X, Y, scoring=scoring,cv="+number+")\n";
 		} 
 		else if (strat instanceof TrainingTest) {
-			String metrique = "";
+			metrique = "";
 			number = strat.getNumber();
 			stratificationAndMetrique = "test_size = 0."+number+"\nX_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=test_size)\nclf.fit(X_train, y_train)\n";
 			for(int i = 0; i < metriquesArray.length; i++) {
@@ -215,15 +240,27 @@ SVM defAlg = (SVM) al;
 				if(metrique == "accuracy") {
 					pythonImport += "from sklearn.metrics import accuracy_score\n";
 					stratificationAndMetrique+="accuracy = accuracy_score(y_test, clf.predict(X_test))\nprint('accuracy :')\nprint(accuracy)\n";
+				}else if(metrique == "balanced_accuracy") {
+					pythonImport += "from sklearn.metrics import balanced_accuracy_score\n";
+					stratificationAndMetrique+="accuracy = balanced_accuracy_score(y_test, clf.predict(X_test))\nprint('balanced accuracy :')\nprint(accuracy)\n";
 				}else if(metrique == "recall") {
 					pythonImport += "from sklearn.metrics import recall_score\n";
 					stratificationAndMetrique+="recall = recall_score(y_test, clf.predict(X_test),average='micro')\nprint('recall :')\nprint(recall)\n";
+				}else if(metrique == "macro_recall") {
+					pythonImport += "from sklearn.metrics import recall_score\n";
+					stratificationAndMetrique+="recall = recall_score(y_test, clf.predict(X_test),average='macro')\nprint('recall :')\nprint(recall)\n";
 				}else if(metrique == "precision") {
 					pythonImport += "from sklearn.metrics import precision_score\n";
 					stratificationAndMetrique+="precision = precision_score(y_test, clf.predict(X_test),average='micro')\nprint('precision :')\nprint(precision)\n";
+				}else if(metrique == "macro_precision") {
+					pythonImport += "from sklearn.metrics import precision_score\n";
+					stratificationAndMetrique+="precision = precision_score(y_test, clf.predict(X_test),average='macro')\nprint('macro precision :')\nprint(precision)\n";
 				}else if(metrique == "F1") {
 					pythonImport += "from sklearn.metrics import f1_score\n";
 					stratificationAndMetrique+="F1 = f1_score(y_test, clf.predict(X_test),average='micro')\nprint('F1 :')\nprint(F1)\n";
+				}else if(metrique == "macro_F1") {
+					pythonImport += "from sklearn.metrics import f1_score\n";
+					stratificationAndMetrique+="F1 = f1_score(y_test, clf.predict(X_test),average='macro')\nprint('macro F1 :')\nprint(F1)\n";
 				}
 			}
 		}
@@ -245,12 +282,12 @@ SVM defAlg = (SVM) al;
 		 * Calling generated Python script (basic solution through systems call)
 		 * we assume that "python" is in the path
 		 */
-		/*Process p = Runtime.getRuntime().exec("mml_"+numAlgo+".py");
+		Process p = Runtime.getRuntime().exec("python output_LAFONT_LEMANCEL_MANDE_RIALET/mml_"+numAlgo+".py");
 		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line; 
 		while ((line = in.readLine()) != null) {
 			System.out.println(line);
-	    }*/
+	    }
 		
 		
 		

@@ -57,8 +57,8 @@ public class MmlParsingJavaCompiler {
 				+ "algorithm RF\n"
 				+ "mlframework scikit-learn\n"
 				+ "algorithm LogisticRegression\n"
-				+ "CrossValidation { numRepetitionCross 5 }\n"
-				+ "accuracy\n"
+				+ "TrainingTest { percentageTraining 30 }\n"
+				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 		
 		//Algorithm
