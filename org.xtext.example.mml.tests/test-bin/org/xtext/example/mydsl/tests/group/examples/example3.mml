@@ -1,6 +1,6 @@
-datainput foo2.csv separator ;
+datainput "foo.csv"
 mlframework scikit-learn
-algorithm DT
+algorithm SVM(kernel='linear')
 TrainingTest {
 	percentageTraining 50
 }

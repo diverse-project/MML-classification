@@ -1,7 +1,7 @@
-datainput foo2.csv separator ;
+datainput "foo.csv"
 mlframework scikit-learn
 algorithm DT
-TrainingTest {
+TrainingTest { 
 	percentageTraining 50
 }
-precision
+accuracy
