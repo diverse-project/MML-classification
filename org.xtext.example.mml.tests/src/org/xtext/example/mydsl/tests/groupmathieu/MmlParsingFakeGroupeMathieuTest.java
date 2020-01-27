@@ -66,7 +66,10 @@ public class MmlParsingFakeGroupeMathieuTest {
 		Assertions.assertNotNull(result);
 		EList<Resource.Diagnostic> errors = result.eResource().getErrors();
 		Assertions.assertTrue(errors.isEmpty(), "Unexpected errors " + errors);			
-		Assertions.assertEquals("iris.csv", result.getInput().getFilelocation());			
+		Assertions.assertEquals("iris.csv", result.getInput().getFilelocation());
+		
+		EList<MLChoiceAlgorithm> listAlgo = result.getAlgorithms();
+		System.out.println(listAlgo.toString());
 		
 	}	
 	
@@ -101,9 +104,6 @@ public class MmlParsingFakeGroupeMathieuTest {
 		Assertions.assertFalse(((SVM) alg2).isKernelSpecified());
 		Assertions.assertEquals(((SVM) alg2).getKernel(), SVMKernel.LINEAR);
 		
-	}		
-	
-
-
+	}
 
 }
