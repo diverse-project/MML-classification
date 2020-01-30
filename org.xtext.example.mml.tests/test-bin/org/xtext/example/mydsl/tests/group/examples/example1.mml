@@ -1,7 +1,0 @@
-datainput "foo.csv"
-mlframework scikit-learn
-algorithm DT(2)
-CrossValidation {
-	numRepetitionCross 20
-}
-accuracy
