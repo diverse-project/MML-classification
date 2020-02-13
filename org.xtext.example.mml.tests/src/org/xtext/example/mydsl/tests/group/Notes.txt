@@ -1,0 +1,2 @@
+verifier avec rfomula l'existance d'une variable predictive
+parcourir les variables predictors 

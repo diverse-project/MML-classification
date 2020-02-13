@@ -1,7 +1,0 @@
-datainput "foo.csv"
-mlframework scikit-learn
-algorithm RandomForest
-CrossValidation {
-	numRepetitionCross 20
-}
-accuracy

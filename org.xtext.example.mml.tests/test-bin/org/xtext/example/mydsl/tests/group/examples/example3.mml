@@ -1,7 +1,0 @@
-datainput "foo.csv"
-mlframework scikit-learn
-algorithm SVM(kernel='linear')
-TrainingTest {
-	percentageTraining 50
-}
-precision
