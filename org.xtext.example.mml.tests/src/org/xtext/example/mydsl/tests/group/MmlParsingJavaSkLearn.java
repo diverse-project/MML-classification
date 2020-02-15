@@ -37,12 +37,13 @@ public class MmlParsingJavaSkLearn {
 		MMLModel result = parseHelper.parse("datainput \"iris.csv\"separator;\r\n" + 
 				"mlframework scikit-learn\r\n" + 
 				"algorithm DecisionTree\r\n" + 
-				"formula \"variety\"~\"colName\"+1+\"colName\"\r\n" + 
+				"formula \"colName\"+1+\"colName\"\r\n" + 
 				"TrainingTest{percentageTraining 70 }\r\n" + 
 				"accuracy" + "");
 		
 		RFormula formul = result.getFormula();
-		Assertions.assertEquals(formul.getPredictive().getColName(), "variety");
+		//Assertions.assertEquals(formul.getPredictive().getColName(), "variety");
+		Assertions.assertNull(formul.getPredictive());
 		Assertions.assertFalse(formul.getPredictors() instanceof AllVariables);
 		Assertions.assertTrue(formul.getPredictors() instanceof PredictorVariables);
 		
@@ -78,20 +79,9 @@ public class MmlParsingJavaSkLearn {
 		importTexte += pythonImport;
 		importTexte += genImportPackageCode(frameworkEnTraitement.getAlgorithm(),result.getFormula(), result.getValidation());
 		
-		// Recuperation de l'objet dataInput Possedant les infos sur fichier et les
-		// instructions de parsingCSV
-		DataInput dataInput = result.getInput();
-		String fileLocation = dataInput.getFilelocation();
-		String DEFAULT_COLUMN_SEPARATOR = ","; // by default
-		String csv_separator = DEFAULT_COLUMN_SEPARATOR;
-
-		CSVParsingConfiguration parsingInstruction = dataInput.getParsingInstruction();
-		if (parsingInstruction != null) {
-			System.err.println("parsing instruction..." + parsingInstruction);
-			csv_separator = parsingInstruction.getSep().toString();
-		}
-		body += "mml_data = pd.read_csv(" + mkValueInSingleQuote(fileLocation) + ", sep="
-				+ mkValueInSingleQuote(csv_separator) + ")";
+		body+= "\n"+genDataInputTraitement(result.getInput());
+		
+		body+= "\n"+genBodypartForPredictiveRFormula(result.getFormula());
 		
 		body += "\n"+genBodypartForAlgorithm(frameworkEnTraitement.getAlgorithm());
 		
@@ -117,6 +107,25 @@ public class MmlParsingJavaSkLearn {
 
 	private String mkValueInSingleQuote(String val) {
 		return "'" + val + "'";
+	}
+	
+	private String genDataInputTraitement(DataInput dataInput) {
+		String datainputpart= "";
+		// Recuperation de l'objet dataInput Possedant les infos sur fichier et les
+		// instructions de parsingCSV
+		String fileLocation = dataInput.getFilelocation();
+		String DEFAULT_COLUMN_SEPARATOR = ","; // by default
+		String csv_separator = DEFAULT_COLUMN_SEPARATOR;
+
+		CSVParsingConfiguration parsingInstruction = dataInput.getParsingInstruction();
+		if (parsingInstruction != null) {
+			System.err.println("parsing instruction..." + parsingInstruction);
+			csv_separator = parsingInstruction.getSep().toString();
+		}
+		datainputpart += "mml_data = pd.read_csv(" + mkValueInSingleQuote(fileLocation) + ", sep="
+				+ mkValueInSingleQuote(csv_separator) + ")";
+
+		return datainputpart;
 	}
 
 	private String genImportPackageCode(MLAlgorithm algo, RFormula formula, Validation validation) {
@@ -197,6 +206,13 @@ public class MmlParsingJavaSkLearn {
 	
 	private String genBodypartForPredictiveRFormula(RFormula formula) {
 		String rFormulaPart = "";
+		
+		if(formula.getPredictive() != null) {
+			
+		}
+		else {
+			
+		}
 		
 		return rFormulaPart;
 	}
