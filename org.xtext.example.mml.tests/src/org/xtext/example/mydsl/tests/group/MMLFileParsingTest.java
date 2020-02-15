@@ -1,5 +1,6 @@
 package org.xtext.example.mydsl.tests.group;
 
+import java.io.InputStream;
 import java.util.Objects;
 import java.util.Scanner;
 
