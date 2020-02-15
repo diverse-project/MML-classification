@@ -24,7 +24,9 @@ import org.xtext.example.mydsl.mml.MMLModel;
 import org.xtext.example.mydsl.mml.RandomForest;
 import org.xtext.example.mydsl.mml.SVM;
 import org.xtext.example.mydsl.tests.MmlInjectorProvider;
+import org.xtext.example.mydsl.tests.group.compilers.SciKitCompiler;
 
+import com.google.common.io.Files;
 import com.google.inject.Inject;
 
 @ExtendWith(InjectionExtension.class)
@@ -36,15 +38,16 @@ public class MMLFileParsingTest {
 
 	@Test
 	void example1Test() throws Exception {
-		MMLModel model = parser.parse(readMMLFile("example01"));
+		String filename = "example01";
+		MMLModel model = parser.parse(readMMLFile(filename));
 
 		model.getAlgorithms().forEach(algorithm -> {
 			// call algorithm factory class
-			algorithmFactory(algorithm, model);
+			algorithmFactory(algorithm, model, filename);
 		});
 	}
 
-	private void algorithmFactory(MLChoiceAlgorithm choiceAlgorithm, MMLModel model) {
+	private void algorithmFactory(MLChoiceAlgorithm choiceAlgorithm, MMLModel model, String filename) {
 		StringBuffer imports = new StringBuffer();
 
 		FrameworkLang framework = choiceAlgorithm.getFramework();
@@ -52,22 +55,7 @@ public class MMLFileParsingTest {
 
 		switch (framework) {
 		case SCIKIT:
-			imports.append("import panda as pd\n");
-			imports.append("from sklearn.model_selection import train_test_split\n");
-			imports.append("from sklearn.metrics import accuracy_score\n");
-
-			String input = pythonReadDataset(model.getInput());
-
-			if (algorithm instanceof SVM) {
-				imports.append("from sklearn import tree\n");
-			} else if (algorithm instanceof DT) {
-				imports.append("from sklearn import tree\n");
-			} else if (algorithm instanceof RandomForest) {
-				imports.append("from sklearn.ensemble import RandomForestClassifier\n");
-			} else if (algorithm instanceof LogisticRegression) {
-				imports.append("from sklearn.linear_model import LogisticRegression\n");
-			}
-
+			SciKitCompiler.compile(algorithm, model, filename);
 			break;
 
 		case R:
