@@ -25,7 +25,7 @@ public class SciKitCompiler {
 
 	// private static StringBuilder imports = new StringBuilder();
 
-	public static boolean compiler(MLAlgorithm algorithm, MMLModel model, String filename) {
+	public static boolean compile(MLAlgorithm algorithm, MMLModel model, String filename) {
 
 		// Variable principal pour la creation du code final
 		String importTexte = "";
