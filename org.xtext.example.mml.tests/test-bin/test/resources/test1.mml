@@ -4,3 +4,4 @@ CrossValidation	{
 	numRepetitionCross 10
 }
 precision
+recall
