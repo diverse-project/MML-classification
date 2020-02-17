@@ -17,7 +17,7 @@ df = pd.read_csv('iris.csv', sep=',')
 features = list(df.columns[:4])
 X = df.drop('variety', axis=1)
 y = df['variety']
-classifier = OneClassSVM(gamma=1.1,kernel='linear')
+classifier = OneClassSVM(gamma=1.1kernel='linear')
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=10)
 classifier.fit(X_train, y_train)
 y_pred = classifier.predict(X_test)

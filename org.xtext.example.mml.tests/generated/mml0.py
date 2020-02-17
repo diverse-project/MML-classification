@@ -17,7 +17,7 @@ df = pd.read_csv('iris.csv', sep=',')
 features = list(df.columns[:4])
 X = df.drop('variety', axis=1)
 y = df['variety']
-classifier = LinearSVC(,kernel='radial')
+classifier = LinearSVC(C=3)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=80)
 classifier.fit(X_train, y_train)
 y_pred = classifier.predict(X_test)

@@ -185,7 +185,7 @@ public class MmlParsingPythonTest {
 						String newdiag = diagtype+"("+(svmAlgo.getGamma() == null ? "":"gamma="+svmAlgo.getGamma())+
 								(svmAlgo.getC() != null && svmAlgo.getGamma() != null ? "," : "")+
 								(svmAlgo.getC() == null ? "":"C="+svmAlgo.getC()+"")+
-								(svmAlgo.isKernelSpecified() ? "," : "")+
+								(svmAlgo.getC() != null && svmAlgo.isKernelSpecified() ? "," : "")+
 								(svmAlgo.isKernelSpecified() ? "kernel='"+svmAlgo.getKernel().getLiteral()+"'":"")+
 								")";
 						if(isCrossValidation)
