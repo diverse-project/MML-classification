@@ -2,7 +2,11 @@ package org.xtext.example.mydsl.tests.group.compilers;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.eclipse.emf.common.util.EList;
+import org.xtext.example.mydsl.mml.AllVariables;
 import org.xtext.example.mydsl.mml.CSVParsingConfiguration;
 import org.xtext.example.mydsl.mml.CrossValidation;
 import org.xtext.example.mydsl.mml.DT;
@@ -11,6 +15,7 @@ import org.xtext.example.mydsl.mml.FormulaItem;
 import org.xtext.example.mydsl.mml.LogisticRegression;
 import org.xtext.example.mydsl.mml.MLAlgorithm;
 import org.xtext.example.mydsl.mml.MMLModel;
+import org.xtext.example.mydsl.mml.PredictorVariables;
 import org.xtext.example.mydsl.mml.RFormula;
 import org.xtext.example.mydsl.mml.RandomForest;
 import org.xtext.example.mydsl.mml.SVM;
@@ -145,6 +150,7 @@ public class SciKitCompiler {
 		} else if (stratification instanceof TrainingTest) {
 			int test_size = 1 - stratification.getNumber() / 100;
 			validationPart += "test_size = " + test_size + "\n";
+			
 
 		}
 
@@ -153,13 +159,97 @@ public class SciKitCompiler {
 
 	private static String genBodypartForPredictiveRFormula(RFormula formula) {
 		String rFormulaPart = "";
-
+		
+		//Si une variable cible est défini 
 		if (formula.getPredictive() != null) {
-
-		} else {
-
+			rFormulaPart += splitingDataSet(formula.getPredictive(), formula.getPredictors());
 		}
-
+		// Si une variable cible n'est pas définis par l'utilisateur on choisi la derniere colonne 
+		else {
+			if(formula.getPredictors() instanceof AllVariables) {
+				//TODO : deplacer ce traitement dans la fonction splitingDataSet
+				rFormulaPart += "y = df.iloc[:,-1]\n";
+				rFormulaPart += "X = df.drop(df.columns[-1],axis=1)\n";
+			}
+			else if (formula.getPredictors() instanceof PredictorVariables) {
+				PredictorVariables predictors = (PredictorVariables) formula.getPredictors();
+				FormulaItem predictive = predictors.getVars().get(predictors.getVars().size()-1);
+				predictors.getVars().remove(predictors.getVars().size()-1);
+				
+				rFormulaPart += splitingDataSet(predictive, predictors);
+			}
+		}
+		
+		return rFormulaPart;
+	}
+	
+	private static String splitingDataSet (FormulaItem predictive, XFormula predictors) {
+		
+		String rFormulaPart ="";
+		
+		if(predictive.getColName() != null) {
+			rFormulaPart += "y = df[\""+predictive.getColName()+"\"]\n";
+		}
+		else{
+			rFormulaPart += "y = df.iloc[:,"+predictive.getColumn()+"]\n";					
+		}
+		
+		//Si tout le fichier est selectionner, couper la variable cible de l'ensemble
+		if (predictors instanceof AllVariables) {
+			//Si la vaiable cible est donné en nom de colonne
+			if(predictive.getColName() != null) {
+				rFormulaPart += "X = df.drop(columns=[\""+predictive.getColName()+"\"])\n";
+			}
+			// colonne cible donner par position int
+			else{
+				rFormulaPart += "X = df.drop(df.columns["+predictive.getColumn()+"],axis=1)\n";					
+			}
+			
+		}
+		//Si j'ai des colonnes spécifique pour l'ensemble des predictors
+		else if(predictors instanceof PredictorVariables) {
+			List<String> predictorWithColumnName = new ArrayList<>();
+			List<Integer>  predictorWithColumnIndex = new ArrayList<>();
+			
+			//TODO : verifier si la list de predictors est vide 
+			for(FormulaItem current : ((PredictorVariables) predictors).getVars()) {
+				if(current.getColName() != null) {
+					predictorWithColumnName.add(current.getColName());
+				}
+				else {
+					predictorWithColumnIndex.add(current.getColumn());
+				}
+			}
+			
+			if(!predictorWithColumnName.isEmpty()) {
+				rFormulaPart += "withColumName = df[[";
+				for(String colname : predictorWithColumnName) {
+					rFormulaPart += "\""+colname+"\",";
+				}					
+				rFormulaPart += "]]";
+				rFormulaPart += "\n";
+			}
+			
+			if(!predictorWithColumnIndex.isEmpty()) {
+				rFormulaPart += "withColumIndex = df.iloc[:,[";
+				for(Integer col : predictorWithColumnIndex) {
+					rFormulaPart += col+",";
+				}
+				rFormulaPart += "]]";
+				rFormulaPart += "\n";
+			}
+			
+			if(!predictorWithColumnName.isEmpty() && !predictorWithColumnIndex.isEmpty()) {
+				rFormulaPart += "X = pd.concat([withColumName,withColumIndex],axis = 1)\n";
+			}
+			else if(!predictorWithColumnName.isEmpty()) {
+				rFormulaPart += "X = withColumName\n";
+			}
+			else if(!predictorWithColumnIndex.isEmpty()) {
+				rFormulaPart += "X = withColumIndex\n";
+			}
+			
+		}
 		return rFormulaPart;
 	}
 
