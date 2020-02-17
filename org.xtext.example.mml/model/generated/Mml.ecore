@@ -32,6 +32,7 @@
     <eLiterals name="SCIKIT" literal="scikit-learn"/>
     <eLiterals name="R" value="1" literal="R"/>
     <eLiterals name="JavaWeka" value="2" literal="Weka"/>
+    <eLiterals name="XGBoost" value="3" literal="xgboost"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MLAlgorithm"/>
   <eClassifiers xsi:type="ecore:EClass" name="SVM" eSuperTypes="#//MLAlgorithm">

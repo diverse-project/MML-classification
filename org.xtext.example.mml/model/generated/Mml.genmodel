@@ -14,6 +14,7 @@
       <genEnumLiterals ecoreEnumLiteral="Mml.ecore#//FrameworkLang/SCIKIT"/>
       <genEnumLiterals ecoreEnumLiteral="Mml.ecore#//FrameworkLang/R"/>
       <genEnumLiterals ecoreEnumLiteral="Mml.ecore#//FrameworkLang/JavaWeka"/>
+      <genEnumLiterals ecoreEnumLiteral="Mml.ecore#//FrameworkLang/XGBoost"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Mml.ecore#//SVMKernel">
       <genEnumLiterals ecoreEnumLiteral="Mml.ecore#//SVMKernel/linear"/>

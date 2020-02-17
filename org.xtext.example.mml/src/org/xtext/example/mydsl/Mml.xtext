@@ -42,7 +42,7 @@ MLChoiceAlgorithm:
 ;
 
 
-enum FrameworkLang: SCIKIT="scikit-learn" | R="R" | JavaWeka="Weka";
+enum FrameworkLang: SCIKIT="scikit-learn" | R="R" | JavaWeka="Weka" | XGBoost="xgboost";
 
 MLAlgorithm : (SVM|DT|RandomForest|LogisticRegression) ;
 
