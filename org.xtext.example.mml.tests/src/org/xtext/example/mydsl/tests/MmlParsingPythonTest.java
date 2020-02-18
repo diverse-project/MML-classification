@@ -280,6 +280,8 @@ public class MmlParsingPythonTest {
 										Process p = Runtime.getRuntime().exec("python generated/mml"+i+".py");
 										BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 										String line; 
+										// obligatoire pour laiser le temps au processus de se finir
+										line = in.readLine(); //on ne lit qu'une ligne pour éviter le blocage du code
 //										while ((line = in.readLine()) != null) {
 //											System.out.println(line);
 //										}
