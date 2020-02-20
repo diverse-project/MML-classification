@@ -51,7 +51,7 @@ public class MmlParsingJavaCompiler {
 	@Test
 	public void compileDataInput() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
-				+ "mlframework Weka\n"
+				+ "mlframework Weka	\n"
 				+ "algorithm DT\n"
 				+ "mlframework Weka\n"
 				+ "algorithm RF\n"

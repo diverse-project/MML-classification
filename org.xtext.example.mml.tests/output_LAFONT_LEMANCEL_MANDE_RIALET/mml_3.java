@@ -1,3 +1,4 @@
+package output_LAFONT_LEMANCEL_MANDE_RIALET;
 import java.io.File;
 import java.util.Random;
 import weka.classifiers.functions.Logistic;
@@ -7,10 +8,10 @@ import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.core.converters.CSVLoader;
 import weka.core.Instances;
-public class test {
+public class Mml_3 {
 	public static void main(String[] args) throws Exception {
 		CSVLoader loader = new CSVLoader();
-		loader.setSource(new File("iris.csv"));
+		loader.setSource(new File(System.getProperty("user.dir")+"\\output_LAFONT_LEMANCEL_MANDE_RIALET\\iris.csv"));
 		Instances data = loader.getDataSet();
 		data.randomize(new Random());
 

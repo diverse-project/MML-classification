@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
@@ -57,7 +58,8 @@ public class MmlParsingJavaCompilerPython {
 		String fileLocation = dataInput.getFilelocation();
 		String pythonImport = "import pandas as pd\n"; 
 		String pythonImport2 = 	"from sklearn.model_selection import train_test_split\r\n" + 
-								"from sklearn import tree\r\n";
+								"from sklearn import tree\r\n"
+								+ "import os\n";
 		pythonImport+=pythonImport2;
 		String DEFAULT_COLUMN_SEPARATOR = ","; // by default
 		String csv_separator = DEFAULT_COLUMN_SEPARATOR;
@@ -68,7 +70,7 @@ public class MmlParsingJavaCompilerPython {
 			csv_separator = parsingInstruction.getSep().toString();
 		}
 		
-		String csvReading = "mml_data = pd.read_csv(" + mkValueInSingleQuote(fileLocation) + ", sep=" + mkValueInSingleQuote(csv_separator) + ")\n";							
+		String csvReading = "mml_data = pd.read_csv(os.path.abspath(os.path.dirname(__file__))+'\\" + fileLocation + "', sep=" + mkValueInSingleQuote(csv_separator) + ",encoding='utf-8')\n";							
 		String x ="", y="";
 		
 		//Formula
@@ -274,24 +276,38 @@ public class MmlParsingJavaCompilerPython {
 		pythonCode = addPythonText(pythonCode, stratificationAndMetrique);
 		pythonCode = addPythonText(pythonCode, printScores);
 		
-		Files.write(pythonCode.getBytes(), new File("output_LAFONT_LEMANCEL_MANDE_RIALET/mml_"+numAlgo+".py"));
+		Files.write(pythonCode.getBytes(), new File("output_LAFONT_LEMANCEL_MANDE_RIALET/Mml_"+numAlgo+".py"));
 		// end of Python generation
 		
 		
-		/*
-		 * Calling generated Python script (basic solution through systems call)
-		 * we assume that "python" is in the path
-		 */
-		Process p = Runtime.getRuntime().exec("python output_LAFONT_LEMANCEL_MANDE_RIALET/mml_"+numAlgo+".py");
-		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		String line; 
-		while ((line = in.readLine()) != null) {
-			System.out.println(line);
+		try {
+            System.out.println("**********");
+            runProcess("python output_LAFONT_LEMANCEL_MANDE_RIALET/Mml_"+numAlgo+".py");
+            System.out.println("**********");
+            //runProcess("java -cp src com/journaldev/files/Test Hi Pankaj");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
+
+    private static void printLines(String cmd, InputStream ins) throws Exception {
+    	String line = null;
+    	BufferedReader in = new BufferedReader(
+	    new InputStreamReader(ins));
+    	while ((line = in.readLine()) != null) {
+    		System.out.println(cmd + " " + line);
 	    }
-		
-		
-		
-	}
+	  }
+	
+    private static void runProcess(String command) throws Exception {
+	    Process pro = Runtime.getRuntime().exec(command);
+	    printLines(command + " stdout:", pro.getInputStream());
+	    printLines(command + " stderr:", pro.getErrorStream());
+	    pro.waitFor();
+	    System.out.println(command + " exitValue() " + pro.exitValue());
+    }
+	
 
 	private String mkValueInSingleQuote(String val) {
 		return "'" + val + "'";

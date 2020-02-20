@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
@@ -54,7 +55,8 @@ public class MmlParsingJavaCompilerJava {
 	
 	public void compileDataInput(MMLModel model, MLAlgorithm al, int numAlgo) throws Exception {
 		String fileLocation = model.getInput().getFilelocation();
-		String javaImport = "import java.io.File;\n"; 
+		String javaImport = "package output_LAFONT_LEMANCEL_MANDE_RIALET;\n";
+		javaImport+= "import java.io.File;\n"; 
 		javaImport+="import java.util.Random;\n";
 		javaImport+="import weka.classifiers.functions.Logistic;\n"; 
 		javaImport+="import weka.classifiers.trees.J48;\n";
@@ -63,11 +65,11 @@ public class MmlParsingJavaCompilerJava {
 		javaImport+="import weka.classifiers.Evaluation;\n"; 
 		javaImport+="import weka.core.converters.CSVLoader;\n";
 		javaImport+="import weka.core.Instances;\n"; 
-		javaImport+="public class test {\n";
+		javaImport+="public class Mml_"+numAlgo +" {\n";
 		javaImport+="\tpublic static void main(String[] args) throws Exception {\n";
 		
 		String csvReading = "\t\tCSVLoader loader = new CSVLoader();\n";
-		csvReading += "\t\tloader.setSource(new File(\""+fileLocation+"\"));\n";	
+		csvReading += "\t\tloader.setSource(new File(System.getProperty(\"user.dir\")+\"\\\\output_LAFONT_LEMANCEL_MANDE_RIALET\\\\"+fileLocation+"\"));\n";	
 		
 		String dataSetCreation = "\t\tInstances data = loader.getDataSet();\n";
 		dataSetCreation += "\t\tdata.randomize(new Random());\n\n";
@@ -134,6 +136,8 @@ public class MmlParsingJavaCompilerJava {
 				}
 				else if(metriquesArray[i]==ValidationMetric.PRECISION) {
 					metriques +="\t\tSystem.out.println(\"Precision =\"+eval.weightedPrecision()*100);\n";
+				}else {
+					metriques +="\t\tSystem.out.println(\"La métrique "+metriquesArray[i].getLiteral()+" n'est pas supportée avec Weka.\");\n";
 				}
 			}
 		}
@@ -148,24 +152,39 @@ public class MmlParsingJavaCompilerJava {
 		javaCode = addJavaText(javaCode, metriques);
 		javaCode = addJavaText(javaCode, "\t}\n}");
 		
-		Files.write(javaCode.getBytes(), new File("output_LAFONT_LEMANCEL_MANDE_RIALET/mml_"+numAlgo+".java"));
+		Files.write(javaCode.getBytes(), new File("output_LAFONT_LEMANCEL_MANDE_RIALET/Mml_"+numAlgo+".java"));
 		// end of Java generation
 		
 		
-		/*
-		 * Calling generated Python script (basic solution through systems call)
-		 * we assume that "python" is in the path
-		 */
-		Process p = Runtime.getRuntime().exec("python output_LAFONT_LEMANCEL_MANDE_RIALET/mml_"+numAlgo+".py");
-		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		String line; 
-		while ((line = in.readLine()) != null) {
-			System.out.println(line);
+		
+		try {
+            System.out.println("**********");
+            runProcess("javac -cp output_LAFONT_LEMANCEL_MANDE_RIALET/weka.jar output_LAFONT_LEMANCEL_MANDE_RIALET/Mml_"+numAlgo+".java");
+            System.out.println("**********");
+            //runProcess("java -cp .:output_LAFONT_LEMANCEL_MANDE_RIALET/weka.jar output_LAFONT_LEMANCEL_MANDE_RIALET.Mml_"+numAlgo);
+            runProcess("java -cp .;output_LAFONT_LEMANCEL_MANDE_RIALET/weka.jar output_LAFONT_LEMANCEL_MANDE_RIALET.Mml_"+numAlgo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
+
+    private static void printLines(String cmd, InputStream ins) throws Exception {
+    	String line = null;
+    	BufferedReader in = new BufferedReader(
+	    new InputStreamReader(ins));
+    	while ((line = in.readLine()) != null) {
+    		System.out.println(cmd + " " + line);
 	    }
-		
-		
-		
-	}
+	  }
+	
+    private static void runProcess(String command) throws Exception {
+	    Process pro = Runtime.getRuntime().exec(command);
+	    printLines(command + " stdout:", pro.getInputStream());
+	    printLines(command + " stderr:", pro.getErrorStream());
+	    pro.waitFor();
+	    System.out.println(command + " exitValue() " + pro.exitValue());
+    }
 
 	private String mkValueInSingleQuote(String val) {
 		return "'" + val + "'";
