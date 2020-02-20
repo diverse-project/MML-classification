@@ -125,7 +125,7 @@ public class MmlParsingJavaCompilerPython {
 				algorithm = "clf = tree.DecisionTreeClassifier(max_depth="+maxDepth+")\n";
 		}
 		else if (al instanceof SVM) {
-SVM defAlg = (SVM) al;
+			SVM defAlg = (SVM) al;
 			
 			/* Si absence de gamma dans le programme, on aura null comme valeur */
 			String gamma = (defAlg.getGamma() == null) ? "'auto'" : defAlg.getGamma();

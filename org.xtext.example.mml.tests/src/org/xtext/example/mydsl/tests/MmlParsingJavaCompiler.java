@@ -51,13 +51,13 @@ public class MmlParsingJavaCompiler {
 	@Test
 	public void compileDataInput() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
-				+ "mlframework scikit-learn\n"
+				+ "mlframework Weka\n"
 				+ "algorithm DT\n"
-				+ "mlframework scikit-learn\n"
+				+ "mlframework Weka\n"
 				+ "algorithm RF\n"
-				+ "mlframework scikit-learn\n"
-				+ "algorithm LogisticRegression\n"
-				+ "TrainingTest { percentageTraining 30 }\n"
+				+ "mlframework Weka\n"
+				+ "algorithm SVM\n"
+				+ "CrossValidation { numRepetitionCross 10 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 		
@@ -74,7 +74,8 @@ public class MmlParsingJavaCompiler {
 			}else if(framework.getLiteral() == "R") {
 				//Traitement R
 			}else if(framework.getLiteral() == "Weka") {
-				//Traitement Weka
+				MmlParsingJavaCompilerJava compiler = new MmlParsingJavaCompilerJava();
+				compiler.compileDataInput(model,al,i+1);
 			}
 		}		
 	}
