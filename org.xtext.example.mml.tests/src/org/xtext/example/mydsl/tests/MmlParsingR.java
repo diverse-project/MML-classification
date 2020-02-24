@@ -34,6 +34,7 @@ import org.xtext.example.mydsl.mml.LogisticRegression;
 import org.xtext.example.mydsl.mml.MLAlgorithm;
 import org.xtext.example.mydsl.mml.MLChoiceAlgorithm;
 import org.xtext.example.mydsl.mml.MMLModel;
+import org.xtext.example.mydsl.mml.PredictorVariables;
 import org.xtext.example.mydsl.mml.RFormula;
 import org.xtext.example.mydsl.mml.RandomForest;
 import org.xtext.example.mydsl.mml.SVM;
@@ -43,6 +44,7 @@ import org.xtext.example.mydsl.mml.Validation;
 import org.xtext.example.mydsl.mml.ValidationMetric;
 import org.xtext.example.mydsl.mml.XFormula;
 import org.xtext.example.mydsl.mml.impl.MLAlgorithmImpl;
+import org.xtext.example.mydsl.mml.impl.PredictorVariablesImpl;
 import org.xtext.example.mydsl.services.MmlGrammarAccess.MLAlgorithmElements;
 
 import com.google.inject.Inject;
@@ -96,11 +98,23 @@ public class MmlParsingR {
 					// Gestion de la colonne à prédire
 					FormulaItem predictive = (model.getFormula() != null ? model.getFormula().getPredictive() : null);
 					XFormula predictors = (model.getFormula() != null ? model.getFormula().getPredictors() : null);
+					String predictorsString = "";
+					if (predictors != null) {
+						for (FormulaItem predictor : ((PredictorVariables)predictors).getVars()) {
+							predictorsString += predictor.getColName() + "+";
+						}
+						predictorsString = predictorsString.substring(0, predictorsString.length() - 1);
+					}
+					if (predictorsString.length() == 0) {
+						predictorsString = ".";
+					}
+					System.out.println(predictorsString);
 					String toPredict = (predictive != null ? predictive.getColName() : "");
+					// Si on ne connait pas le nom, on va chercher directement dans le fichier plutôt qu'utiliser l'index en R (trop de vérifications à faire dans le compilateur)
 					if (toPredict.length() == 0) {
 						BufferedReader reader = new BufferedReader(new FileReader("src" + File.separator + "test" + File.separator + "resources" + File.separator + fileLocation));
 						String columnNames = reader.readLine();
-						toPredict = columnNames.split(csvSeparator)[columnNames.split(csvSeparator).length - 1].replace("\"", "");
+						toPredict = columnNames.split(csvSeparator)[(model.getFormula() != null ? predictive.getColumn() : columnNames.split(csvSeparator).length) - 1].replace("\"", "");
 						reader.close();
 					}
 					
@@ -132,9 +146,9 @@ public class MmlParsingR {
 //						> prediction <- predict(model, dataTest, type='class')
 						if (trControlValue != 0) {
 							rFileContent.append("trControl <- trainControl(method=\"cv\", number=" + trControlValue + ")").append(System.lineSeparator());
-							rFileContent.append("model <- train(" + toPredict + "~., data=dataTrain, method=\"rpart\", trControl=trControl, metric=\"Accuracy\")").append(System.lineSeparator());
+							rFileContent.append("model <- train(" + toPredict + "~" + predictorsString + "., data=dataTrain, method=\"rpart\", trControl=trControl, metric=\"Accuracy\")").append(System.lineSeparator());
 						} else {
-							rFileContent.append("model <- rpart(\" + toPredict + \"~., data=dataTrain, method='class')").append(System.lineSeparator());
+							rFileContent.append("model <- rpart(" + toPredict + "~" + predictorsString + ", data=dataTrain, method='class')").append(System.lineSeparator());
 						}
 						rFileContent.append("prediction <- predict(model, dataTest[, 1:ncol(dataTest) - 1]" + (trControlValue != 0 ? "" : ", type='class'") + ")").append(System.lineSeparator());
 					} else if (alg.getAlgorithm() instanceof LogisticRegression) {
@@ -143,22 +157,22 @@ public class MmlParsingR {
 //						> model <- glm(formula=toPredict~., family=binomial(link="logit"), data=dataTrain)
 //						> model <- multinom(toPredict~., data=dataTrain))
 //						> prediction <- predict(model, dataTest[, 1:ncol(dataTest) - 1] [, type="response"])
-						rFileContent.append("classNb <- length(dataTest$" + toPredict + "~.)").append(System.lineSeparator());
+						rFileContent.append("classNb <- length(dataTest$" + toPredict + "~" + predictorsString + ")").append(System.lineSeparator());
 						// Les ifelse ayant un comportement imprévu pour l'attribution des variables, il est nécessaire de passer par les ifs standards
 						if (trControlValue != 0) {
 							rFileContent.append("trControl <- trainControl(method=\"cv\", number=" + trControlValue + ")").append(System.lineSeparator());
 							rFileContent.append("model <- ").append(System.lineSeparator());
 							rFileContent.append("if (classNb <= 2) {\r\n" + 
-									"    model <- train(" + toPredict + "~., data=dataTrain, method=\"glm\", family=binomial, trControl=trControl)\r\n" + 
+									"    model <- train(" + toPredict + "~" + predictorsString + ", data=dataTrain, method=\"glm\", family=binomial, trControl=trControl)\r\n" + 
 									"} else {\r\n" + 
-									"    model <- train(" + toPredict + "~., data=dataTrain, method=\"multinom\", trControl=trControl)\r\n" + 
+									"    model <- train(" + toPredict + "~" + predictorsString + ", data=dataTrain, method=\"multinom\", trControl=trControl)\r\n" + 
 									"}")
 							.append(System.lineSeparator());
 						} else {
 							rFileContent.append("if (classNb <= 2) {\r\n" + 
-									"    model <- glm(formula=variety~., family=binomial, data=dataTrain)\r\n" + 
+									"    model <- glm(formula=" + toPredict + "~" + predictorsString + ", family=binomial, data=dataTrain)\r\n" + 
 									"} else {\r\n" + 
-									"    model <- multinom(variety~., data=dataTrain)\r\n" + 
+									"    model <- multinom(" + toPredict + "~" + predictorsString + ", data=dataTrain)\r\n" + 
 									"}")
 							.append(System.lineSeparator());
 						}
@@ -175,7 +189,7 @@ public class MmlParsingR {
 						if (trControlValue != 0) {
 							rFileContent.append("trControl <- trainControl(method=\"cv\", number=" + trControlValue + ")").append(System.lineSeparator());
 						}
-						rFileContent.append("model <- train(" + toPredict + "~., data=dataTrain, method=\"rf\", " + (trControlValue != 0 ? "trControl=trControl, " : "") + "metric=\"Accuracy\")").append(System.lineSeparator());
+						rFileContent.append("model <- train(" + toPredict + "~" + predictorsString + ", data=dataTrain, method=\"rf\", " + (trControlValue != 0 ? "trControl=trControl, " : "") + "metric=\"Accuracy\")").append(System.lineSeparator());
 						rFileContent.append("prediction <- predict(model, dataTest[, 1:ncol(dataTest) - 1])").append(System.lineSeparator());
 					} else if (alg.getAlgorithm() instanceof SVM) {
 //						SVM
@@ -186,7 +200,7 @@ public class MmlParsingR {
 						String cost = (algSVM.getC() != null ? algSVM.getGamma() : "");
 						String kernel = (algSVM.isKernelSpecified() ? algSVM.getKernel().getName() : "");
 						String classification = (algSVM.isClassificationSpecified() ? algSVM.getSvmclassification().getLiteral() : "");
-						rFileContent.append("model <- svm(" + toPredict + "~., data=dataTrain"
+						rFileContent.append("model <- svm(" + toPredict + "~" + predictorsString + ", data=dataTrain"
 								+ (classification.length() > 0 ? ", type=\"" + classification + "\"" : "")
 								+ (kernel.length() > 0 ? ", kernel=\"" + kernel + "\"" : "")
 								+ (gamma.length() > 0 ? ", gamma=" + gamma : "")
@@ -265,7 +279,7 @@ public class MmlParsingR {
 						rFileContent.append("print(" + valMet.getName() + ")").append(System.lineSeparator());
 					}
 //					}
-					saveFileContent(fileName, alg.getAlgorithm().getClass().getInterfaces()[0].getSimpleName(), rFileContent);
+//					saveFileContent(fileName, alg.getAlgorithm().getClass().getInterfaces()[0].getSimpleName(), rFileContent);
 				}
 			}
 //			saveFileContent(fileName, alg.getAlgorithm().getClass().getInterfaces()[0].getSimpleName(), rFileContent);
