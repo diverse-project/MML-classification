@@ -1,5 +1,5 @@
 datainput "iris.csv"
-separator ;
+separator ,
 mlframework scikit-learn algorithm SVM gamma=1.1 kernel=linear classification one-classification
 TrainingTest { percentageTraining 10 }
 accuracy

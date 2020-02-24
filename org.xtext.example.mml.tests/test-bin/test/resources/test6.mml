@@ -1,6 +1,6 @@
 datainput
 "iris.csv"
-separator ;
+separator ,
 mlframework
 scikit-learn
 algorithm
