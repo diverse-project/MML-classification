@@ -53,9 +53,9 @@ public class MmlParsingJavaCompiler {
 		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
 				+ "mlframework Weka	\n"
 				+ "algorithm DT\n"
-				+ "mlframework Weka\n"
+				+ "mlframework python\n"
 				+ "algorithm RF\n"
-				+ "mlframework Weka\n"
+				+ "mlframework R\n"
 				+ "algorithm SVM\n"
 				+ "CrossValidation { numRepetitionCross 10 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
@@ -72,7 +72,8 @@ public class MmlParsingJavaCompiler {
 				MmlParsingJavaCompilerPython compiler = new MmlParsingJavaCompilerPython();
 				compiler.compileDataInput(model,al,i+1);
 			}else if(framework.getLiteral() == "R") {
-				//Traitement R
+				MmlParsingJavaCompilerR compiler = new MmlParsingJavaCompilerR();
+				compiler.compileDataInput(model,al,i+1);
 			}else if(framework.getLiteral() == "Weka") {
 				MmlParsingJavaCompilerJava compiler = new MmlParsingJavaCompilerJava();
 				compiler.compileDataInput(model,al,i+1);
