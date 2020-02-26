@@ -5,8 +5,11 @@ library(LogicReg)
 library(e1071)
 library(party)
 data <- read_csv("output_LAFONT_LEMANCEL_MANDE_RIALET/iris.csv")
-predictive <- names(data[dim(data)[2]])
-predictors <- "."
+predictive <- names(data[5])
+predictors <- c()
+predictors <- c(predictors, names(data[1]))
+predictors <- c(predictors, names(data[3]))
+predictors <- c(predictors, names(data[4]))
 formula <- reformulate(termlabels = predictors, response = predictive)
 fitControl <- trainControl(method="cv", number=10)
 data_train <- data

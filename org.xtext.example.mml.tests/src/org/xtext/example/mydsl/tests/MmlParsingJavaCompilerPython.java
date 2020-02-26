@@ -81,33 +81,36 @@ public class MmlParsingJavaCompilerPython {
 		}else {
 			//Predictives
 			FormulaItem fi = f.getPredictive();
-			String colName = fi.getColName();
+			String colName = fi.getColName()+"";
 			int colIndex = fi.getColumn();
 			String column = "";
-			if(colName.length() > 0 )
-				column = colName;
-			else
-				column = colIndex+"";
-			y = "Y = mml_data[\""+column+"\"]\n";
+			boolean num = false;
+			if(colName.length() > 0 && !colName.equals("null") ) {
+				column = "\""+colName+"\"";
+			}
+			else {
+				column = "mml_data.columns["+(colIndex-1)+"]";			
+			}
+			y = "Y = mml_data["+column+"]\n";
 			
 			//Predictors
 			XFormula preds = f.getPredictors();
-			if(preds instanceof AllVariables)
-				x = "X = mml_data.drop(columns=[\""+column+ "\"])\n";
-			else if(preds instanceof PredictorVariables) {
+			if(preds instanceof AllVariables) {
+				x = "X = mml_data.drop(columns=["+column+ "])\n";
+			}else if(preds instanceof PredictorVariables) {
 				FormulaItem[] predictors = (FormulaItem[]) ((PredictorVariables) preds).getVars().toArray();
 				String predictorsCol = "";
 				FormulaItem item;
 				for(int i = 0; i < predictors.length; i++) {
 					item = predictors[i];
-					colName = item.getColName();
+					colName = item.getColName()+"";
 					colIndex = item.getColumn();
 					column = "";
-					if(colName.length() > 0 )
+					if(colName.length() > 0 && !colName.equals("null"))
 						column = colName;
 					else
-						column = colIndex+"";
-					predictorsCol+="'"+column+"',";
+						column = "mml_data.columns["+(colIndex-1)+"]";
+					predictorsCol+=column+",";
 				}
 				if(predictorsCol.length() > 0) {
 					predictorsCol =  predictorsCol.substring(0, predictorsCol.length()-1);
