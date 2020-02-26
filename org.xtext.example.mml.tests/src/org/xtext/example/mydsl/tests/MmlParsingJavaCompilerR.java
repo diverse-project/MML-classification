@@ -80,10 +80,10 @@ public class MmlParsingJavaCompilerR {
 		
 		String readCsv = "";
 		if (csv_separator == ";") {
-			readCsv = "data <- read_csv2(\"output_LAFONT_LEMANCEL_MANDE_RIALET/" + fileLocation + "\")\n";
+			readCsv = "data <- read.csv2(\"output_LAFONT_LEMANCEL_MANDE_RIALET/" + fileLocation + "\")\n";
 		}
 		else {
-			readCsv = "data <- read_csv(\"output_LAFONT_LEMANCEL_MANDE_RIALET/" + fileLocation + "\")\n";
+			readCsv = "data <- read.csv(\"output_LAFONT_LEMANCEL_MANDE_RIALET/" + fileLocation + "\")\n";
 		}
 		
 		
@@ -103,7 +103,7 @@ public class MmlParsingJavaCompilerR {
 		else {
 			/* Traitement predictive */
 			if (f.getPredictive().getColName() != null) {
-				predictive = "predictive <- " + f.getPredictive().getColName() + "\n";
+				predictive = "predictive <- \"" + f.getPredictive().getColName() + "\"\n";
 			}
 			else if (f.getPredictive().getColumn() != 0) {
 				predictive = "predictive <- names(data[" + (f.getPredictive().getColumn()) + "])\n";
@@ -122,7 +122,7 @@ public class MmlParsingJavaCompilerR {
 					colName = item.getColName();
 					colIndex = item.getColumn();
 					if(colName != null && colName.length() > 0 ) {
-						predictors += "predictors <- c(predictors, " + colName + ")\n";
+						predictors += "predictors <- c(predictors, \"" + colName + "\")\n";
 					}
 					else {
 						predictors += "predictors <- c(predictors, names(data[" + colIndex + "]))\n";
@@ -145,13 +145,13 @@ public class MmlParsingJavaCompilerR {
 			methode = "ctree2";
 			
 			if(maxDepth == 0) {
-				parametres = "";
+				ecrireAlgo += "model <- train(formula, data=data_train,method=\"" + methode + "\",trControl=fitControl)";
 			}
 			else {
-				parametres = ",maxdepth=" + maxDepth;
+				ecrireAlgo += "grid <- expand.grid(maxdepth=" + maxDepth + ",mincriterion=1)\n";
+				ecrireAlgo += "model <- train(formula, data=data_train,method=\"" + methode + "\",trControl=fitControl,tuneGrid=grid)";
 			}
 			
-			ecrireAlgo += "model <- train(formula, data=data_train,method=\"" + methode + "\"" + parametres + ",trControl=fitControl)";
 		}
 		else if (al instanceof SVM) {
 			SVM defAlg = (SVM) al;
@@ -256,7 +256,9 @@ public class MmlParsingJavaCompilerR {
 		
 		String prediction = "";
 		prediction += "pred <- predict(model,newdata=data_test)\n";
-		prediction += "mat <- confusionMatrix(table(pred,data_test[[predictive]]))\n";
+		prediction += "u <- union(pred, data_test[[predictive]])\n";
+		prediction += "t <- table(factor(pred, u), factor(data_test[[predictive]], u))\n";
+		prediction += "mat <- confusionMatrix(t)\n";
 		
 		ValidationMetric[] metriquesArray = (ValidationMetric[]) metric.toArray();
 		String metrique = "";
@@ -338,7 +340,7 @@ public class MmlParsingJavaCompilerR {
 	    private static boolean runProcess(String command) throws Exception {
 		    Process pro = Runtime.getRuntime().exec(command);
 		    printLines(command + " stdout:", pro.getInputStream());
-		    printLines(command + " stderr:", pro.getErrorStream());
+		    //printLines(command + " stderr:", pro.getErrorStream());
 		    pro.waitFor();
 		    System.out.println(command + " exitValue() " + pro.exitValue());
 		    return pro.exitValue() == 0;
