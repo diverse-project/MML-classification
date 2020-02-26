@@ -223,7 +223,7 @@ public class MmlParsingJavaTest {
 	
 	@Test
 	/* SVM avec classification nu */
-	/* Test planté avec R */
+	/* Non supporté par R */
 	public void SVM4() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework " + framework + "\n"
@@ -237,7 +237,7 @@ public class MmlParsingJavaTest {
 	
 	@Test
 	/* SVM avec classification one */
-	/* Test planté avec R */
+	/* Non supporté par R */
 	public void SVM5() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework " + framework + "\n"
@@ -264,7 +264,6 @@ public class MmlParsingJavaTest {
 	
 	@Test
 	/* SVM avec kernel radial */
-	/* Test planté avec R */
 	public void SVM7() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework " + framework + "\n"

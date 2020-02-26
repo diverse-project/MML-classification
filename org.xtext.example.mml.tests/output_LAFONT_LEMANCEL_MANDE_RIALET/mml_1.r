@@ -13,7 +13,9 @@ trainIndex <- createDataPartition(data[[predictive]], p=split, list=FALSE)
 data_train <- data[ trainIndex,]
 data_test <- data[-trainIndex,]
 fitControl <- trainControl(method="none")
-model <- train(formula, data=data_train,method="rf",trControl=fitControl)
+data_train[[predictive]] <- as.character(data_train[[predictive]])
+data_train[[predictive]] <- as.factor(data_train[[predictive]])
+model <- randomForest(formula, data=data_train, na.action = na.omit)
 pred <- predict(model,newdata=data_test)
 u <- union(pred, data_test[[predictive]])
 t <- table(factor(pred, u), factor(data_test[[predictive]], u))
@@ -27,7 +29,7 @@ if (!is.null(dim(mat$byClass)[1])) { print(mean(mat$byClass[,"Precision"],na.rm=
 print("F1")
 if (!is.null(dim(mat$byClass)[1])) { print(mean(mat$byClass[,"F1"],na.rm=TRUE)) } else { print(mean(mat$byClass["F1"],na.rm=TRUE)) }
 print("Accuracy")
-print(mat$overall["Accuracy"])
+print(as.double(mat$overall["Accuracy"]))
 print("Macro Recall non supporté")
 print("Macro Precision non supporté")
 print("Macro F1 non supporté")

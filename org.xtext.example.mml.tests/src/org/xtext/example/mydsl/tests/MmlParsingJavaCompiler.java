@@ -53,8 +53,8 @@ public class MmlParsingJavaCompiler {
 		String data="new-thyroid.csv";
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework R\n"
-				+ "algorithm RF\n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "algorithm LogisticRegression\n"
+				+ "TrainingTest { percentageTraining 65 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 	
