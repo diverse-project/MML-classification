@@ -48,16 +48,16 @@ public class MmlParsingJavaCompilerR {
 	}
 	
 	@Test
-	public void compileDataInput(MMLModel model, MLAlgorithm al, int numAlgo) throws Exception {
+	public Boolean compileDataInput(MMLModel model, MLAlgorithm al, int numAlgo) throws Exception {
 		DataInput dataInput = model.getInput();
 		String fileLocation = dataInput.getFilelocation();
 		
-		/*String installPackages = "install.packages(\"caret\")\n";
-		installPackages += "install.packages(\"readr\")\n";
-		installPackages += "install.packages(\"randomForest\")\n";
-		installPackages += "install.packages(\"LogicReg\")\n";
-		installPackages += "install.packages(\"e1071\")\n";
-		installPackages += "install.packages(\"party\")\n";*/
+		/*String installPackages = "install.packages(\"caret\",repos=\"http://cran.irsn.fr/\")\n";
+		installPackages += "install.packages(\"readr\",repos=\"http://cran.irsn.fr/\")\n";
+		installPackages += "install.packages(\"randomForest\",repos=\"http://cran.irsn.fr/\")\n";
+		installPackages += "install.packages(\"LogicReg\",repos=\"http://cran.irsn.fr/\")\n";
+		installPackages += "install.packages(\"e1071\",repos=\"http://cran.irsn.fr/\")\n";
+		installPackages += "install.packages(\"party\",repos=\"http://cran.irsn.fr/\")\n";*/
 		
 		String installPackages = "";
 
@@ -78,7 +78,14 @@ public class MmlParsingJavaCompilerR {
 		importPackages += "library(e1071)\n";
 		importPackages += "library(party)\n";
 		
-		String readCsv = "data <- read_csv(\"output_LAFONT_LEMANCEL_MANDE_RIALET/" + fileLocation + "\")\n";
+		String readCsv = "";
+		if (csv_separator == ";") {
+			readCsv = "data <- read_csv2(\"output_LAFONT_LEMANCEL_MANDE_RIALET/" + fileLocation + "\")\n";
+		}
+		else {
+			readCsv = "data <- read_csv(\"output_LAFONT_LEMANCEL_MANDE_RIALET/" + fileLocation + "\")\n";
+		}
+		
 		
 		//Formula
 		String predictive = "";
@@ -95,12 +102,11 @@ public class MmlParsingJavaCompilerR {
 		}
 		else {
 			/* Traitement predictive */
-			if (!f.getPredictive().getColName().equalsIgnoreCase("")) {
+			if (f.getPredictive().getColName() != null) {
 				predictive = "predictive <- " + f.getPredictive().getColName() + "\n";
 			}
 			else if (f.getPredictive().getColumn() != 0) {
-				/* On ajoute +1 car R ajoute une première colonne qui correspond à une PK */
-				predictive = "predictive <- names(data[" + (f.getPredictive().getColumn() + 1) + "])\n";
+				predictive = "predictive <- names(data[" + (f.getPredictive().getColumn()) + "])\n";
 			}
 			
 			/* Traitement predictors */
@@ -115,11 +121,11 @@ public class MmlParsingJavaCompilerR {
 					item = arrayPredictors[i];
 					colName = item.getColName();
 					colIndex = item.getColumn();
-					if(colName.length() > 0 ) {
-						predictors += "predictors <- (predictors, " + colName + ")\n";
+					if(colName != null && colName.length() > 0 ) {
+						predictors += "predictors <- c(predictors, " + colName + ")\n";
 					}
 					else {
-						predictors += "predictors <- (predictors, names(data[" + colIndex + "])\n";
+						predictors += "predictors <- c(predictors, names(data[" + colIndex + "]))\n";
 					}
 				}
 			}
@@ -177,7 +183,7 @@ public class MmlParsingJavaCompilerR {
 				switch (classification) {
 				
 					case "C-classification" :
-						ecrireAlgo	= "model <- svm(formula=formula, data=data_train, type=" + classification;
+						ecrireAlgo	= "model <- svm(formula=formula, data=data_train, type=\"" + classification + "\"";
 						if (gamma != null) ecrireAlgo += ", gamma=" + gamma;
 						ecrireAlgo += ", kernel=" + kernel;
 						ecrireAlgo += ", cost=" + c;
@@ -185,7 +191,7 @@ public class MmlParsingJavaCompilerR {
 						break;
 						
 					case "nu-classification" :
-						ecrireAlgo	= "model <- svm(formula=formula, data=data_train, type=" + classification;
+						ecrireAlgo	= "model <- svm(formula=formula, data=data_train, type=\"" + classification + "\"";
 						if (gamma != null) ecrireAlgo += ", gamma=" + gamma;
 						ecrireAlgo += ", kernel=" + kernel;
 						ecrireAlgo += ", cost=" + c;
@@ -194,7 +200,7 @@ public class MmlParsingJavaCompilerR {
 						break;
 						
 					case "one-classification" : 
-						ecrireAlgo	= "model <- svm(formula=formula, data=data_train, type=" + classification;
+						ecrireAlgo	= "model <- svm(formula=formula, data=data_train, type=\"" + classification + "\"";
 						if (gamma != null) ecrireAlgo += ", gamma=" + gamma;
 						ecrireAlgo += ", kernel=" + kernel;
 						ecrireAlgo += ", cost=" + c;
@@ -262,25 +268,26 @@ public class MmlParsingJavaCompilerR {
 				metriques +="print(mat$overall[\"Accuracy\"])\n";
 			}else if(metrique == "balanced_accuracy") {
 				metriques += "print(\"Balanced Accuracy\")\n";
-				metriques += "print(mat$byClass[,\"Balanced Accuracy\"])\n";
+				metriques += "if (!is.null(dim(mat$byClass)[1])) { print(mean(mat$byClass[,\"Balanced Accuracy\"])) } ";
+				metriques += "else { print(mean(mat$byClass[\"Balanced Accuracy\"])) }\n";
 			}else if(metrique == "recall") {
 				metriques += "print(\"Recall\")\n";
-				metriques += "print(mat$byClass[,\"Recall\"])\n";
+				metriques += "if (!is.null(dim(mat$byClass)[1])) { print(mean(mat$byClass[,\"Recall\"],na.rm=TRUE)) } ";
+				metriques += "else { print(mean(mat$byClass[\"Recall\"],na.rm=TRUE)) }\n";
 			}else if(metrique == "macro_recall") {
-				metriques += "print(\"Macro Recall\")\n";
-				metriques += "print(mean(mat$byClass[,\"Recall\"],na.rm=TRUE))\n";
+				metriques += "print(\"Macro Recall non supporté\")\n";
 			}else if(metrique == "precision") {
 				metriques += "print(\"Precision\")\n";
-				metriques += "print(mat$byClass[,\"Precision\"])\n";
+				metriques += "if (!is.null(dim(mat$byClass)[1])) { print(mean(mat$byClass[,\"Precision\"],na.rm=TRUE)) } ";
+				metriques += "else { print(mean(mat$byClass[\"Precision\"],na.rm=TRUE)) }\n";
 			}else if(metrique == "macro_precision") {
-				metriques += "print(\"Macro Precision\")\n";
-				metriques += "print(mean(mat$byClass[,\"Precision\"],na.rm=TRUE))\n";
+				metriques += "print(\"Macro Precision non supporté\")\n";
 			}else if(metrique == "F1") {
 				metriques += "print(\"F1\")\n";
-				metriques += "print(mat$byClass[,\"F1\"])\n";
+				metriques += "if (!is.null(dim(mat$byClass)[1])) { print(mean(mat$byClass[,\"F1\"],na.rm=TRUE)) } ";
+				metriques += "else { print(mean(mat$byClass[\"F1\"],na.rm=TRUE)) }\n";
 			}else if(metrique == "macro_F1") {
-				metriques += "print(\"Macro F1\")\n";
-				metriques += "print(mean(mat$byClass[,\"F1\"],na.rm=TRUE))\n";
+				metriques += "print(\"Macro F1 non supporté\")\n";
 			}
 			else if(metrique == "macro_accuracy") {
 				metriques += "print(\"Macro Accuracy non supporté\")\n";
@@ -303,18 +310,18 @@ public class MmlParsingJavaCompilerR {
 		
 		Files.write(writeProgram.getBytes(), new File("output_LAFONT_LEMANCEL_MANDE_RIALET/mml_"+numAlgo+".r"));
 
-	
+		Boolean executionReussie = false;
 		try {
             System.out.println("**********");
             //runProcess("cd output_LAFONT_LEMANCEL_MANDE_RIALET");
-            runProcess("Rscript output_LAFONT_LEMANCEL_MANDE_RIALET/Mml_"+numAlgo+".r");
+            executionReussie = runProcess("Rscript output_LAFONT_LEMANCEL_MANDE_RIALET/Mml_"+numAlgo+".r");
             System.out.println("**********");
             //runProcess("java -cp src com/journaldev/files/Test Hi Pankaj");
         } catch (Exception e) {
             e.printStackTrace();
         }
 		
-
+		return executionReussie;
 		
 		
 	}
@@ -328,12 +335,13 @@ public class MmlParsingJavaCompilerR {
 		    }
 		  }
 		
-	    private static void runProcess(String command) throws Exception {
+	    private static boolean runProcess(String command) throws Exception {
 		    Process pro = Runtime.getRuntime().exec(command);
 		    printLines(command + " stdout:", pro.getInputStream());
-		    //printLines(command + " stderr:", pro.getErrorStream());
+		    printLines(command + " stderr:", pro.getErrorStream());
 		    pro.waitFor();
 		    System.out.println(command + " exitValue() " + pro.exitValue());
+		    return pro.exitValue() == 0;
 	    }
 	
 	private String addProgramText(String programText, String toAdd) {

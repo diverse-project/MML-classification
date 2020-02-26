@@ -1,6 +1,9 @@
 package org.xtext.example.mydsl.tests;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.File;
 import java.io.InputStreamReader;
 
@@ -14,6 +17,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.xtext.example.mydsl.mml.CSVParsingConfiguration;
 import org.xtext.example.mydsl.mml.DataInput;
+import org.xtext.example.mydsl.mml.FrameworkLang;
+import org.xtext.example.mydsl.mml.MLAlgorithm;
+import org.xtext.example.mydsl.mml.MLChoiceAlgorithm;
 import org.xtext.example.mydsl.mml.MMLModel;
 
 import com.google.common.io.Files;
@@ -39,49 +45,155 @@ public class MmlParsingJavaTest {
 		Assertions.assertTrue(errors.isEmpty(), "Unexpected errors");			
 		Assertions.assertEquals("foo.csv", result.getInput().getFilelocation());			
 		
-	}		
+	}
 	
 	@Test
-	public void compileDataInput() throws Exception {
-		MMLModel result = parseHelper.parse("datainput \"foo2.csv\" separator ;\n"
-				+ "mlframework scikit-learn\n"
-				+ "algorithm DT\n"
-				+ "TrainingTest { percentageTraining 70 }\n"
-				+ "recall\n"
-				+ "");
-		DataInput dataInput = result.getInput();
-		String fileLocation = dataInput.getFilelocation();
-	
-		
-		String pythonImport = "import pandas as pd\n"; 
-		String DEFAULT_COLUMN_SEPARATOR = ","; // by default
-		String csv_separator = DEFAULT_COLUMN_SEPARATOR;
-		CSVParsingConfiguration parsingInstruction = dataInput.getParsingInstruction();
-		if (parsingInstruction != null) {			
-			System.err.println("parsing instruction..." + parsingInstruction);
-			csv_separator = parsingInstruction.getSep().toString();
-		}
-		String csvReading = "mml_data = pd.read_csv(" + mkValueInSingleQuote(fileLocation) + ", sep=" + mkValueInSingleQuote(csv_separator) + ")";						
-		String pandasCode = pythonImport + csvReading;
-		
-		pandasCode += "\nprint (mml_data)\n"; 
-		
-		Files.write(pandasCode.getBytes(), new File("mml.py"));
-		// end of Python generation
-		
-		
-		/*
-		 * Calling generated Python script (basic solution through systems call)
-		 * we assume that "python" is in the path
-		 */
-		Process p = Runtime.getRuntime().exec("python mml.py");
-		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		String line; 
-		while ((line = in.readLine()) != null) {
-			System.out.println(line);
-	    }
+	public void model1() throws Exception {
+		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
+				+ "mlframework R\n"
+				+ "algorithm SVM\n"
+				+ "formula 5 ~ 1+2+3+4 \n"
+				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
+				+ "");	
 
+		compileDataInput(model);
+	}
+	
+	@Test
+	public void model2() throws Exception {
+		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
+				+ "mlframework R\n"
+				+ "algorithm DT\n"
+				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
+				+ "");	
+
+		compileDataInput(model);
+	}
+	
+	@Test
+	public void model3() throws Exception {
+		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
+				+ "mlframework R\n"
+				+ "algorithm RandomForest\n"
+				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
+				+ "");	
+
+		compileDataInput(model);
+	}
+	
+	/* Problème avec LogisticRegression */
+	@Test
+	public void model4() throws Exception {
+		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
+				+ "mlframework R\n"
+				+ "algorithm LogisticRegression\n"
+				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
+				+ "");	
+
+		compileDataInput(model);
+	}
+	
+	@Test
+	public void model5() throws Exception {
+		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
+				+ "mlframework R\n"
+				+ "algorithm SVM\n"
+				+ "TrainingTest { percentageTraining 65 }\n"
+				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
+				+ "");	
+
+		compileDataInput(model);
+	}
+	
+	@Test
+	public void model6() throws Exception {
+		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
+				+ "mlframework R\n"
+				+ "algorithm DT\n"
+				+ "TrainingTest { percentageTraining 65 }\n"
+				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
+				+ "");	
+
+		compileDataInput(model);
+	}
+	
+	@Test
+	public void model7() throws Exception {
+		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
+				+ "mlframework R\n"
+				+ "algorithm RandomForest\n"
+				+ "TrainingTest { percentageTraining 65 }\n"
+				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
+				+ "");	
+
+		compileDataInput(model);
+	}
+	
+	/* Problemes avec LogisticRegression */
+	@Test
+	public void model8() throws Exception {
+		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
+				+ "mlframework R\n"
+				+ "algorithm LogisticRegression\n"
+				+ "TrainingTest { percentageTraining 65 }\n"
+				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
+				+ "");	
 		
+		compileDataInput(model);
+	}
+	
+	/* Problemes avec la classification nu de SVM */
+	@Test
+	public void model9() throws Exception {
+		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
+				+ "mlframework R\n"
+				+ "algorithm SVM classification nu-classification \n"
+				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
+				+ "");	
+
+		compileDataInput(model);
+	}
+	
+	/* Problemes avec la classification one de SVM */
+	@Test
+	public void model10() throws Exception {
+		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
+				+ "mlframework R\n"
+				+ "algorithm SVM classification one-classification\n"
+				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
+				+ "");	
+		
+		compileDataInput(model);
+	}
+	
+	@Test
+	public void model11() throws Exception {
+		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
+				+ "mlframework R\n"
+				+ "algorithm SVM classification C-classification\n"
+				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
+				+ "");	
+		
+		compileDataInput(model);
+	}
+	
+	private void compileDataInput(MMLModel model) throws Exception {
+		
+		MLChoiceAlgorithm[] algos = (MLChoiceAlgorithm[]) model.getAlgorithms().toArray();
+
+		for(int i = 0; i < algos.length; i++) {
+			MLAlgorithm al = (MLAlgorithm) algos[i].getAlgorithm();
+			MmlParsingJavaCompilerR compiler = new MmlParsingJavaCompilerR();
+			Boolean executionReussie = compiler.compileDataInput(model,al,i+1);
+			assertTrue(executionReussie);
+		}
 		
 	}
 
