@@ -53,6 +53,8 @@ import com.google.inject.Inject;
 @ExtendWith(InjectionExtension.class)
 @InjectWith(MmlInjectorProvider.class)
 public class MmlParsingR {
+	
+	private List<Path> createdFiles = new ArrayList<>();
 
 	@Inject
 	ParseHelper<MMLModel> parseHelper;
@@ -72,16 +74,16 @@ public class MmlParsingR {
 					String csvSeparator = (csvConf.getSep() != null ? csvConf.getSep().getLiteral() : ";");
 					
 					// Installation et import des librairies
-					rFileContent.append("install.packages(\"caret\")").append(System.lineSeparator());
-					rFileContent.append("install.packages(\"e1071\")").append(System.lineSeparator());
+					rFileContent.append("install.packages(\"caret\", repos=\"http://cran.rstudio.com/\")").append(System.lineSeparator());
+					rFileContent.append("install.packages(\"e1071\", repos=\"http://cran.rstudio.com/\")").append(System.lineSeparator());
 					if (alg.getAlgorithm() instanceof DT) {
-						rFileContent.append("install.packages(\"rpart\")").append(System.lineSeparator());
+						rFileContent.append("install.packages(\"rpart\", repos=\"http://cran.rstudio.com/\")").append(System.lineSeparator());
 						rFileContent.append("library(rpart)").append(System.lineSeparator());
 					} else if (alg.getAlgorithm() instanceof LogisticRegression) {
-						rFileContent.append("install.packages(\"nnet\")").append(System.lineSeparator());
+						rFileContent.append("install.packages(\"nnet\", repos=\"http://cran.rstudio.com/\")").append(System.lineSeparator());
 						rFileContent.append("library(nnet)").append(System.lineSeparator());
 					} else if (alg.getAlgorithm() instanceof RandomForest) {
-						rFileContent.append("install.packages(\"randomForest\")").append(System.lineSeparator());
+						rFileContent.append("install.packages(\"randomForest\", repos=\"http://cran.rstudio.com/\")").append(System.lineSeparator());
 						rFileContent.append("library(randomForest)").append(System.lineSeparator());
 					} else if (alg.getAlgorithm() instanceof SVM) {
 						
@@ -108,11 +110,11 @@ public class MmlParsingR {
 					if (predictorsString.length() == 0) {
 						predictorsString = ".";
 					}
-					System.out.println(predictorsString);
 					String toPredict = (predictive != null ? predictive.getColName() : "");
 					// Si on ne connait pas le nom, on va chercher directement dans le fichier plutôt qu'utiliser l'index en R (trop de vérifications à faire dans le compilateur)
 					if (toPredict.length() == 0) {
-						BufferedReader reader = new BufferedReader(new FileReader("src" + File.separator + "test" + File.separator + "resources" + File.separator + fileLocation));
+//						BufferedReader reader = new BufferedReader(new FileReader("src" + File.separator + "test" + File.separator + "resources" + File.separator + fileLocation));
+						BufferedReader reader = new BufferedReader(new FileReader(fileLocation));
 						String columnNames = reader.readLine();
 						toPredict = columnNames.split(csvSeparator)[(model.getFormula() != null ? predictive.getColumn() : columnNames.split(csvSeparator).length) - 1].replace("\"", "");
 						reader.close();
@@ -146,7 +148,7 @@ public class MmlParsingR {
 //						> prediction <- predict(model, dataTest, type='class')
 						if (trControlValue != 0) {
 							rFileContent.append("trControl <- trainControl(method=\"cv\", number=" + trControlValue + ")").append(System.lineSeparator());
-							rFileContent.append("model <- train(" + toPredict + "~" + predictorsString + "., data=dataTrain, method=\"rpart\", trControl=trControl, metric=\"Accuracy\")").append(System.lineSeparator());
+							rFileContent.append("model <- train(" + toPredict + "~" + predictorsString + ", data=dataTrain, method=\"rpart\", trControl=trControl, metric=\"Accuracy\")").append(System.lineSeparator());
 						} else {
 							rFileContent.append("model <- rpart(" + toPredict + "~" + predictorsString + ", data=dataTrain, method='class')").append(System.lineSeparator());
 						}
@@ -275,33 +277,41 @@ public class MmlParsingR {
 							}
 							rFileContent.append("\")]").append(System.lineSeparator());
 						}
-						rFileContent.append("message(\"" + valMet.getName() + " :\")").append(System.lineSeparator());
+						rFileContent.append("cat(\"" + valMet.getName() + " :\", fill=TRUE)").append(System.lineSeparator());
 						rFileContent.append("print(" + valMet.getName() + ")").append(System.lineSeparator());
 					}
 //					}
-//					saveFileContent(fileName, alg.getAlgorithm().getClass().getInterfaces()[0].getSimpleName(), rFileContent);
+					saveFileContent(fileName, alg.getAlgorithm().getClass().getInterfaces()[0].getSimpleName(), rFileContent);
 				}
 			}
-//			saveFileContent(fileName, alg.getAlgorithm().getClass().getInterfaces()[0].getSimpleName(), rFileContent);
-//			saveFileContent(fileName, lastAlgName, rFileContent);
-//			saveFileContent(rFileContent);
-			
-//			Process proc = Runtime.getRuntime().exec("D:\\Programmes\\R\\bin\\Rscript.exe --vanilla --slave D:\\Donnees\\Cours\\MIAGE\\M2\\IDM\\Projet\\MML-classification\\org.xtext.example.mml.tests\\src\\test\\resources\\results\\final.r");
-//			BufferedReader stdInput = new BufferedReader(new 
-//				     InputStreamReader(proc.getInputStream()));
-//			BufferedReader stdError = new BufferedReader(new 
-//				     InputStreamReader(proc.getErrorStream()));
-//			// Read the output from the command
-//			System.out.println("Here is the standard output of the command:\n");
-//			String s = null;
-//			while ((s = stdInput.readLine()) != null) {
-//			    System.out.println(s);
-//			}
-//			// Read any errors from the attempted command
-//			System.out.println("Here is the standard error of the command (if any):\n");
-//			while ((s = stdError.readLine()) != null) {
-//			    System.out.println(s);
-//			}
+		}
+		this.executeGeneratedFiles();
+	}
+	
+	private void executeGeneratedFiles() throws IOException {
+		for (Path path : createdFiles) {
+			File toExecute = path.toFile();
+			Process proc = Runtime.getRuntime().exec("Rscript.exe --vanilla --slave " + toExecute.getAbsolutePath());
+			BufferedReader stdInput = new BufferedReader(new 
+				     InputStreamReader(proc.getInputStream()));
+			BufferedReader stdError = new BufferedReader(new 
+				     InputStreamReader(proc.getErrorStream()));
+			// Read the output from the command
+			System.out.println();
+			System.out.println("Exécution du fichier '" + toExecute.getName() + "'");
+			System.out.println("Résultat de l'exécution :" + System.lineSeparator());
+			String s = null;
+			while ((s = stdInput.readLine()) != null) {
+			    System.out.println(s);
+			}
+			// Read any errors from the attempted command
+			System.out.println();
+			System.out.println("Erreurs survenues lors de l'exécution :" + System.lineSeparator());
+			while ((s = stdError.readLine()) != null) {
+			    System.err.println(s);
+			}
+			System.out.println("———————————————————————————————————————");
+			System.out.println("———————————————————————————————————————");
 		}
 	}
 	
@@ -319,6 +329,7 @@ public class MmlParsingR {
 		try {
 			Path newFile = Paths.get("src" + File.separator + "test" + File.separator + "resources" + File.separator + "results" + File.separator + fileName + "." + algName + ".r");
 			Files.write(newFile, sb.toString().getBytes());
+			createdFiles.add(newFile);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
