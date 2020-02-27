@@ -1,7 +1,9 @@
-datainput "foo.csv"
+datainput "iris.csv"
 mlframework scikit-learn
-algorithm DT(2)
-CrossValidation {
-	numRepetitionCross 20
-}
+algorithm DT
+mlframework scikit-learn
+algorithm RF
+mlframework scikit-learn
+algorithm LogisticRegression
+CrossValidation { numRepetitionCross 5 }
 accuracy

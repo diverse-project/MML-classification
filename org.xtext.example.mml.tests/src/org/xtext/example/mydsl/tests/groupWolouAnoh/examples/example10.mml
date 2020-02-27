@@ -1,7 +1,5 @@
 datainput "foo.csv"
 mlframework scikit-learn
 algorithm LogisticRegression
-TrainingTest { 
-	percentageTraining 80
-}
+TrainingTest { percentageTraining 80 }
 pression

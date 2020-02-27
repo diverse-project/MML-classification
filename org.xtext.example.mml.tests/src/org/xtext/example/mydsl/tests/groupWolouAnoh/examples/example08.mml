@@ -1,7 +1,5 @@
 datainput "foo.csv"
 mlframework scikit-learn
 algorithm DT
-TrainingTest { 
-	percentageTraining 50
-}
+TrainingTest { percentageTraining 50 }
 accuracy

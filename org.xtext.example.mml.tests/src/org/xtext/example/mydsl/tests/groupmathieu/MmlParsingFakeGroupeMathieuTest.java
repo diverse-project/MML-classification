@@ -8,11 +8,13 @@ import org.eclipse.xtext.testing.util.ParseHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.xtext.example.mydsl.mml.CrossValidation;
 import org.xtext.example.mydsl.mml.MLAlgorithm;
 import org.xtext.example.mydsl.mml.MLChoiceAlgorithm;
 import org.xtext.example.mydsl.mml.MMLModel;
 import org.xtext.example.mydsl.mml.SVM;
 import org.xtext.example.mydsl.mml.SVMKernel;
+import org.xtext.example.mydsl.mml.TrainingTest;
 import org.xtext.example.mydsl.tests.MmlInjectorProvider;
 
 import com.google.inject.Inject;
@@ -44,7 +46,9 @@ public class MmlParsingFakeGroupeMathieuTest {
 		Assertions.assertNotNull(result);
 		EList<Resource.Diagnostic> errors = result.eResource().getErrors();
 		Assertions.assertTrue(errors.isEmpty(), "Unexpected errors " + errors);			
-		Assertions.assertEquals("iris.csv", result.getInput().getFilelocation());			
+		Assertions.assertEquals("iris.csv", result.getInput().getFilelocation());	
+		//Assertions.assertTrue(result.getValidation().getStratification() instanceof TrainingTest);
+		System.out.println(result.getValidation().getStratification());
 		
 	}		
 	

@@ -64,7 +64,7 @@ public class MMLFileParsingTest {
 		}
 	}
 
-	public StringBuffer readMMLFile(String filename) {
+	public String readMMLFile(String filename) {
 		try {
 			InputStream in = getClass().getResourceAsStream(
 					"/org/xtext/example/mydsl/tests/groupWolouAnoh/examples/" + normalizeFilename(filename) + ".mml");
@@ -77,7 +77,8 @@ public class MMLFileParsingTest {
 			}
 			sc.close();
 
-			return buf;
+			System.out.println(buf.toString());
+			return buf.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

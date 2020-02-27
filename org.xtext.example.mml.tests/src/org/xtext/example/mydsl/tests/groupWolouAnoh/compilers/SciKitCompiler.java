@@ -168,8 +168,8 @@ public class SciKitCompiler {
 	private static String genBodyPartValidation(Validation validation, MMLModel model) {
 
 		String algopart = "";
-
-		if (model.getValidation() instanceof TrainingTest) {
+		System.out.println(model.getValidation().getStratification());
+		if (model.getValidation().getStratification() instanceof TrainingTest) {
 			algopart += "train_size = " + model.getValidation().getStratification().getNumber() + "/100 \n";
 			algopart += "X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=train_size)\n";
 
@@ -179,7 +179,7 @@ public class SciKitCompiler {
 			// Recuperation des resultats en fonction des metrics de validation definies
 			algopart += train_test_accuracy_part(model.getValidation().getMetric());
 
-		} else if (model.getValidation() instanceof CrossValidation) {
+		} else if (model.getValidation().getStratification() instanceof CrossValidation) {
 
 			// Set scoring setting for cross_validation operation
 			algopart += "scoring_metrics = " + cross_validation_scoring_part(model.getValidation().getMetric()) + "\n";
