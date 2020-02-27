@@ -39,7 +39,7 @@ public class SciKitCompiler {
 
 		// Import de bibliotheque python pandas pour gerer l'importation de fichier
 
-		importTexte += genImportPackageCode(algorithm, model.getFormula(), model.getValidation());
+		importTexte += genImportPackageCode(algorithm, model.getValidation());
 
 		body += "\n" + genDataInputTraitement(model.getInput());
 
@@ -52,11 +52,8 @@ public class SciKitCompiler {
 		codeFinalTexte = importTexte + body;
 
 		try {
-			filename = filename.concat("_")
-					.concat(framework.toString())
-					.concat("_")
-					.concat(algorithm.getClass().getSimpleName())
-					.concat(".py");
+			filename = filename.concat("_").concat(framework.toString()).concat("_")
+					.concat(algorithm.getClass().getSimpleName()).concat(".py");
 			Files.write(codeFinalTexte.getBytes(), new File(filename));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -90,7 +87,7 @@ public class SciKitCompiler {
 		return datainputpart;
 	}
 
-	private static String genImportPackageCode(MLAlgorithm algo, RFormula formula, Validation validation) {
+	private static String genImportPackageCode(MLAlgorithm algo, Validation validation) {
 		String importCode = "";
 
 		// Import librairie Pandas
@@ -110,9 +107,11 @@ public class SciKitCompiler {
 
 		// Import pour la formula (Pour R uniquement)
 		String importFormula = "";
-		FormulaItem predictive = formula.getPredictive();
-
-		XFormula predictors = formula.getPredictors();
+		/*
+		 * FormulaItem predictive = formula.getPredictive();
+		 * 
+		 * XFormula predictors = formula.getPredictors();
+		 */
 
 		// Import pour la validation
 		String importValidate = "";
@@ -143,7 +142,7 @@ public class SciKitCompiler {
 
 		} else if (algo instanceof SVM) {
 			// TODO : set SVM parameters definition
-
+			algopart += "clf = svm.SVR()\n";
 		} else if (algo instanceof RandomForest) {
 			algopart += "clf = RandomForestClassifier()\n";
 		} else if (algo instanceof LogisticRegression) {
@@ -322,28 +321,35 @@ public class SciKitCompiler {
 
 		return scoringSet;
 	}
-
+	
 	private static String genBodypartForPredictiveRFormula(RFormula formula) {
 		String rFormulaPart = "";
 
 		// Si une variable cible est défini
-		if (formula.getPredictive() != null) {
-			rFormulaPart += splitingDataSet(formula.getPredictive(), formula.getPredictors());
-		}
-		// Si une variable cible n'est pas définis par l'utilisateur on choisi la
-		// derniere colonne
-		else {
-			if (formula.getPredictors() instanceof AllVariables) {
-				// TODO : deplacer ce traitement dans la fonction splitingDataSet
-				rFormulaPart += "y = df.iloc[:,-1]\n";
-				rFormulaPart += "X = df.drop(df.columns[-1],axis=1)\n";
-			} else if (formula.getPredictors() instanceof PredictorVariables) {
-				PredictorVariables predictors = (PredictorVariables) formula.getPredictors();
-				FormulaItem predictive = predictors.getVars().get(predictors.getVars().size() - 1);
-				predictors.getVars().remove(predictors.getVars().size() - 1);
-
-				rFormulaPart += splitingDataSet(predictive, predictors);
+		if (formula != null) {
+			
+			if (formula.getPredictive() != null) {
+				rFormulaPart += splitingDataSet(formula.getPredictive(), formula.getPredictors());
 			}
+			// Si une variable cible n'est pas définis par l'utilisateur on choisi la
+			// derniere colonne
+			else {
+				if (formula.getPredictors() instanceof AllVariables) {
+					// TODO : deplacer ce traitement dans la fonction splitingDataSet
+					rFormulaPart += "y = df.iloc[:,-1]\n";
+					rFormulaPart += "X = df.drop(df.columns[-1],axis=1)\n";
+				} else if (formula.getPredictors() instanceof PredictorVariables) {
+					PredictorVariables predictors = (PredictorVariables) formula.getPredictors();
+					FormulaItem predictive = predictors.getVars().get(predictors.getVars().size() - 1);
+					predictors.getVars().remove(predictors.getVars().size() - 1);
+
+					rFormulaPart += splitingDataSet(predictive, predictors);
+				}
+			}
+		}
+		else {
+			rFormulaPart += "y = df.iloc[:,-1]\n";
+			rFormulaPart += "X = df.drop(df.columns[-1],axis=1)\n";			
 		}
 
 		return rFormulaPart;
