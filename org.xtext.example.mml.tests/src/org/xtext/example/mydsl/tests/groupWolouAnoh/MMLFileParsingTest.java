@@ -2,11 +2,12 @@ package org.xtext.example.mydsl.tests.groupWolouAnoh;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Objects;
 import java.util.Scanner;
-import java.util.logging.Logger;
 
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
@@ -42,6 +43,13 @@ public class MMLFileParsingTest {
 			String file = filename.concat("_").concat(algorithm.getFramework().getLiteral()).concat("_")
 					.concat(algorithm.getAlgorithm().getClass().getSimpleName()).concat(".py");
 			assertTrue(new File(file).exists());
+			
+			Process p = Runtime.getRuntime().exec("python file");
+			BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line;
+			while ((line = in.readLine()) != null) {
+				System.out.println(line);
+			}
 		}
 	}
 
@@ -77,7 +85,6 @@ public class MMLFileParsingTest {
 			}
 			sc.close();
 
-			System.out.println(buf.toString());
 			return buf.toString();
 		} catch (Exception e) {
 			e.printStackTrace();

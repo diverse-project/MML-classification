@@ -2,4 +2,4 @@ datainput "foo.csv"
 mlframework scikit-learn
 algorithm RandomForest
 CrossValidation { numRepetitionCross 20 }
-recall
+accuracy macro_precision

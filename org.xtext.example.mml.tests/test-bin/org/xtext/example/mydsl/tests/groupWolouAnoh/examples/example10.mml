@@ -2,4 +2,4 @@ datainput "foo.csv"
 mlframework scikit-learn
 algorithm LogisticRegression
 TrainingTest { percentageTraining 80 }
-recall
+recall balanced_accuracy macro_F1 
