@@ -1,0 +1,6 @@
+install.packages("caret",repos="http://cran.irsn.fr/")
+install.packages("readr",repos="http://cran.irsn.fr/")
+install.packages("randomForest",repos="http://cran.irsn.fr/")
+install.packages("LogicReg",repos="http://cran.irsn.fr/")
+install.packages("e1071",repos="http://cran.irsn.fr/")
+install.packages("party",repos="http://cran.irsn.fr/")

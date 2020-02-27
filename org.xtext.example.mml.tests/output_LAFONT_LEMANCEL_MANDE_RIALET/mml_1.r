@@ -8,9 +8,13 @@ library(party)
 
 data <- read.csv("output_LAFONT_LEMANCEL_MANDE_RIALET/iris.csv")
 
-x <- names(data[dim(data)[2]])
+x <- "variety"
 
-y <- "."
+y <- c()
+y <- c(y, names(data[1]))
+y <- c(y, names(data[2]))
+y <- c(y, "petal.length")
+y <- c(y, names(data[4]))
 
 formula <- reformulate(termlabels = y, response = x)
 
