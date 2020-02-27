@@ -48,8 +48,6 @@ public class SciKitCompiler {
 
 		body += "\n" + genBodypartForAlgorithm(algorithm, model);
 
-		body += "\n" + genBodypartForValidation(model.getValidation());
-
 		codeFinalTexte = importTexte + body;
 
 		try {
@@ -135,6 +133,86 @@ public class SciKitCompiler {
 
 		} else if (algo instanceof SVM) {
 			algopart += svmTraitement(algo, model);
+		} else if (algo instanceof RandomForest) {
+			algopart += randomForestTraitement(algo, model);
+		} else if (algo instanceof LogisticRegression) {
+			algopart += logisticRegressionTraitement(algo, model);
+		}
+
+		return algopart;
+	}
+
+	/**
+	 * Traitement logisticRegression
+	 * @param algo
+	 * @param model
+	 * @return
+	 */
+	private static String logisticRegressionTraitement(MLAlgorithm algo, MMLModel model) {
+		String algopart = "";
+
+		// Définition de l'algorithme à utiliser pour le model
+		algopart += "clf = LogisticRegression()\n";
+
+		if (model.getValidation() instanceof TrainingTest) {
+			algopart += "train_size = " + model.getValidation().getStratification().getNumber() + "/100 \n";
+			algopart += "X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=train_size)\n";
+
+			// Creation du model avec le training set
+			algopart += "clf.fit(X_train, y_train)\n";
+
+			// Recuperation des resultats en fonction des metrics de validation definies
+			algopart += train_test_accuracy_part(model.getValidation().getMetric());
+
+		} else if (model.getValidation() instanceof CrossValidation) {
+
+			// Set scoring setting for cross_validation operation
+			algopart += "scoring_metrics = " + cross_validation_scoring_part(model.getValidation().getMetric()) + "\n";
+
+			algopart += "\n" + "cv_results = cross_validation(clf, X, y, cv="
+					+ model.getValidation().getStratification().getNumber() + "scoring = scoring_metrics)\n";
+
+			// TODO:Recuperer les cv_results en fonction des metrics utilisés et retournés
+			// le mean() sur l'indice du tableau concerné
+
+		}
+
+		return algopart;
+	}
+
+	/**
+	 * Traitement randomForest
+	 * @param algo
+	 * @param model
+	 * @return
+	 */
+	private static String randomForestTraitement(MLAlgorithm algo, MMLModel model) {
+		String algopart = "";
+
+		// Définition de l'algorithme à utiliser pour le model
+		algopart += "clf = RandomForestClassifier()\n";
+
+		if (model.getValidation() instanceof TrainingTest) {
+			algopart += "train_size = " + model.getValidation().getStratification().getNumber() + "/100 \n";
+			algopart += "X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=train_size)\n";
+
+			// Creation du model avec le training set
+			algopart += "clf.fit(X_train, y_train)\n";
+
+			// Recuperation des resultats en fonction des metrics de validation definies
+			algopart += train_test_accuracy_part(model.getValidation().getMetric());
+
+		} else if (model.getValidation() instanceof CrossValidation) {
+
+			// Set scoring setting for cross_validation operation
+			algopart += "scoring_metrics = " + cross_validation_scoring_part(model.getValidation().getMetric()) + "\n";
+
+			algopart += "\n" + "cv_results = cross_validation(clf, X, y, cv="
+					+ model.getValidation().getStratification().getNumber() + "scoring = scoring_metrics)\n";
+
+			// TODO:Recuperer les cv_results en fonction des metrics utilisés et retournés
+			// le mean() sur l'indice du tableau concerné
+
 		}
 
 		return algopart;
@@ -162,19 +240,94 @@ public class SciKitCompiler {
 
 			// Creation du model avec le training set
 			algopart += "clf.fit(X_train, y_train)\n";
+
+			// Recuperation des resultats en fonction des metrics de validation definies
+			algopart += train_test_accuracy_part(model.getValidation().getMetric());
+
 		} else if (model.getValidation() instanceof CrossValidation) {
 
 			// Set scoring setting for cross_validation operation
 			algopart += "scoring_metrics = " + cross_validation_scoring_part(model.getValidation().getMetric()) + "\n";
 
-			algopart += "\n" + "cv_results = cross_validation(clf, X, y, cv=" + model.getValidation().getStratification().getNumber()
-					+ "scoring = scoring_metrics)\n";
-			
-			//TODO:Recuperer les cv_results en fonction des metrics utilisés et retournés le mean() sur l'indice du tableau concerné
-				
+			algopart += "\n" + "cv_results = cross_validation(clf, X, y, cv="
+					+ model.getValidation().getStratification().getNumber() + "scoring = scoring_metrics)\n";
+
+			// TODO:Recuperer les cv_results en fonction des metrics utilisés et retournés
+			// le mean() sur l'indice du tableau concerné
+
 		}
 
 		return algopart;
+	}
+
+	/**
+	 * Display the accuracy result for define validation metrics
+	 * 
+	 * @return
+	 */
+	private static String train_test_accuracy_part(EList<ValidationMetric> metrics) {
+		String accuracy_result = "";
+		for (ValidationMetric m : metrics) {
+			switch (m) {
+			case BALANCED_ACCURACY:
+				accuracy_result+="\n"
+						+"res_balanced_accuracy_score = metrics.balanced_accuracy_score(y_test,clf.predict(X_test))\n"
+						+"print(res_balanced_accuracy_score)\n"
+				;
+				break;
+			case RECALL:
+				accuracy_result+="\n"
+						+"res_recall_score = metrics.recall_score(y_test,clf.predict(X_test),average='micro')\n"
+						+"print(res_recall_score)\n"
+				;
+				break;
+			case PRECISION:
+				accuracy_result+="\n"
+						+"res_precision_score = metrics.precision_score(y_test,clf.predict(X_test),average='micro')\n"
+						+"print(res_precision_score)\n"
+				;
+				break;
+			case F1:
+				accuracy_result+="\n"
+						+"res_f1_score = metrics.f1_score(y_test,clf.predict(X_test),average='micro')\n"
+						+"print(res_f1_score)\n"
+				;
+				break;
+			case ACCURACY:
+				accuracy_result+="\n"
+						+"res_accuracy_score = metrics.accuracy_score(y_test,clf.predict(X_test))\n"
+						+"print(res_accuracy_score)\n"
+				;
+				break;
+			case MACRO_RECALL:
+				accuracy_result+="\n"
+						+"res_recall__macro_score = metrics.recall_score(y_test,clf.predict(X_test),average='macro')\n"
+						+"print(res_recall__macro_score)\n"
+				;
+				break;
+			case MACRO_PRECISION:
+				accuracy_result+="\n"
+						+"res_precision_macro_score = metrics.precision_score(y_test,clf.predict(X_test),average='macro')\n"
+						+"print(res_precision_macro_score)\n"
+				;
+				break;
+			case MACRO_F1:
+				accuracy_result+="\n"
+						+"res_f1_macro_score = metrics.f1_score(y_test,clf.predict(X_test),average='macro')\n"
+						+"print(res_f1_macro_score)\n"
+				;
+				break;
+			case MACRO_ACCURACY:
+				accuracy_result+="\n"
+						+"res_accuracy_macro_score = metrics.accuracy_score(y_test,clf.predict(X_test))\n"
+						+"print(res_accuracy_macro_score)\n"
+				;
+				break;
+			default:
+				break;
+			}
+		}
+		return accuracy_result;
 	}
 
 	/**
@@ -187,8 +340,8 @@ public class SciKitCompiler {
 	 */
 	private static String cross_validation_scoring_part(EList<ValidationMetric> metrics) {
 		String scoringSet = "";
-		
-		//If no metrics are defined use accuracy for scoring
+
+		// If no metrics are defined use accuracy for scoring
 		if (metrics.isEmpty()) {
 			scoringSet = "['accuracy']";
 
@@ -229,7 +382,6 @@ public class SciKitCompiler {
 			}
 			scoringSet += "]";
 		}
-		
 
 		return scoringSet;
 	}
@@ -244,22 +396,6 @@ public class SciKitCompiler {
 
 	private static String svmTraitement(MLAlgorithm algo, MMLModel model) {
 		return "";
-	}
-
-	private static String genBodypartForValidation(Validation validation) {
-		String validationPart = "\n";
-
-		// Training
-		StratificationMethod stratification = validation.getStratification();
-		if (stratification instanceof CrossValidation) {
-			validationPart += "";
-		} else if (stratification instanceof TrainingTest) {
-			int test_size = 1 - stratification.getNumber() / 100;
-			validationPart += "test_size = " + test_size + "\n";
-
-		}
-
-		return validationPart;
 	}
 
 	private static String genBodypartForPredictiveRFormula(RFormula formula) {
