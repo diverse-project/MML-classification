@@ -57,7 +57,7 @@ public class MMLFileParsingTest {
 	public StringBuffer readMMLFile(String filename) {
 		try {
 			InputStream in = getClass().getResourceAsStream(
-					"/org/xtext/example/mydsl/tests/group/examples/" + normalizeFilename(filename) + ".mml");
+					"/org/xtext/example/mydsl/tests/groupWolouAnnoh/examples/" + normalizeFilename(filename) + ".mml");
 
 			StringBuffer buf = new StringBuffer("");
 			Scanner sc = new Scanner(in);
