@@ -21,7 +21,6 @@ import org.xtext.example.mydsl.mml.PredictorVariables;
 import org.xtext.example.mydsl.mml.RFormula;
 import org.xtext.example.mydsl.mml.RandomForest;
 import org.xtext.example.mydsl.mml.SVM;
-import org.xtext.example.mydsl.mml.StratificationMethod;
 import org.xtext.example.mydsl.mml.TrainingTest;
 import org.xtext.example.mydsl.mml.Validation;
 import org.xtext.example.mydsl.mml.ValidationMetric;
@@ -57,7 +56,7 @@ public class SciKitCompiler {
 		codeFinalTexte = importTexte + body;
 
 		try {
-			filename = filename.concat("_").concat(framework.toString()).concat("_")
+			filename = filename.concat("_").concat(framework.getLiteral()).concat("_")
 					.concat(algorithm.getClass().getSimpleName()).concat(".py");
 			Files.write(codeFinalTexte.getBytes(), new File(filename));
 		} catch (IOException e) {
@@ -326,13 +325,13 @@ public class SciKitCompiler {
 
 		return scoringSet;
 	}
-	
+
 	private static String genBodypartForPredictiveRFormula(RFormula formula) {
 		String rFormulaPart = "";
 
 		// Si une variable cible est défini
 		if (formula != null) {
-			
+
 			if (formula.getPredictive() != null) {
 				rFormulaPart += splitingDataSet(formula.getPredictive(), formula.getPredictors());
 			}
@@ -351,10 +350,9 @@ public class SciKitCompiler {
 					rFormulaPart += splitingDataSet(predictive, predictors);
 				}
 			}
-		}
-		else {
+		} else {
 			rFormulaPart += "y = df.iloc[:,-1]\n";
-			rFormulaPart += "X = df.drop(df.columns[-1],axis=1)\n";			
+			rFormulaPart += "X = df.drop(df.columns[-1],axis=1)\n";
 		}
 
 		return rFormulaPart;

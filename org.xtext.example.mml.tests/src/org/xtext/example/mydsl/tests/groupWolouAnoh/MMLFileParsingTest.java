@@ -1,11 +1,12 @@
 package org.xtext.example.mydsl.tests.groupWolouAnoh;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
@@ -33,17 +34,17 @@ public class MMLFileParsingTest {
 		String filename = "example01";
 		MMLModel model = parser.parse(readMMLFile(filename));
 
-		model.getAlgorithms().forEach(algorithm -> {
+		Objects.requireNonNull(model.getAlgorithms(), "MLChoiceAlgorithm is not provided.");
+		
+		for (MLChoiceAlgorithm algorithm : model.getAlgorithms()) {
 			algorithmFactory(algorithm, model, filename);
-			
-			String file = filename.concat("_")
-					.concat(algorithm.getFramework().getLiteral())
-					.concat("_")
-					.concat(algorithm.getAlgorithm().getClass().getSimpleName())
-					.concat(".py");
-			System.out.println(file);
-			assertFalse(new File(file).exists());
-		});
+
+			System.out.println(filename);
+			String file = filename.concat("_").concat(algorithm.getFramework().getLiteral()).concat("_")
+					.concat(algorithm.getAlgorithm().getClass().getSimpleName()).concat(".py");
+			assertTrue(new File(file).exists());
+		}
+		System.out.println("after for");
 	}
 
 	private void algorithmFactory(MLChoiceAlgorithm choiceAlgorithm, MMLModel model, String filename) {
@@ -53,6 +54,7 @@ public class MMLFileParsingTest {
 		switch (framework) {
 		case SCIKIT:
 			SciKitCompiler.compile(framework, algorithm, model, filename);
+			System.out.println(filename);
 			break;
 
 		case R:
@@ -70,10 +72,11 @@ public class MMLFileParsingTest {
 			InputStream in = getClass().getResourceAsStream(
 					"/org/xtext/example/mydsl/tests/groupWolouAnoh/examples/" + normalizeFilename(filename) + ".mml");
 
-			StringBuffer buf = new StringBuffer("");
+			StringBuffer buf = new StringBuffer();
 			Scanner sc = new Scanner(in);
 			while (sc.hasNext()) {
-				buf.append(sc.next());
+				buf.append(sc.nextLine());
+				buf.append("\n");
 			}
 			sc.close();
 
