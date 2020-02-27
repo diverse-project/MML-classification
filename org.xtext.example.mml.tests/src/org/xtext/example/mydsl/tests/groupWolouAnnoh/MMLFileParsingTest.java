@@ -1,4 +1,4 @@
-package org.xtext.example.mydsl.tests.group;
+package org.xtext.example.mydsl.tests.groupWolouAnnoh;
 
 import java.io.InputStream;
 import java.util.Scanner;
@@ -13,7 +13,7 @@ import org.xtext.example.mydsl.mml.MLAlgorithm;
 import org.xtext.example.mydsl.mml.MLChoiceAlgorithm;
 import org.xtext.example.mydsl.mml.MMLModel;
 import org.xtext.example.mydsl.tests.MmlInjectorProvider;
-import org.xtext.example.mydsl.tests.group.compilers.SciKitCompiler;
+import org.xtext.example.mydsl.tests.groupWolouAnnoh.compilers.SciKitCompiler;
 
 import com.google.inject.Inject;
 
