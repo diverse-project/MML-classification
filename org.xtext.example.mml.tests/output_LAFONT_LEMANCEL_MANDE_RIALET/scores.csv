@@ -1,0 +1,384 @@
+Weka,RandomForest,recall,100.0,2386
+Weka,RandomForest,precision,100.0,2386
+Weka,RandomForest,f1,100.0,2386
+Weka,RandomForest,accuracy,100.0,2386
+Weka,RandomForest,recall,100.0,2127
+Weka,RandomForest,precision,100.0,2127
+Weka,RandomForest,f1,100.0,2127
+Weka,RandomForest,accuracy,100.0,2127
+Weka,RandomForest,recall,100.0,1943
+Weka,RandomForest,precision,100.0,1943
+Weka,RandomForest,f1,100.0,1943
+Weka,RandomForest,accuracy,100.0,1943
+Weka,RandomForest,recall,100.0,2340
+Weka,RandomForest,precision,100.0,2340
+Weka,RandomForest,f1,100.0,2340
+Weka,RandomForest,accuracy,100.0,2340
+Weka,RandomForest,recall,100.0,2045
+Weka,RandomForest,precision,100.0,2045
+Weka,RandomForest,f1,100.0,2045
+Weka,RandomForest,accuracy,100.0,2045
+Weka,RandomForest,recall,100.0,3183
+Weka,RandomForest,precision,100.0,3183
+Weka,RandomForest,f1,100.0,3183
+Weka,RandomForest,accuracy,100.0,3183
+Weka,RandomForest,recall,100.0,1922
+Weka,RandomForest,precision,100.0,1922
+Weka,RandomForest,f1,100.0,1922
+Weka,RandomForest,accuracy,100.0,1922
+Weka,DT,precision,98.22485207100591,3233
+Weka,LogisticRegression,precision,98.19004524886878,2020
+Weka,DT,f1,98.0949263502455,3233
+Weka,LogisticRegression,accuracy,98.07692307692308,2020
+Weka,DT,accuracy,98.07692307692308,3233
+Weka,LogisticRegression,recall,98.07692307692307,2020
+Weka,LogisticRegression,f1,98.07692307692307,2020
+Weka,DT,recall,98.07692307692307,3233
+Weka,DT,precision,96.5587044534413,3196
+Weka,DT,recall,96.15384615384616,3196
+Weka,DT,accuracy,96.15384615384616,3196
+Weka,DT,recall,96.15384615384616,3434
+Weka,DT,precision,96.15384615384616,3434
+Weka,DT,f1,96.15384615384616,3434
+Weka,DT,accuracy,96.15384615384616,3434
+Weka,DT,f1,96.14049145299145,3196
+Weka,LogisticRegression,precision,95.34480458850206,2107
+Weka,LogisticRegression,recall,95.33333333333334,2107
+Weka,LogisticRegression,accuracy,95.33333333333333,2107
+Weka,LogisticRegression,f1,95.33286661999534,2107
+Weka,RandomForest,precision,94.09875551987155,2985
+Weka,RandomForest,precision,94.09875551987155,2740
+Weka,RandomForest,recall,94.0,2985
+Weka,RandomForest,accuracy,94.0,2985
+Weka,RandomForest,recall,94.0,2740
+Weka,RandomForest,accuracy,94.0,2740
+Weka,RandomForest,f1,93.99459513562208,2985
+Weka,RandomForest,f1,93.99459513562208,2740
+Weka,DT,precision,92.11145996860283,2956
+Weka,DT,precision,92.11145996860283,3446
+Weka,DT,f1,92.03802733214498,2956
+Weka,DT,f1,92.03802733214498,3446
+Weka,DT,recall,92.0,2956
+Weka,DT,accuracy,92.0,2956
+Weka,DT,recall,92.0,3446
+Weka,DT,accuracy,92.0,3446
+R,RandomForest,balanced accuracy,1,6093
+R,RandomForest,recall,1,6093
+R,RandomForest,precision,1,6093
+R,RandomForest,f1,1,6093
+R,RandomForest,accuracy,1,6093
+R,RandomForest,balanced accuracy,1,5750
+R,RandomForest,recall,1,5750
+R,RandomForest,precision,1,5750
+R,RandomForest,f1,1,5750
+R,RandomForest,accuracy,1,5750
+scikit-learn,SVM,precision_macro,0.9818181818181818,1840
+scikit-learn,SVM,precision_macro,0.9818181818181818,2184
+scikit-learn,SVM,precision_macro,0.9818181818181818,1840
+scikit-learn,SVM,precision_macro,0.9818181818181818,3455
+scikit-learn,SVM,precision_macro,0.9818181818181818,3494
+scikit-learn,SVM,precision_macro,0.9818181818181818,3569
+scikit-learn,SVM,balanced_accuracy,0.9800000000000001,1840
+scikit-learn,SVM,recall_micro,0.9800000000000001,1840
+scikit-learn,SVM,precision_micro,0.9800000000000001,1840
+scikit-learn,SVM,f1_micro,0.9800000000000001,1840
+scikit-learn,SVM,accuracy,0.9800000000000001,1840
+scikit-learn,SVM,recall_macro,0.9800000000000001,1840
+scikit-learn,SVM,balanced_accuracy,0.9800000000000001,2184
+scikit-learn,SVM,recall_micro,0.9800000000000001,2184
+scikit-learn,SVM,precision_micro,0.9800000000000001,2184
+scikit-learn,SVM,f1_micro,0.9800000000000001,2184
+scikit-learn,SVM,accuracy,0.9800000000000001,2184
+scikit-learn,SVM,recall_macro,0.9800000000000001,2184
+scikit-learn,SVM,balanced_accuracy,0.9800000000000001,1840
+scikit-learn,SVM,recall_micro,0.9800000000000001,1840
+scikit-learn,SVM,precision_micro,0.9800000000000001,1840
+scikit-learn,SVM,f1_micro,0.9800000000000001,1840
+scikit-learn,SVM,accuracy,0.9800000000000001,1840
+scikit-learn,SVM,recall_macro,0.9800000000000001,1840
+scikit-learn,SVM,balanced_accuracy,0.9800000000000001,3455
+scikit-learn,SVM,recall_micro,0.9800000000000001,3455
+scikit-learn,SVM,precision_micro,0.9800000000000001,3455
+scikit-learn,SVM,f1_micro,0.9800000000000001,3455
+scikit-learn,SVM,accuracy,0.9800000000000001,3455
+scikit-learn,SVM,recall_macro,0.9800000000000001,3455
+scikit-learn,SVM,balanced_accuracy,0.9800000000000001,3494
+scikit-learn,SVM,recall_micro,0.9800000000000001,3494
+scikit-learn,SVM,precision_micro,0.9800000000000001,3494
+scikit-learn,SVM,f1_micro,0.9800000000000001,3494
+scikit-learn,SVM,accuracy,0.9800000000000001,3494
+scikit-learn,SVM,recall_macro,0.9800000000000001,3494
+scikit-learn,SVM,balanced_accuracy,0.9800000000000001,3569
+scikit-learn,SVM,recall_micro,0.9800000000000001,3569
+scikit-learn,SVM,precision_micro,0.9800000000000001,3569
+scikit-learn,SVM,f1_micro,0.9800000000000001,3569
+scikit-learn,SVM,accuracy,0.9800000000000001,3569
+scikit-learn,SVM,recall_macro,0.9800000000000001,3569
+R,SVM,balanced accuracy,0.98,3244
+R,SVM,balanced accuracy,0.98,3553
+scikit-learn,SVM,f1_macro,0.9799498746867169,1840
+scikit-learn,SVM,f1_macro,0.9799498746867169,2184
+scikit-learn,SVM,f1_macro,0.9799498746867169,1840
+scikit-learn,SVM,f1_macro,0.9799498746867169,3455
+scikit-learn,SVM,f1_macro,0.9799498746867169,3494
+scikit-learn,SVM,f1_macro,0.9799498746867169,3569
+scikit-learn,LogisticRegression,precision_macro,0.9767676767676768,2043
+R,RandomForest,balanced accuracy,0.9765625,3330
+R,SVM,balanced accuracy,0.9765625,3286
+R,RandomForest,balanced accuracy,0.9765625,3254
+R,SVM,balanced accuracy,0.975,3168
+R,SVM,balanced accuracy,0.975,3372
+R,SVM,balanced accuracy,0.975,3698
+R,SVM,balanced accuracy,0.975,3116
+R,SVM,precision,0.973824786324786,3553
+scikit-learn,LogisticRegression,balanced_accuracy,0.9733333333333334,2043
+scikit-learn,LogisticRegression,recall_micro,0.9733333333333334,2043
+scikit-learn,LogisticRegression,precision_micro,0.9733333333333334,2043
+scikit-learn,LogisticRegression,f1_micro,0.9733333333333334,2043
+scikit-learn,LogisticRegression,accuracy,0.9733333333333334,2043
+scikit-learn,LogisticRegression,recall_macro,0.9733333333333334,2043
+R,SVM,recall,0.973333333333333,3244
+R,SVM,precision,0.973333333333333,3244
+R,SVM,f1,0.973333333333333,3244
+R,SVM,accuracy,0.973333333333333,3244
+R,SVM,recall,0.973333333333333,3553
+R,SVM,accuracy,0.973333333333333,3553
+R,SVM,f1,0.973322662398293,3553
+scikit-learn,LogisticRegression,f1_macro,0.973165236323131,2043
+scikit-learn,SVM,macro precision,0.9729729729729729,3458
+scikit-learn,SVM,balanced accuracy,0.9722222222222222,3458
+scikit-learn,SVM,macro recall,0.9722222222222222,3458
+scikit-learn,SVM,macro f1,0.9714227393345581,3458
+scikit-learn,SVM,precision_macro,0.9712820512820513,3405
+scikit-learn,RandomForest,precision_macro,0.9707070707070707,3654
+scikit-learn,RandomForest,macro precision,0.9703703703703704,2019
+R,DT,balanced accuracy,0.97,8107
+scikit-learn,RandomForest,macro f1,0.9695220503347958,2019
+scikit-learn,RandomForest,macro precision,0.9694581280788178,2342
+scikit-learn,RandomForest,recall,0.9693877551020408,2019
+scikit-learn,RandomForest,precision,0.9693877551020408,2019
+scikit-learn,RandomForest,f1,0.9693877551020408,2019
+scikit-learn,RandomForest,accuracy,0.9693877551020408,2019
+scikit-learn,RandomForest,recall,0.9693877551020408,2342
+scikit-learn,RandomForest,precision,0.9693877551020408,2342
+scikit-learn,RandomForest,f1,0.9693877551020408,2342
+scikit-learn,RandomForest,accuracy,0.9693877551020408,2342
+scikit-learn,SVM,recall,0.9693877551020408,3458
+scikit-learn,SVM,precision,0.9693877551020408,3458
+scikit-learn,SVM,f1,0.9693877551020408,3458
+scikit-learn,SVM,accuracy,0.9693877551020408,3458
+R,RandomForest,precision,0.969045291625937,3330
+R,SVM,precision,0.969045291625937,3286
+R,RandomForest,precision,0.969045291625937,3254
+scikit-learn,RandomForest,balanced accuracy,0.9689708141321045,2019
+scikit-learn,RandomForest,macro recall,0.9689708141321045,2019
+R,RandomForest,recall,0.96875,3330
+R,RandomForest,accuracy,0.96875,3330
+R,SVM,recall,0.96875,3286
+R,SVM,accuracy,0.96875,3286
+R,RandomForest,recall,0.96875,3254
+R,RandomForest,accuracy,0.96875,3254
+R,RandomForest,balanced accuracy,0.96875,5708
+R,RandomForest,f1,0.968742368742369,3330
+R,SVM,f1,0.968742368742369,3286
+R,RandomForest,f1,0.968742368742369,3254
+scikit-learn,RandomForest,macro f1,0.9685580938344387,2342
+scikit-learn,DT,precision_macro,0.9683501683501683,2318
+scikit-learn,RandomForest,balanced accuracy,0.9679738562091503,2342
+scikit-learn,RandomForest,macro recall,0.9679738562091503,2342
+R,SVM,precision,0.967750568714037,3168
+R,SVM,precision,0.967750568714037,3372
+R,SVM,precision,0.967750568714037,3698
+R,SVM,precision,0.967750568714037,3116
+scikit-learn,SVM,precision_macro,0.967138047138047,2420
+R,SVM,recall,0.966666666666667,3168
+R,SVM,accuracy,0.966666666666667,3168
+R,SVM,recall,0.966666666666667,3372
+R,SVM,accuracy,0.966666666666667,3372
+R,SVM,recall,0.966666666666667,3698
+R,SVM,accuracy,0.966666666666667,3698
+R,SVM,recall,0.966666666666667,3116
+R,SVM,accuracy,0.966666666666667,3116
+scikit-learn,DT,balanced_accuracy,0.9666666666666668,2318
+scikit-learn,DT,recall_micro,0.9666666666666668,2318
+scikit-learn,DT,precision_micro,0.9666666666666668,2318
+scikit-learn,DT,f1_micro,0.9666666666666668,2318
+scikit-learn,DT,accuracy,0.9666666666666668,2318
+scikit-learn,DT,recall_macro,0.9666666666666668,2318
+scikit-learn,SVM,recall_micro,0.9666666666666668,2420
+scikit-learn,SVM,precision_micro,0.9666666666666668,2420
+scikit-learn,SVM,f1_micro,0.9666666666666668,2420
+scikit-learn,SVM,accuracy,0.9666666666666668,2420
+scikit-learn,RandomForest,balanced_accuracy,0.9666666666666668,3654
+scikit-learn,RandomForest,recall_micro,0.9666666666666668,3654
+scikit-learn,RandomForest,precision_micro,0.9666666666666668,3654
+scikit-learn,RandomForest,f1_micro,0.9666666666666668,3654
+scikit-learn,RandomForest,accuracy,0.9666666666666668,3654
+scikit-learn,RandomForest,recall_macro,0.9666666666666668,3654
+scikit-learn,SVM,balanced_accuracy,0.9666666666666666,2420
+scikit-learn,SVM,recall_macro,0.9666666666666666,2420
+scikit-learn,SVM,balanced_accuracy,0.9666666666666666,3405
+scikit-learn,SVM,recall_micro,0.9666666666666666,3405
+scikit-learn,SVM,precision_micro,0.9666666666666666,3405
+scikit-learn,SVM,f1_micro,0.9666666666666666,3405
+scikit-learn,SVM,accuracy,0.9666666666666666,3405
+scikit-learn,SVM,recall_macro,0.9666666666666666,3405
+R,SVM,f1,0.966636639642345,3168
+R,SVM,f1,0.966636639642345,3372
+R,SVM,f1,0.966636639642345,3698
+R,SVM,f1,0.966636639642345,3116
+scikit-learn,SVM,f1_macro,0.9666165413533834,2420
+scikit-learn,DT,f1_macro,0.9665831244778612,2318
+scikit-learn,RandomForest,f1_macro,0.9664818612187034,3654
+scikit-learn,SVM,f1_macro,0.9662063086104006,3405
+R,SVM,balanced accuracy,0.965,3938
+scikit-learn,SVM,precision_macro,0.9634343434343435,1990
+scikit-learn,RandomForest,precision_macro,0.9634343434343435,3437
+scikit-learn,DT,balanced accuracy,0.9620132953466287,1804
+scikit-learn,DT,macro recall,0.9620132953466287,1804
+R,DT,precision,0.961889425657542,8107
+R,RandomForest,balanced accuracy,0.9609375,3502
+scikit-learn,DT,balanced accuracy,0.960190136660725,3037
+scikit-learn,DT,macro recall,0.960190136660725,3037
+scikit-learn,DT,macro precision,0.960190136660725,3037
+scikit-learn,DT,macro f1,0.960190136660725,3037
+scikit-learn,SVM,balanced_accuracy,0.96,1990
+scikit-learn,SVM,recall_micro,0.96,1990
+scikit-learn,SVM,precision_micro,0.96,1990
+scikit-learn,SVM,f1_micro,0.96,1990
+scikit-learn,SVM,accuracy,0.96,1990
+scikit-learn,SVM,recall_macro,0.96,1990
+scikit-learn,RandomForest,balanced_accuracy,0.96,3437
+scikit-learn,RandomForest,recall_micro,0.96,3437
+scikit-learn,RandomForest,precision_micro,0.96,3437
+scikit-learn,RandomForest,f1_micro,0.96,3437
+scikit-learn,RandomForest,accuracy,0.96,3437
+scikit-learn,RandomForest,recall_macro,0.96,3437
+R,DT,recall,0.96,8107
+R,DT,accuracy,0.96,8107
+R,DT,f1,0.959935897435897,8107
+scikit-learn,SVM,f1_macro,0.9598319029897976,1990
+scikit-learn,RandomForest,f1_macro,0.9598319029897976,3437
+scikit-learn,DT,recall,0.9591836734693877,1804
+scikit-learn,DT,precision,0.9591836734693877,1804
+scikit-learn,DT,f1,0.9591836734693877,1804
+scikit-learn,DT,accuracy,0.9591836734693877,1804
+scikit-learn,DT,recall,0.9591836734693877,3037
+scikit-learn,DT,precision,0.9591836734693877,3037
+scikit-learn,DT,f1,0.9591836734693877,3037
+scikit-learn,DT,accuracy,0.9591836734693877,3037
+R,SVM,precision,0.95906432748538,3938
+scikit-learn,DT,macro f1,0.9586466165413533,1804
+R,RandomForest,recall,0.958333333333333,5708
+R,RandomForest,precision,0.958333333333333,5708
+R,RandomForest,f1,0.958333333333333,5708
+R,RandomForest,accuracy,0.958333333333333,5708
+scikit-learn,DT,macro precision,0.9565082323703015,1804
+scikit-learn,DT,precision_macro,0.9550168350168349,1983
+scikit-learn,DT,balanced_accuracy,0.9533333333333334,1983
+scikit-learn,DT,recall_micro,0.9533333333333334,1983
+scikit-learn,DT,precision_micro,0.9533333333333334,1983
+scikit-learn,DT,f1_micro,0.9533333333333334,1983
+scikit-learn,DT,accuracy,0.9533333333333334,1983
+scikit-learn,DT,recall_macro,0.9533333333333334,1983
+R,SVM,recall,0.953333333333333,3938
+R,SVM,accuracy,0.953333333333333,3938
+scikit-learn,DT,f1_macro,0.9532497911445279,1983
+R,RandomForest,balanced accuracy,0.953125,3411
+R,SVM,f1,0.953103540682678,3938
+scikit-learn,RandomForest,macro precision,0.9514687100893998,3796
+scikit-learn,LogisticRegression,recall,0.9489795918367347,1885
+scikit-learn,LogisticRegression,precision,0.9489795918367347,1885
+scikit-learn,LogisticRegression,f1,0.9489795918367347,1885
+scikit-learn,LogisticRegression,accuracy,0.9489795918367347,1885
+scikit-learn,RandomForest,recall,0.9489795918367347,3796
+scikit-learn,RandomForest,precision,0.9489795918367347,3796
+scikit-learn,RandomForest,f1,0.9489795918367347,3796
+scikit-learn,RandomForest,accuracy,0.9489795918367347,3796
+scikit-learn,RandomForest,macro f1,0.9485230062564346,3796
+scikit-learn,RandomForest,balanced accuracy,0.9482323232323232,3796
+scikit-learn,RandomForest,macro recall,0.9482323232323232,3796
+R,RandomForest,precision,0.948191593352884,3502
+scikit-learn,LogisticRegression,balanced accuracy,0.9481915933528837,1885
+scikit-learn,LogisticRegression,macro recall,0.9481915933528837,1885
+R,RandomForest,recall,0.947916666666667,3502
+R,RandomForest,accuracy,0.947916666666667,3502
+scikit-learn,LogisticRegression,macro precision,0.9479166666666666,1885
+R,RandomForest,f1,0.947903947903948,3502
+scikit-learn,LogisticRegression,macro f1,0.9479039479039478,1885
+R,RandomForest,balanced accuracy,0.9453125,3633
+scikit-learn,RandomForest,balanced accuracy,0.9400352733686067,2573
+scikit-learn,RandomForest,macro recall,0.9400352733686067,2573
+scikit-learn,RandomForest,recall,0.9387755102040817,2573
+scikit-learn,RandomForest,precision,0.9387755102040817,2573
+scikit-learn,RandomForest,f1,0.9387755102040817,2573
+scikit-learn,RandomForest,accuracy,0.9387755102040817,2573
+R,RandomForest,recall,0.9375,3411
+R,RandomForest,precision,0.9375,3411
+R,RandomForest,f1,0.9375,3411
+R,RandomForest,accuracy,0.9375,3411
+R,RandomForest,balanced accuracy,0.9375,5896
+scikit-learn,RandomForest,macro precision,0.935483870967742,2573
+scikit-learn,RandomForest,macro f1,0.9352142110762799,2573
+scikit-learn,RandomForest,macro precision,0.9300366300366302,3801
+R,RandomForest,precision,0.929392446633826,3633
+scikit-learn,RandomForest,recall,0.9285714285714286,3801
+scikit-learn,RandomForest,precision,0.9285714285714286,3801
+scikit-learn,RandomForest,f1,0.9285714285714286,3801
+scikit-learn,RandomForest,accuracy,0.9285714285714286,3801
+scikit-learn,DT,recall,0.9285714285714286,3325
+scikit-learn,DT,precision,0.9285714285714286,3325
+scikit-learn,DT,f1,0.9285714285714286,3325
+scikit-learn,DT,accuracy,0.9285714285714286,3325
+R,RandomForest,recall,0.927083333333333,3633
+R,RandomForest,accuracy,0.927083333333333,3633
+R,RandomForest,f1,0.926922763233015,3633
+scikit-learn,DT,balanced accuracy,0.9261904761904761,3325
+scikit-learn,DT,macro recall,0.9261904761904761,3325
+scikit-learn,DT,macro f1,0.9252479023646072,3325
+scikit-learn,DT,macro precision,0.9246112237998648,3325
+scikit-learn,RandomForest,balanced accuracy,0.9243727598566308,3801
+scikit-learn,RandomForest,macro recall,0.9243727598566308,3801
+scikit-learn,RandomForest,macro f1,0.9231668915879442,3801
+R,RandomForest,recall,0.916666666666667,5896
+R,RandomForest,precision,0.916666666666667,5896
+R,RandomForest,f1,0.916666666666667,5896
+R,RandomForest,accuracy,0.916666666666667,5896
+scikit-learn,RandomForest,balanced accuracy,0.9039351851851851,3803
+scikit-learn,RandomForest,macro recall,0.9039351851851851,3803
+scikit-learn,RandomForest,macro precision,0.9039351851851851,3803
+scikit-learn,RandomForest,macro f1,0.9019607843137255,3803
+scikit-learn,RandomForest,recall,0.8979591836734694,3803
+scikit-learn,RandomForest,precision,0.8979591836734694,3803
+scikit-learn,RandomForest,f1,0.8979591836734694,3803
+scikit-learn,RandomForest,accuracy,0.8979591836734694,3803
+R,DT,f1,0.810401579986833,6595
+R,DT,f1,0.810401579986833,6753
+R,DT,precision,0.742424242424242,6595
+R,DT,precision,0.742424242424242,6753
+R,DT,balanced accuracy,0.734375,6595
+R,DT,balanced accuracy,0.734375,6753
+R,DT,recall,0.645833333333333,6595
+R,DT,accuracy,0.645833333333333,6595
+R,DT,recall,0.645833333333333,6753
+R,DT,accuracy,0.645833333333333,6753
+R,DT,balanced accuracy,0.5,7065
+R,DT,f1,0.5,7065
+R,DT,balanced accuracy,0.5,6515
+R,DT,f1,0.5,6515
+R,DT,recall,0.333333333333333,7065
+R,DT,precision,0.333333333333333,7065
+R,DT,accuracy,0.333333333333333,7065
+R,DT,recall,0.333333333333333,6515
+R,DT,precision,0.333333333333333,6515
+R,DT,accuracy,0.333333333333333,6515
+R,RandomForest,f1,0.266534391534392,4125
+R,RandomForest,accuracy,0.147368421052632,4125
+R,RandomForest,precision,0.146256684491979,4125
+R,RandomForest,recall,0.1357910906298,4125
+R,LogisticRegression,recall,0,3587
+R,LogisticRegression,precision,0,3587
+R,LogisticRegression,accuracy,0,3587
+R,LogisticRegression,recall,0,3445
+R,LogisticRegression,precision,0,3445
+R,LogisticRegression,accuracy,0,3445
