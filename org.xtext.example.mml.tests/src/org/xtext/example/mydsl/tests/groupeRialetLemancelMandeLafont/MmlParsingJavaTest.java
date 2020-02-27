@@ -1,5 +1,7 @@
 package org.xtext.example.mydsl.tests.groupeRialetLemancelMandeLafont;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
@@ -30,10 +32,8 @@ public class MmlParsingJavaTest {
 	@Inject
 	ParseHelper<MMLModel> parseHelper;
 	
-	//String data = "iris.csv";
 	String data = "iris.csv";
-	
-	String framework = "R";
+	//String data = "new-thyroid.csv";
 	
 	private static boolean setUpIsDone = false;
 	
@@ -1160,6 +1160,9 @@ public class MmlParsingJavaTest {
 				results = compiler.compileDataInput(model,al,i+1);
 			}
 		}
+		
+		Boolean executionReussie = !results.isEmpty();
+		assertTrue(executionReussie);
 		
 	    Instant finish = Instant.now();
 		long timeElapsed = Duration.between(start, finish).toMillis();  
