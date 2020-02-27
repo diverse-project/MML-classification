@@ -1,4 +1,4 @@
-package org.xtext.example.mydsl.tests.group.compilers;
+package org.xtext.example.mydsl.tests.groupWolouAnnoh.compilers;
 
 import java.io.File;
 import java.io.IOException;
