@@ -53,7 +53,7 @@ public class SciKitCompiler {
 
 		try {
 			filename = filename.concat("_")
-					.concat(framework.toString())
+					.concat(framework.getLiteral())
 					.concat("_")
 					.concat(algorithm.getClass().getSimpleName())
 					.concat(".py");
