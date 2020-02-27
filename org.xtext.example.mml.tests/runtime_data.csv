@@ -1,10 +1,1 @@
 "data","algo","framework","recall"
-iris.csv,DT,scikit-learn,0.9600000000000002
-iris.csv,RandomForest,scikit-learn,0.9466666666666667
-iris.csv,LogisticRegression,scikit-learn,0.9600000000000002
-iris.csv,DT,scikit-learn,0.9599358974358974
-iris.csv,LogisticRegression,scikit-learn,0.9524572649572649
-iris.csv,DT,scikit-learn,0.9333333333333332
-ecoli.csv,RandomForest,scikit-learn,0.8398471055088702
-ecoli.csv,LogisticRegression,scikit-learn,0.7549450549450548
-ecoli.csv,DT,scikit-learn,0.8245834056718586
