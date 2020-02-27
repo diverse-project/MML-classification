@@ -266,28 +266,23 @@ public class MmlParsingJavaCompilerR {
 		for(int i = 0; i < metriquesArray.length; i++) {
 			metrique = metriquesArray[i].getLiteral();
 			if(metrique == "accuracy") {
-				metriques += "print(\"Accuracy\")\n";
-				metriques +="print(mat$overall[\"Accuracy\"])\n";
+				metriques +="print(paste(\"Accuracy___\",as.double(mat$overall[\"Accuracy\"]),sep=\"\"))\n";
 			}else if(metrique == "balanced_accuracy") {
-				metriques += "print(\"Balanced Accuracy\")\n";
-				metriques += "if (!is.null(dim(mat$byClass)[1])) { print(mean(mat$byClass[,\"Balanced Accuracy\"])) } ";
-				metriques += "else { print(mean(mat$byClass[\"Balanced Accuracy\"])) }\n";
+				metriques += "if (!is.null(dim(mat$byClass)[1])) { print(paste(\"Balanced Accuracy___\",mean(mat$byClass[,\"Balanced Accuracy\"]),sep=\"\")) } ";
+				metriques += "else { print(paste(\"Balanced Accuracy___\",mean(mat$byClass[\"Balanced Accuracy\"]),sep=\"\")) }\n";
 			}else if(metrique == "recall") {
-				metriques += "print(\"Recall\")\n";
-				metriques += "if (!is.null(dim(mat$byClass)[1])) { print(mean(mat$byClass[,\"Recall\"],na.rm=TRUE)) } ";
-				metriques += "else { print(mean(mat$byClass[\"Recall\"],na.rm=TRUE)) }\n";
+				metriques += "if (!is.null(dim(mat$byClass)[1])) { print(paste(\"Recall___\",mean(mat$byClass[,\"Recall\"],na.rm=TRUE),sep=\"\")) } ";
+				metriques += "else { print(paste(\"Recall___\",mean(mat$byClass[\"Recall\"],na.rm=TRUE),sep=\"\")) }\n";
 			}else if(metrique == "macro_recall") {
 				metriques += "print(\"Macro Recall non supporté\")\n";
 			}else if(metrique == "precision") {
-				metriques += "print(\"Precision\")\n";
-				metriques += "if (!is.null(dim(mat$byClass)[1])) { print(mean(mat$byClass[,\"Precision\"],na.rm=TRUE)) } ";
-				metriques += "else { print(mean(mat$byClass[\"Precision\"],na.rm=TRUE)) }\n";
+				metriques += "if (!is.null(dim(mat$byClass)[1])) { print(paste(\"Precision___\",mean(mat$byClass[,\"Precision\"],na.rm=TRUE),sep=\"\")) } ";
+				metriques += "else { print(paste(\"Precision\",mean(mat$byClass[\"Precision\"],na.rm=TRUE),sep=\"\")) }\n";
 			}else if(metrique == "macro_precision") {
 				metriques += "print(\"Macro Precision non supporté\")\n";
 			}else if(metrique == "F1") {
-				metriques += "print(\"F1\")\n";
-				metriques += "if (!is.null(dim(mat$byClass)[1])) { print(mean(mat$byClass[,\"F1\"],na.rm=TRUE)) } ";
-				metriques += "else { print(mean(mat$byClass[\"F1\"],na.rm=TRUE)) }\n";
+				metriques += "if (!is.null(dim(mat$byClass)[1])) { print(paste(\"F1___\",mean(mat$byClass[,\"F1\"],na.rm=TRUE),sep=\"\")) } ";
+				metriques += "else { print(paste(\"F1___\",mean(mat$byClass[\"F1\"],na.rm=TRUE),sep=\"\")) }\n";
 			}else if(metrique == "macro_F1") {
 				metriques += "print(\"Macro F1 non supporté\")\n";
 			}
@@ -340,7 +335,7 @@ public class MmlParsingJavaCompilerR {
 	    private static boolean runProcess(String command) throws Exception {
 		    Process pro = Runtime.getRuntime().exec(command);
 		    printLines(command + " stdout:", pro.getInputStream());
-		    //printLines(command + " stderr:", pro.getErrorStream());
+	    	//printLines(command + " stderr:", pro.getErrorStream());
 		    pro.waitFor();
 		    System.out.println(command + " exitValue() " + pro.exitValue());
 		    return pro.exitValue() == 0;

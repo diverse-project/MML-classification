@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -53,7 +54,8 @@ public class MmlParsingJavaCompilerPython {
 		System.out.println(result.getAlgorithm().getAlgorithm().getClass());*/
 	}
 	
-	public void compileDataInput(MMLModel model, MLAlgorithm al, int numAlgo) throws Exception {
+	public List<String> compileDataInput(MMLModel model, MLAlgorithm al, int numAlgo) throws Exception {
+		List<String> results = new ArrayList<String>();
 		DataInput dataInput = model.getInput();
 		String fileLocation = dataInput.getFilelocation();
 		String pythonImport = "import pandas as pd\n"; 
@@ -227,11 +229,7 @@ public class MmlParsingJavaCompilerPython {
 					metriques+= "'"+metrique + "',";
 				else
 					metriques+= "'"+metrique + "'] \n";
-				if(macro)
-					printScores+="print('"+metriquesArray[i].getLiteral()+" : ')\n";
-				else
-					printScores+="print('"+metrique+" : ')\n";
-				printScores+="print(sum(scores['test_"+metrique+"']) / len(scores['test_"+metrique+"']))\n";
+				printScores+="print('"+metrique+"___'+str(sum(scores['test_"+metrique+"']) / len(scores['test_"+metrique+"'])))\n";
 			}
 			pythonImport+="from sklearn.model_selection import cross_validate\n";
 			stratificationAndMetrique = metriques+"scores = cross_validate(clf,X, Y, scoring=scoring,cv="+number+")\n";
@@ -244,28 +242,28 @@ public class MmlParsingJavaCompilerPython {
 				metrique = metriquesArray[i].getLiteral();
 				if(metrique == "accuracy") {
 					pythonImport += "from sklearn.metrics import accuracy_score\n";
-					stratificationAndMetrique+="accuracy = accuracy_score(y_test, clf.predict(X_test))\nprint('accuracy :')\nprint(accuracy)\n";
+					stratificationAndMetrique+="accuracy = accuracy_score(y_test, clf.predict(X_test))\nprint('accuracy___'+str(accuracy))\n";
 				}else if(metrique == "balanced_accuracy") {
 					pythonImport += "from sklearn.metrics import balanced_accuracy_score\n";
-					stratificationAndMetrique+="accuracy = balanced_accuracy_score(y_test, clf.predict(X_test))\nprint('balanced accuracy :')\nprint(accuracy)\n";
+					stratificationAndMetrique+="accuracy = balanced_accuracy_score(y_test, clf.predict(X_test))\nprint('balanced accuracy___'+str(accuracy))\n";
 				}else if(metrique == "recall") {
 					pythonImport += "from sklearn.metrics import recall_score\n";
-					stratificationAndMetrique+="recall = recall_score(y_test, clf.predict(X_test),average='micro')\nprint('recall :')\nprint(recall)\n";
+					stratificationAndMetrique+="recall = recall_score(y_test, clf.predict(X_test),average='micro')\nprint('recall___'+str(recall))\n";
 				}else if(metrique == "macro_recall") {
 					pythonImport += "from sklearn.metrics import recall_score\n";
-					stratificationAndMetrique+="recall = recall_score(y_test, clf.predict(X_test),average='macro')\nprint('recall :')\nprint(recall)\n";
+					stratificationAndMetrique+="recall = recall_score(y_test, clf.predict(X_test),average='macro')\nprint('macro recall___'+str(recall))\n";
 				}else if(metrique == "precision") {
 					pythonImport += "from sklearn.metrics import precision_score\n";
-					stratificationAndMetrique+="precision = precision_score(y_test, clf.predict(X_test),average='micro')\nprint('precision :')\nprint(precision)\n";
+					stratificationAndMetrique+="precision = precision_score(y_test, clf.predict(X_test),average='micro')\nprint('precision___'+str(precision))\n";
 				}else if(metrique == "macro_precision") {
 					pythonImport += "from sklearn.metrics import precision_score\n";
-					stratificationAndMetrique+="precision = precision_score(y_test, clf.predict(X_test),average='macro')\nprint('macro precision :')\nprint(precision)\n";
+					stratificationAndMetrique+="precision = precision_score(y_test, clf.predict(X_test),average='macro')\nprint('macro precision___'+str(precision))\n";
 				}else if(metrique == "F1") {
 					pythonImport += "from sklearn.metrics import f1_score\n";
-					stratificationAndMetrique+="F1 = f1_score(y_test, clf.predict(X_test),average='micro')\nprint('F1 :')\nprint(F1)\n";
+					stratificationAndMetrique+="F1 = f1_score(y_test, clf.predict(X_test),average='micro')\nprint('F1___'+str(F1))\n";
 				}else if(metrique == "macro_F1") {
 					pythonImport += "from sklearn.metrics import f1_score\n";
-					stratificationAndMetrique+="F1 = f1_score(y_test, clf.predict(X_test),average='macro')\nprint('macro F1 :')\nprint(F1)\n";
+					stratificationAndMetrique+="F1 = f1_score(y_test, clf.predict(X_test),average='macro')\nprint('macro F1___'+str(F1))\n";
 				}
 			}
 		}
@@ -285,30 +283,36 @@ public class MmlParsingJavaCompilerPython {
 		
 		try {
             System.out.println("**********");
-            runProcess("python output_LAFONT_LEMANCEL_MANDE_RIALET/Mml_"+numAlgo+".py");
+            results = runProcess("python output_LAFONT_LEMANCEL_MANDE_RIALET/Mml_"+numAlgo+".py",results);
             System.out.println("**********");
             //runProcess("java -cp src com/journaldev/files/Test Hi Pankaj");
         } catch (Exception e) {
             e.printStackTrace();
         }
+		return results;
         
     }
 
-    private static void printLines(String cmd, InputStream ins) throws Exception {
+    private static List<String> printLines(String cmd, InputStream ins,List<String> results) throws Exception {
     	String line = null;
     	BufferedReader in = new BufferedReader(
 	    new InputStreamReader(ins));
     	while ((line = in.readLine()) != null) {
     		System.out.println(cmd + " " + line);
+    		if(line.contains("___")) {
+    			results.add("scikit-learn"+"___"+line);
+    		}
 	    }
+    	return results;
 	  }
 	
-    private static void runProcess(String command) throws Exception {
+    private static List<String> runProcess(String command,List<String> results) throws Exception {
 	    Process pro = Runtime.getRuntime().exec(command);
-	    printLines(command + " stdout:", pro.getInputStream());
-	    printLines(command + " stderr:", pro.getErrorStream());
+	    printLines(command + " stdout:", pro.getInputStream(),results);
+	    printLines(command + " stderr:", pro.getErrorStream(),results);
 	    pro.waitFor();
 	    System.out.println(command + " exitValue() " + pro.exitValue());
+	    return results;
     }
 	
 

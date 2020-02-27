@@ -60,6 +60,7 @@ public class MmlParsingJavaCompiler {
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 	
+		List<String[]> values = new ArrayList<String[]>();
 		
 		//Algorithm
 		MLChoiceAlgorithm[] algos = (MLChoiceAlgorithm[]) model.getAlgorithms().toArray();

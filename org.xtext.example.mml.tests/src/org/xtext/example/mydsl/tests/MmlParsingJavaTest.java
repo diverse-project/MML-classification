@@ -2,14 +2,21 @@ package org.xtext.example.mydsl.tests;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
 import org.eclipse.xtext.testing.util.ParseHelper;
+import org.junit.After;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.xtext.example.mydsl.mml.FrameworkLang;
 import org.xtext.example.mydsl.mml.MLAlgorithm;
 import org.xtext.example.mydsl.mml.MLChoiceAlgorithm;
 import org.xtext.example.mydsl.mml.MMLModel;
@@ -26,7 +33,9 @@ public class MmlParsingJavaTest {
 	String data = "iris.csv";
 	//String data = "new-thyroid.csv";
 	
-	String framework = "R";
+	String framework = "scikit-learn";
+	
+	private static boolean setUpIsDone = false;
 	
 	@Test
 	public void loadModel() throws Exception {
@@ -41,6 +50,13 @@ public class MmlParsingJavaTest {
 		Assertions.assertTrue(errors.isEmpty(), "Unexpected errors");			
 		Assertions.assertEquals("foo.csv", result.getInput().getFilelocation());			
 		
+	}
+	public void setUp() throws IOException {
+	    if (setUpIsDone) {
+	        return;
+	    }
+	    Classifier.reset();
+	    setUpIsDone = true;
 	}
 	
 		
@@ -186,7 +202,7 @@ public class MmlParsingJavaTest {
 	/* SVM sans parametres en CrossValidation */
 	public void SVM1() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
-				+ "mlframework R \n"
+				+ "mlframework "+framework+" \n"
 				+ "algorithm SVM \n"
 				+ "CrossValidation { numRepetitionCross 10 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
@@ -199,7 +215,7 @@ public class MmlParsingJavaTest {
 	/* SVM sans parametres en TrainingTest */
 	public void SVM2() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
-				+ "mlframework R \n"
+				+ "mlframework "+framework+" \n"
 				+ "algorithm SVM \n"
 				+ "TrainingTest { percentageTraining 65 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
@@ -411,17 +427,32 @@ public class MmlParsingJavaTest {
 		compileDataInput(model);
 	}
 	
+	@AfterAll 
+	public static void deleteOutputFile() {
+        Classifier.calculateScore();
+	}
+	
 	
 	private void compileDataInput(MMLModel model) throws Exception {
-		
+		setUp();
 		MLChoiceAlgorithm[] algos = (MLChoiceAlgorithm[]) model.getAlgorithms().toArray();
-
+		List<String> results = new ArrayList<String>();
+		
 		for(int i = 0; i < algos.length; i++) {
 			MLAlgorithm al = (MLAlgorithm) algos[i].getAlgorithm();
-			MmlParsingJavaCompilerR compiler = new MmlParsingJavaCompilerR();
-			Boolean executionReussie = compiler.compileDataInput(model,al,i+1);
-			assertTrue(executionReussie);
+			FrameworkLang framework = algos[i].getFramework();
+			if(framework.getLiteral() == "scikit-learn") {
+				MmlParsingJavaCompilerPython compiler = new MmlParsingJavaCompilerPython();
+				results = compiler.compileDataInput(model,al,i+1);
+			}else if(framework.getLiteral() == "R") {
+				MmlParsingJavaCompilerR compiler = new MmlParsingJavaCompilerR();
+				compiler.compileDataInput(model,al,i+1);
+			}else if(framework.getLiteral() == "Weka") {
+				MmlParsingJavaCompilerJava compiler = new MmlParsingJavaCompilerJava();
+				compiler.compileDataInput(model,al,i+1);
+			}
 		}
+		Classifier.addScores(results);
 		
 	}
 
