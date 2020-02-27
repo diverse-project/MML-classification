@@ -2,6 +2,7 @@ package org.xtext.example.mydsl.tests.groupeRialetLemancelMandeLafont;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.xtext.example.mydsl.mml.*;
@@ -9,13 +10,14 @@ import org.xtext.example.mydsl.mml.*;
 import com.google.common.io.Files;
 
 public class MmlParsingJavaCompilerJava extends Compiler {
-	
+
+	List<String> results = new ArrayList<String>();
 	boolean stop = false;
 	String strategy = "";
 	StratificationMethod strat ;
 	int number;
 	
-	public void compileDataInput(MMLModel model, MLAlgorithm al, int numAlgo) throws Exception {
+	public List<String> compileDataInput(MMLModel model, MLAlgorithm al, int numAlgo) throws Exception {
 		
 		super.init();
 		
@@ -78,12 +80,13 @@ public class MmlParsingJavaCompilerJava extends Compiler {
 		/* Execution program */
 		try {
             System.out.println("**********");
-            runProcess("javac -cp output_LAFONT_LEMANCEL_MANDE_RIALET/weka.jar output_LAFONT_LEMANCEL_MANDE_RIALET/Mml_" + numAlgo + ".java", new ArrayList<String>(), "Weka");
+            runProcess("javac -cp output_LAFONT_LEMANCEL_MANDE_RIALET/weka.jar output_LAFONT_LEMANCEL_MANDE_RIALET/Mml_" + numAlgo + ".java", "Weka");
             System.out.println("**********");
-            runProcess("java -cp .;output_LAFONT_LEMANCEL_MANDE_RIALET/weka.jar output_LAFONT_LEMANCEL_MANDE_RIALET.Mml_" + numAlgo, new ArrayList<String>(), "Weka");
+            results = runProcess("java -cp .;output_LAFONT_LEMANCEL_MANDE_RIALET/weka.jar output_LAFONT_LEMANCEL_MANDE_RIALET.Mml_" + numAlgo, "Weka");
         } catch (Exception e) {
             e.printStackTrace();
         }
+		return results;
     }
 	
 	/* Algorithm treatment */
@@ -130,16 +133,16 @@ public class MmlParsingJavaCompilerJava extends Compiler {
 			//Metriques
 			for (int i = 0 ; i < metriquesArray.length ; i++) {
 				if (metriquesArray[i] == ValidationMetric.ACCURACY) {
-					metriques = addInstruction(metriques, "\t\tSystem.out.println(\"Accuracy = \"+eval.pctCorrect());");			
+					metriques = addInstruction(metriques, "\t\tSystem.out.println(\"Accuracy___\"+eval.pctCorrect());");			
 				}
 				else if (metriquesArray[i] == ValidationMetric.RECALL) {
-					metriques = addInstruction(metriques, "\t\tSystem.out.println(\"Recall = \"+eval.weightedRecall()*100);");
+					metriques = addInstruction(metriques, "\t\tSystem.out.println(\"Recall___\"+eval.weightedRecall()*100);");
 				}
 				else if (metriquesArray[i]==ValidationMetric.F1) {
-					metriques = addInstruction(metriques, "\t\tSystem.out.println(\"F1 = \"+eval.weightedFMeasure()*100);");
+					metriques = addInstruction(metriques, "\t\tSystem.out.println(\"F1___\"+eval.weightedFMeasure()*100);");
 				}
 				else if (metriquesArray[i]==ValidationMetric.PRECISION) {
-					metriques = addInstruction(metriques, "\t\tSystem.out.println(\"Precision =\"+eval.weightedPrecision()*100);");
+					metriques = addInstruction(metriques, "\t\tSystem.out.println(\"Precision___\"+eval.weightedPrecision()*100);");
 				}
 				else {
 					metriques = addInstruction(metriques, "\t\tSystem.out.println(\"La métrique " + metriquesArray[i].getLiteral() + " n'est pas supportée avec Weka.\");");

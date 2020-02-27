@@ -57,7 +57,7 @@ public class MmlParsingJavaCompilerPython extends Compiler {
 		/* Execution program */
 		try {
             System.out.println("**********");
-            results = runProcess("python output_LAFONT_LEMANCEL_MANDE_RIALET/Mml_" + numAlgo + ".py", results, "scikit-learn");
+            results = runProcess("python output_LAFONT_LEMANCEL_MANDE_RIALET/Mml_" + numAlgo + ".py", "scikit-learn");
             System.out.println("**********");
         } catch (Exception e) {
             e.printStackTrace();

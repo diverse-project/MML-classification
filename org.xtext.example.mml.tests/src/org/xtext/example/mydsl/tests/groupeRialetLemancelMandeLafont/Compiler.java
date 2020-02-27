@@ -3,6 +3,7 @@ package org.xtext.example.mydsl.tests.groupeRialetLemancelMandeLafont;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.xtext.example.mydsl.mml.CSVParsingConfiguration;
@@ -70,23 +71,32 @@ public class Compiler {
 		formula = "";
 	}
 	
-	public static List<String> printLines(String cmd, InputStream ins, List<String> results, String framework) throws Exception {
+	public static List<String> printLines(String cmd, InputStream ins, String framework) throws Exception {
     	String line = null;
-    	BufferedReader in = new BufferedReader(
-	    new InputStreamReader(ins));
+    	BufferedReader in = new BufferedReader(new InputStreamReader(ins));
+    	List<String> results = new ArrayList<String>();
     	while ((line = in.readLine()) != null) {
     		System.out.println(cmd + " " + line);
     		if (line.contains("___")) {
-    			results.add(framework + "___" + line);
+    			if(framework == "R") {
+    				line = line.substring(4);
+    			}
+    			line = line.replace("\"","").toLowerCase();
+    			try {
+    			    double d = Double.parseDouble(line.split("___")[1]);
+    			    results.add(framework + "___" + line);
+    			} catch (NumberFormatException e) {
+    			    
+    			}
     		}
 	    }
     	return results;
     }
 	
-    public static List<String> runProcess(String command, List<String> results, String framework) throws Exception {
+    public static List<String> runProcess(String command, String framework) throws Exception {
 	    Process pro = Runtime.getRuntime().exec(command);
-	    printLines(command + " stdout:", pro.getInputStream(), results, framework);
-    	//printLines(command + " stderr:", pro.getErrorStream());
+	    List<String> results = printLines(command + " stdout:", pro.getInputStream(), framework);
+    	printLines(command + " stderr:", pro.getErrorStream(), framework);
 	    pro.waitFor();
 	    System.out.println(command + " exitValue() " + pro.exitValue());
 	    return results;

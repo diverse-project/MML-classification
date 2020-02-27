@@ -6,7 +6,7 @@ library(LogicReg)
 library(e1071)
 library(party)
 
-data <- read.csv2("output_LAFONT_LEMANCEL_MANDE_RIALET/iris2.csv")
+data <- read.csv("output_LAFONT_LEMANCEL_MANDE_RIALET/iris.csv")
 
 x <- names(data[dim(data)[2]])
 

@@ -2,6 +2,7 @@ package org.xtext.example.mydsl.tests.groupeRialetLemancelMandeLafont;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.xtext.example.mydsl.mml.*;
@@ -9,10 +10,11 @@ import org.xtext.example.mydsl.mml.*;
 import com.google.common.io.Files;
 
 public class MmlParsingJavaCompilerR extends Compiler {
-	
+
+	List<String> results = new ArrayList<String>();
 	Boolean nonSupporte = false;
 	
-	public void compileDataInput(MMLModel model, MLAlgorithm al, int numAlgo) throws Exception {
+	public List<String> compileDataInput(MMLModel model, MLAlgorithm al, int numAlgo) throws Exception {
 		
 		super.init();
 		
@@ -80,11 +82,12 @@ public class MmlParsingJavaCompilerR extends Compiler {
 		/* Execution program */
 		try {
             System.out.println("**********");
-            runProcess("Rscript output_LAFONT_LEMANCEL_MANDE_RIALET/Mml_" + numAlgo + ".r", new ArrayList<String>(), "R");
+            results = runProcess("Rscript output_LAFONT_LEMANCEL_MANDE_RIALET/Mml_" + numAlgo + ".r", "R");
             System.out.println("**********");
         } catch (Exception e) {
             e.printStackTrace();
         }
+		return results;
 	}
 	
 	/* Formula treatment */
