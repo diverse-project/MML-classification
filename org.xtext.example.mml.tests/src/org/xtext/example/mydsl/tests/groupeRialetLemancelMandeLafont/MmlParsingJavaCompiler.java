@@ -3,8 +3,6 @@ package org.xtext.example.mydsl.tests.groupeRialetLemancelMandeLafont;
 import java.io.BufferedReader; 
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
@@ -43,8 +41,6 @@ public class MmlParsingJavaCompiler {
 				+ "CrossValidation { numRepetitionCross 10 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
-	
-		List<String[]> values = new ArrayList<String[]>();
 		
 		//Algorithm
 		MLChoiceAlgorithm[] algos = (MLChoiceAlgorithm[]) model.getAlgorithms().toArray();
