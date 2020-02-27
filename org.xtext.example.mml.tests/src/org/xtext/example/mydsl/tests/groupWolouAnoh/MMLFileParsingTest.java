@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Objects;
@@ -12,6 +14,8 @@ import java.util.Scanner;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
 import org.eclipse.xtext.testing.util.ParseHelper;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.xtext.example.mydsl.mml.FrameworkLang;
@@ -29,27 +33,94 @@ public class MMLFileParsingTest {
 
 	@Inject
 	ParseHelper<MMLModel> parser;
+	
+	static String resultFile = "runtime_data.csv";
+	static FileWriter  fw;
+	
+	@BeforeAll
+	public static void openReportFile() throws IOException {
+		fw = new FileWriter(resultFile, true);
+	}
+	
+	@AfterAll
+	public static void closeFile() throws IOException {
+		fw.close();
+	}
 
 	@Test
 	void example1Test() throws Exception {
-		String filename = "example01";
+		parseFile("example01");
+	}
+
+	@Test
+	void example2Test() throws Exception {
+		parseFile("example02");
+	}
+
+	@Test
+	void example3Test() throws Exception {
+		parseFile("example03");
+	}
+
+	@Test
+	void example4Test() throws Exception {
+		parseFile("example04");
+	}
+
+	@Test
+	void example5Test() throws Exception {
+		parseFile("example05");
+	}
+
+	@Test
+	void example6Test() throws Exception {
+		parseFile("example06");
+	}
+
+	@Test
+	void example7Test() throws Exception {
+		parseFile("example07");
+	}
+
+	@Test
+	void example8Test() throws Exception {
+		parseFile("example08");
+	}
+
+	@Test
+	void example9Test() throws Exception {
+		parseFile("example09");
+	}
+
+	@Test
+	void example10Test() throws Exception {
+		parseFile("example10");
+	}
+	
+	private void parseFile(String filename) throws Exception {
 		MMLModel model = parser.parse(readMMLFile(filename));
 
 		Objects.requireNonNull(model.getAlgorithms(), "MLChoiceAlgorithm is not provided.");
-		
+
 		for (MLChoiceAlgorithm algorithm : model.getAlgorithms()) {
 			algorithmFactory(algorithm, model, filename);
 
 			String file = filename.concat("_").concat(algorithm.getFramework().getLiteral()).concat("_")
 					.concat(algorithm.getAlgorithm().getClass().getSimpleName()).concat(".py");
 			assertTrue(new File(file).exists());
-			
-			Process p = Runtime.getRuntime().exec("python file");
-			BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			String line;
-			while ((line = in.readLine()) != null) {
-				System.out.println(line);
-			}
+
+			runScript(file, model, algorithm.getAlgorithm(), algorithm.getFramework());
+		}
+	}
+
+	private void runScript(String file, MMLModel model, MLAlgorithm algo, FrameworkLang frame) throws IOException {
+		Process p = Runtime.getRuntime().exec("python " + file);
+		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		String dataset = model.getInput().getFilelocation();
+		String algorithm = algo.getClass().getSimpleName().replace("Impl", "");
+		String line;
+		while ((line = in.readLine()) != null) {
+			fw.write(String.format("%s,%s,%s,%s\n", dataset, algorithm, frame.getLiteral(), line));
 		}
 	}
 

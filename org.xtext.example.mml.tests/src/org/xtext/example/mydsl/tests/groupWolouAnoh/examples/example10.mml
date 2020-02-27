@@ -1,5 +1,5 @@
-datainput "foo.csv"
+datainput "ecoli.csv" separator ,
 mlframework scikit-learn
 algorithm LogisticRegression
 TrainingTest { percentageTraining 80 }
-recall balanced_accuracy macro_F1 
+recall

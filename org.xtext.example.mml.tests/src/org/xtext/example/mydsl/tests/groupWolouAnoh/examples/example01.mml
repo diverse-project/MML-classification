@@ -6,4 +6,4 @@ algorithm RF
 mlframework scikit-learn
 algorithm LogisticRegression
 CrossValidation { numRepetitionCross 5 }
-accuracy
+recall

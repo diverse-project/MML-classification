@@ -1,7 +1,7 @@
-datainput "iris.csv" separator ;
+datainput "iris.csv"
 mlframework scikit-learn
 algorithm SVM gamma=1.0 kernel=linear
 mlframework scikit-learn
 algorithm SVM gamma=1.0 kernel=polynomial
 CrossValidation { numRepetitionCross 10 }
-macro_recall
+recall

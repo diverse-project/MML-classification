@@ -4,4 +4,4 @@ algorithm SVM kernel=linear
 mlframework scikit-learn
 algorithm DT 2
 CrossValidation { numRepetitionCross 5 }
-F1
+recall

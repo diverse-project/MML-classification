@@ -1,4 +1,4 @@
-datainput "foo.csv"
+datainput "ecoli.csv" separator ,
 mlframework scikit-learn
 algorithm DT
 mlframework scikit-learn
