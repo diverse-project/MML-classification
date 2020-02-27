@@ -13,11 +13,11 @@ public class MmlParsingJavaCompilerPython extends Compiler {
 	
 	String algoName;
 	
-	public List<String> compileDataInput(MMLModel model, MLAlgorithm al, int numAlgo) throws Exception {
+	public Pair<Boolean,ArrayList<String>> compileDataInput(MMLModel model, MLAlgorithm al, int numAlgo) throws Exception {
 		
 		super.init();
 		
-		List<String> results = new ArrayList<String>();
+		Pair<Boolean,ArrayList<String>> results = new Pair<Boolean,ArrayList<String>>(true, new ArrayList<String>());
 		
 		DataInput dataInput = model.getInput();
 		String fileLocation = dataInput.getFilelocation();

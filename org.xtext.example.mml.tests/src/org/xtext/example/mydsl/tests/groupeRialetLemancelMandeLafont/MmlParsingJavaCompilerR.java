@@ -11,11 +11,11 @@ import com.google.common.io.Files;
 
 public class MmlParsingJavaCompilerR extends Compiler {
 
-	List<String> results = new ArrayList<String>();
+	Pair<Boolean,ArrayList<String>> results;
 	Boolean nonSupporte = false;
 	String algoName;
 	
-	public List<String> compileDataInput(MMLModel model, MLAlgorithm al, int numAlgo) throws Exception {
+	public Pair<Boolean,ArrayList<String>> compileDataInput(MMLModel model, MLAlgorithm al, int numAlgo) throws Exception {
 		
 		super.init();
 		

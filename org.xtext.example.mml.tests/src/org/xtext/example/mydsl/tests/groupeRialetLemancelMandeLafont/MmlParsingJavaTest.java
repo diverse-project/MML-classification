@@ -66,7 +66,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework scikit-learn\n"
 				+ "algorithm RF\n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -79,7 +79,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework Weka\n"
 				+ "algorithm RF\n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -92,7 +92,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework R\n"
 				+ "algorithm RF\n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -105,7 +105,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework scikit-learn\n"
 				+ "algorithm RandomForest\n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -118,7 +118,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework Weka\n"
 				+ "algorithm RandomForest\n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -131,7 +131,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework R\n"
 				+ "algorithm RandomForest\n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -262,7 +262,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework scikit-learn\n"
 				+ "algorithm DT \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -275,7 +275,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework Weka\n"
 				+ "algorithm DT \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -288,7 +288,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework R\n"
 				+ "algorithm DT \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -301,7 +301,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework scikit-learn\n"
 				+ "algorithm DT 10 \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -314,7 +314,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework Weka\n"
 				+ "algorithm DT 10 \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -327,7 +327,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework R\n"
 				+ "algorithm DT 10 \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -380,7 +380,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework scikit-learn\n"
 				+ "algorithm LogisticRegression\n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 		
@@ -393,7 +393,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework Weka\n"
 				+ "algorithm LogisticRegression\n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 		
@@ -406,7 +406,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework R\n"
 				+ "algorithm LogisticRegression\n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 		
@@ -459,7 +459,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework scikit-learn \n"
 				+ "algorithm SVM \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 		
@@ -472,7 +472,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework Weka \n"
 				+ "algorithm SVM \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 		
@@ -485,7 +485,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework R \n"
 				+ "algorithm SVM \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 		
@@ -537,7 +537,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework scikit-learn\n"
 				+ "algorithm SVM classification C-classification \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -550,7 +550,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework Weka\n"
 				+ "algorithm SVM classification C-classification \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -563,7 +563,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework R\n"
 				+ "algorithm SVM classification C-classification \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -577,7 +577,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework scikit-learn\n"
 				+ "algorithm SVM classification nu-classification \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -590,7 +590,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework Weka\n"
 				+ "algorithm SVM classification nu-classification \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -603,7 +603,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework R\n"
 				+ "algorithm SVM classification nu-classification \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -617,7 +617,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework scikit-learn\n"
 				+ "algorithm SVM classification one-classification \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -631,7 +631,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework Weka\n"
 				+ "algorithm SVM classification one-classification \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -645,7 +645,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework R\n"
 				+ "algorithm SVM classification one-classification \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -658,7 +658,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework scikit-learn\n"
 				+ "algorithm SVM kernel=linear \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -671,7 +671,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework Weka\n"
 				+ "algorithm SVM kernel=linear \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -684,7 +684,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework R\n"
 				+ "algorithm SVM kernel=linear \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -697,7 +697,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework scikit-learn\n"
 				+ "algorithm SVM kernel=radial \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -710,7 +710,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework Weka\n"
 				+ "algorithm SVM kernel=radial \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -723,7 +723,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework R\n"
 				+ "algorithm SVM kernel=radial \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -736,7 +736,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework scikit-learn\n"
 				+ "algorithm SVM kernel=polynomial \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -749,7 +749,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework Weka\n"
 				+ "algorithm SVM kernel=polynomial \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -762,7 +762,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework R\n"
 				+ "algorithm SVM kernel=polynomial \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -775,7 +775,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework scikit-learn\n"
 				+ "algorithm SVM C=0.8 \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -788,7 +788,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework Weka\n"
 				+ "algorithm SVM C=0.8 \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -801,7 +801,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework R\n"
 				+ "algorithm SVM C=0.8 \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -814,7 +814,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework scikit-learn\n"
 				+ "algorithm SVM gamma=1.5 \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -827,7 +827,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework Weka\n"
 				+ "algorithm SVM gamma=1.5 \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -840,7 +840,7 @@ public class MmlParsingJavaTest {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework R\n"
 				+ "algorithm SVM gamma=1.5 \n"
-				+ "CrossValidation { numRepetitionCross 10 }\n"
+				+ "CrossValidation { numRepetitionCross 5 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 
@@ -901,6 +901,7 @@ public class MmlParsingJavaTest {
 	
 	@Test
 	/* Algo fonctionnant + ajout separator ; */
+	//Erreur lors de ce test
 	public void Separator2Weka() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"iris2.csv\" separator ;\n"
 				+ "mlframework Weka\n"
@@ -1011,6 +1012,7 @@ public class MmlParsingJavaTest {
 	
 	@Test
 	/* Algo fonctionnant + formula personnalisée */
+	//Erreur lors de ce test
 	public void Formula3Python() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
 				+ "mlframework scikit-learn\n"
@@ -1095,6 +1097,7 @@ public class MmlParsingJavaTest {
 	
 	@Test
 	/* Algo fonctionnant + formula personnalisée */
+	//Erreur lors de ce test
 	public void Formula5Python() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
 				+ "mlframework scikit-learn\n"
@@ -1143,7 +1146,8 @@ public class MmlParsingJavaTest {
 	private void compileDataInput(MMLModel model) throws Exception {
 		setUp();
 		MLChoiceAlgorithm[] algos = (MLChoiceAlgorithm[]) model.getAlgorithms().toArray();
-		List<String> results = new ArrayList<String>(),resultsWithTime = new ArrayList<String>();
+		Pair<Boolean,ArrayList<String>> results = new Pair<Boolean, ArrayList<String>>(true, new ArrayList<String>());
+		List<String> resultsWithTime = new ArrayList<String>();
 		Instant start = Instant.now();
 		
 		for(int i = 0; i < algos.length; i++) {
@@ -1161,12 +1165,11 @@ public class MmlParsingJavaTest {
 			}
 		}
 		
-		Boolean executionReussie = !results.isEmpty();
-		assertTrue(executionReussie);
+		assertTrue(results.getFirst());
 		
 	    Instant finish = Instant.now();
 		long timeElapsed = Duration.between(start, finish).toMillis();  
-		for(String result : results) {
+		for(String result : results.getSecond()) {
 			resultsWithTime.add(result+"___"+timeElapsed);
 		}
 		Classifier.addScores(resultsWithTime);

@@ -11,14 +11,14 @@ import com.google.common.io.Files;
 
 public class MmlParsingJavaCompilerJava extends Compiler {
 
-	List<String> results = new ArrayList<String>();
+	Pair<Boolean,ArrayList<String>> results;
 	boolean stop = false;
 	String strategy = "";
 	StratificationMethod strat ;
 	int number;
 	String algoName;
 	
-	public List<String> compileDataInput(MMLModel model, MLAlgorithm al, int numAlgo) throws Exception {
+	public Pair<Boolean,ArrayList<String>> compileDataInput(MMLModel model, MLAlgorithm al, int numAlgo) throws Exception {
 		
 		super.init();
 		

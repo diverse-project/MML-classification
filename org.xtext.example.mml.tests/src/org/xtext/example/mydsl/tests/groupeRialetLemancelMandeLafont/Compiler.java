@@ -93,13 +93,13 @@ public class Compiler {
     	return results;
     }
 	
-    public static List<String> runProcess(String command, String algo, String framework) throws Exception {
+    public static Pair<Boolean,ArrayList<String>> runProcess(String command, String algo, String framework) throws Exception {
 	    Process pro = Runtime.getRuntime().exec(command);
-	    List<String> results = printLines(command + " stdout:", pro.getInputStream(), framework,algo);
+	    ArrayList<String> results = (ArrayList<String>) printLines(command + " stdout:", pro.getInputStream(), framework,algo);
     	printLines(command + " stderr:", pro.getErrorStream(), framework,algo);
 	    pro.waitFor();
 	    System.out.println(command + " exitValue() " + pro.exitValue());
-	    return results;
+	    return new Pair<Boolean, ArrayList<String>>(pro.exitValue()==0,results);
     }
     
 	public String mkValueInSingleQuote(String val) {
