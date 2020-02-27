@@ -22,16 +22,12 @@ public class MmlParsingJavaCompilerR extends Compiler {
 		DataInput dataInput = model.getInput();
 		String fileLocation = dataInput.getFilelocation();
 		
-		/* Packages à installer la premiere fois qu'on lance un programme MML appelant R 
-		 * Fonctionne mieux manuellement sous RStudio */
-		/*String installPackages = "install.packages(\"caret\",repos=\"http://cran.irsn.fr/\")\n";
-		installPackages += "install.packages(\"readr\",repos=\"http://cran.irsn.fr/\")\n";
-		installPackages += "install.packages(\"randomForest\",repos=\"http://cran.irsn.fr/\")\n";
-		installPackages += "install.packages(\"LogicReg\",repos=\"http://cran.irsn.fr/\")\n";
-		installPackages += "install.packages(\"e1071\",repos=\"http://cran.irsn.fr/\")\n";
-		installPackages += "install.packages(\"party\",repos=\"http://cran.irsn.fr/\")\n";*/
-		String installPackages = "";
+		/* Un executable est present dans output_LAFONT_LEMANCEL_MANDE_RIALET/executable/ pour installer
+		 * les packages R avant de pouvoir executer les programmes MML avec R
+		 * Il doit etre execute avec RStudio
+		 */
 
+		
 		/* Construction imports */
 		imports = addInstruction(imports, "library(readr)");
 		imports = addInstruction(imports, "library(caret)");
@@ -65,7 +61,6 @@ public class MmlParsingJavaCompilerR extends Compiler {
 			program = "print(\"Les classifications nu et one de SVM ne sont pas supportées\")";
 		} 
 		else {
-			program = addInstruction(program, installPackages);
 			program = addInstruction(program, imports);
 			program = addInstruction(program, csvReading);
 			program = addInstruction(program, x);

@@ -33,7 +33,7 @@ public class MmlParsingJavaTest {
 	//String data = "iris.csv";
 	String data = "iris.csv";
 	
-	String framework = "Weka";
+	String framework = "R";
 	
 	private static boolean setUpIsDone = false;
 	

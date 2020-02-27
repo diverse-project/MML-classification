@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 scikit-learn___RandomForest___balanced accuracy___0.9162393162393162___2027
 scikit-learn___RandomForest___recall___0.9183673469387755___2027
 scikit-learn___RandomForest___precision___0.9183673469387755___2027
@@ -382,3 +383,10 @@ scikit-learn___RandomForest___accuracy___0.9693877551020408___1982
 scikit-learn___RandomForest___macro recall___0.96875___1982
 scikit-learn___RandomForest___macro precision___0.9705882352941176___1982
 scikit-learn___RandomForest___macro f1___0.9682219419924337___1982
+=======
+R___balanced accuracy___0.953125___3460
+R___recall___0.9375___3460
+R___precision___0.9375___3460
+R___f1___0.9375___3460
+R___accuracy___0.9375___3460
+>>>>>>> 48dc180a4c8a186ff27eeb676c24a97943ff49f0
