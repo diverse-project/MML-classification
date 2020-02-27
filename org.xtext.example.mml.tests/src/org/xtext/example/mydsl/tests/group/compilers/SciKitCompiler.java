@@ -47,6 +47,8 @@ public class SciKitCompiler {
 		body += "\n" + genBodypartForPredictiveRFormula(model.getFormula());
 
 		body += "\n" + genBodypartForAlgorithm(algorithm, model);
+		
+		body += "\n" + genValidationPart(algorithm, model);
 
 		codeFinalTexte = importTexte + body;
 
@@ -128,111 +130,38 @@ public class SciKitCompiler {
 	private static String genBodypartForAlgorithm(MLAlgorithm algo, MMLModel model) {
 		String algopart = "\n";
 
-		if (algo instanceof DT) {
-			algopart += dtTraitement(algo, model);
-
+		if (algo instanceof DT) {			
+			int maxd = ((DT) algo).getMax_depth();
+			// Définition de l'algorithme à utiliser pour le model
+			algopart += "clf = ";
+			algopart += (maxd != 0) ? "tree.DecisionTreeClassifier(max_depth = " + maxd + ")\n"
+					: "tree.DecisionTreeClassifier()\n";
+			
 		} else if (algo instanceof SVM) {
-			algopart += svmTraitement(algo, model);
+			//algopart += svmTraitement(algo, model);
 		} else if (algo instanceof RandomForest) {
-			algopart += randomForestTraitement(algo, model);
+			algopart += "clf = RandomForestClassifier()\n";
 		} else if (algo instanceof LogisticRegression) {
-			algopart += logisticRegressionTraitement(algo, model);
+			algopart += "clf = LogisticRegression()\n";
+			
 		}
 
 		return algopart;
 	}
 
-	/**
-	 * Traitement logisticRegression
-	 * @param algo
-	 * @param model
-	 * @return
-	 */
-	private static String logisticRegressionTraitement(MLAlgorithm algo, MMLModel model) {
-		String algopart = "";
-
-		// Définition de l'algorithme à utiliser pour le model
-		algopart += "clf = LogisticRegression()\n";
-
-		if (model.getValidation() instanceof TrainingTest) {
-			algopart += "train_size = " + model.getValidation().getStratification().getNumber() + "/100 \n";
-			algopart += "X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=train_size)\n";
-
-			// Creation du model avec le training set
-			algopart += "clf.fit(X_train, y_train)\n";
-
-			// Recuperation des resultats en fonction des metrics de validation definies
-			algopart += train_test_accuracy_part(model.getValidation().getMetric());
-
-		} else if (model.getValidation() instanceof CrossValidation) {
-
-			// Set scoring setting for cross_validation operation
-			algopart += "scoring_metrics = " + cross_validation_scoring_part(model.getValidation().getMetric()) + "\n";
-
-			algopart += "\n" + "cv_results = cross_validation(clf, X, y, cv="
-					+ model.getValidation().getStratification().getNumber() + "scoring = scoring_metrics)\n";
-
-			// TODO:Recuperer les cv_results en fonction des metrics utilisés et retournés
-			// le mean() sur l'indice du tableau concerné
-
-		}
-
-		return algopart;
-	}
 
 	/**
-	 * Traitement randomForest
-	 * @param algo
-	 * @param model
-	 * @return
-	 */
-	private static String randomForestTraitement(MLAlgorithm algo, MMLModel model) {
-		String algopart = "";
-
-		// Définition de l'algorithme à utiliser pour le model
-		algopart += "clf = RandomForestClassifier()\n";
-
-		if (model.getValidation() instanceof TrainingTest) {
-			algopart += "train_size = " + model.getValidation().getStratification().getNumber() + "/100 \n";
-			algopart += "X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=train_size)\n";
-
-			// Creation du model avec le training set
-			algopart += "clf.fit(X_train, y_train)\n";
-
-			// Recuperation des resultats en fonction des metrics de validation definies
-			algopart += train_test_accuracy_part(model.getValidation().getMetric());
-
-		} else if (model.getValidation() instanceof CrossValidation) {
-
-			// Set scoring setting for cross_validation operation
-			algopart += "scoring_metrics = " + cross_validation_scoring_part(model.getValidation().getMetric()) + "\n";
-
-			algopart += "\n" + "cv_results = cross_validation(clf, X, y, cv="
-					+ model.getValidation().getStratification().getNumber() + "scoring = scoring_metrics)\n";
-
-			// TODO:Recuperer les cv_results en fonction des metrics utilisés et retournés
-			// le mean() sur l'indice du tableau concerné
-
-		}
-
-		return algopart;
-	}
-
-	/**
-	 * Decision tree algorithm traitement
+	 * Validation part generator
+	 * Gen specific part for train-test or Cross-validation specification
 	 * 
 	 * @param algo
 	 * @param model
 	 * @return
 	 */
-	private static String dtTraitement(MLAlgorithm algo, MMLModel model) {
+	private static String genValidationPart(MLAlgorithm algo, MMLModel model) {
 
 		String algopart = "";
-		int maxd = ((DT) algo).getMax_depth();
-		// Définition de l'algorithme à utiliser pour le model
-		algopart += "clf = ";
-		algopart += (maxd != 0) ? "tree.DecisionTreeClassifier(max_depth = " + maxd + ")\n"
-				: "tree.DecisionTreeClassifier()\n";
+		
 
 		if (model.getValidation() instanceof TrainingTest) {
 			algopart += "train_size = " + model.getValidation().getStratification().getNumber() + "/100 \n";
@@ -384,18 +313,6 @@ public class SciKitCompiler {
 		}
 
 		return scoringSet;
-	}
-
-	/**
-	 * Traitement algo SVM
-	 * 
-	 * @param algo
-	 * @param model
-	 * @return
-	 */
-
-	private static String svmTraitement(MLAlgorithm algo, MMLModel model) {
-		return "";
 	}
 
 	private static String genBodypartForPredictiveRFormula(RFormula formula) {
