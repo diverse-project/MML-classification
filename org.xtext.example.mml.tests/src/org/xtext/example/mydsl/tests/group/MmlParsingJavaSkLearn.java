@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -39,7 +40,15 @@ public class MmlParsingJavaSkLearn {
 
 		MMLModel result = parseHelper.parse("datainput \"iris.csv\"separator;\r\n" + "mlframework scikit-learn\r\n"
 				+ "algorithm DecisionTree\r\n" + "formula \"colName\"+1+\"colName\"\r\n"
-				+ "TrainingTest{percentageTraining 70 }\r\n" + "accuracy" + "");
+				+ "TrainingTest{percentageTraining 70 }\r\n" + "accuracy balanced_accuracy F1 macro_F1" + ""
+				);
+		
+		/*MMLModel result += parseHelper("datainput \"Filelocation.csv\"\r\n" + 
+				"mlframework scikit-learn\r\n" + 
+				"algorithm DecisionTree\r\n" + 
+				"1\r\n" + 
+				"CrossValidation{numRepetitionCross 1 }\r\n" + 
+				"accuracy balanced_accuracy F1 macro_F1");*/
 
 		RFormula formul = result.getFormula();
 		// Assertions.assertEquals(formul.getPredictive().getColName(), "variety");
@@ -55,6 +64,33 @@ public class MmlParsingJavaSkLearn {
 		EList<Resource.Diagnostic> errors = result.eResource().getErrors();
 		Assertions.assertTrue(errors.isEmpty(), "Unexpected errors");
 		Assertions.assertEquals("iris.csv", result.getInput().getFilelocation());
+		
+		EList<ValidationMetric> metric = result.getValidation().getMetric();
+		System.out.println(metric.toString());
+		
+		for(ValidationMetric m : result.getValidation().getMetric()) {
+			switch (m) {
+			case BALANCED_ACCURACY:
+				System.out.println(m);
+				
+				break;
+			case RECALL:
+				System.out.println(m.toString()+"\n");
+
+				break;
+			case PRECISION:
+				System.out.println(m.toString()+"\n");
+
+				break;
+			case ACCURACY:
+				System.out.println(m);
+
+				break;
+
+			default:
+				break;
+			}
+		}
 
 	}
 

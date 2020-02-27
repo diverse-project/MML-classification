@@ -22,6 +22,7 @@ import org.xtext.example.mydsl.mml.SVM;
 import org.xtext.example.mydsl.mml.StratificationMethod;
 import org.xtext.example.mydsl.mml.TrainingTest;
 import org.xtext.example.mydsl.mml.Validation;
+import org.xtext.example.mydsl.mml.ValidationMetric;
 import org.xtext.example.mydsl.mml.XFormula;
 
 import com.google.common.io.Files;
@@ -38,15 +39,14 @@ public class SciKitCompiler {
 		String codeFinalTexte = "";
 
 		// Import de bibliotheque python pandas pour gerer l'importation de fichier
-		String pythonImport = "import pandas as pd\n";
-		importTexte += pythonImport;
+
 		importTexte += genImportPackageCode(algorithm, model.getFormula(), model.getValidation());
 
 		body += "\n" + genDataInputTraitement(model.getInput());
 
 		body += "\n" + genBodypartForPredictiveRFormula(model.getFormula());
 
-		body += "\n" + genBodypartForAlgorithm(algorithm);
+		body += "\n" + genBodypartForAlgorithm(algorithm, model);
 
 		body += "\n" + genBodypartForValidation(model.getValidation());
 
@@ -89,6 +89,9 @@ public class SciKitCompiler {
 	private static String genImportPackageCode(MLAlgorithm algo, RFormula formula, Validation validation) {
 		String importCode = "";
 
+		// Import librairie Pandas
+		importCode += "import pandas as pd\n";
+
 		// Import pour l'algorithme
 		String importAlgo = "";
 		if (algo instanceof DT) {
@@ -124,20 +127,123 @@ public class SciKitCompiler {
 
 	}
 
-	private static String genBodypartForAlgorithm(MLAlgorithm algo) {
+	private static String genBodypartForAlgorithm(MLAlgorithm algo, MMLModel model) {
 		String algopart = "\n";
 
 		if (algo instanceof DT) {
-			int maxd = ((DT) algo).getMax_depth();
+			algopart += dtTraitement(algo, model);
 
-			algopart += "clf = ";
-			algopart += (maxd != 0) ? "tree.DecisionTreeClassifier(max_depth = " + maxd + ")\n"
-					: "tree.DecisionTreeClassifier()\n";
 		} else if (algo instanceof SVM) {
-
+			algopart += svmTraitement(algo, model);
 		}
 
 		return algopart;
+	}
+
+	/**
+	 * Decision tree algorithm traitement
+	 * 
+	 * @param algo
+	 * @param model
+	 * @return
+	 */
+	private static String dtTraitement(MLAlgorithm algo, MMLModel model) {
+
+		String algopart = "";
+		int maxd = ((DT) algo).getMax_depth();
+		// Définition de l'algorithme à utiliser pour le model
+		algopart += "clf = ";
+		algopart += (maxd != 0) ? "tree.DecisionTreeClassifier(max_depth = " + maxd + ")\n"
+				: "tree.DecisionTreeClassifier()\n";
+
+		if (model.getValidation() instanceof TrainingTest) {
+			algopart += "train_size = " + model.getValidation().getStratification().getNumber() + "/100 \n";
+			algopart += "X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=train_size)\n";
+
+			// Creation du model avec le training set
+			algopart += "clf.fit(X_train, y_train)\n";
+		} else if (model.getValidation() instanceof CrossValidation) {
+
+			// Set scoring setting for cross_validation operation
+			algopart += "scoring_metrics = " + cross_validation_scoring_part(model.getValidation().getMetric()) + "\n";
+
+			algopart += "\n" + "cv_results = cross_validation(clf, X, y, cv=" + model.getValidation().getStratification().getNumber()
+					+ "scoring = scoring_metrics)\n";
+			
+			//TODO:Recuperer les cv_results en fonction des metrics utilisés et retournés le mean() sur l'indice du tableau concerné
+				
+		}
+
+		return algopart;
+	}
+
+	/**
+	 * 
+	 * Set cross validation scoring setting for cross_validation operation Accuracy
+	 * used if no metrics are defined
+	 * 
+	 * @param metrics
+	 * @return
+	 */
+	private static String cross_validation_scoring_part(EList<ValidationMetric> metrics) {
+		String scoringSet = "";
+		
+		//If no metrics are defined use accuracy for scoring
+		if (metrics.isEmpty()) {
+			scoringSet = "['accuracy']";
+
+		} else {
+			scoringSet = "[";
+			for (ValidationMetric m : metrics) {
+				switch (m) {
+				case BALANCED_ACCURACY:
+					scoringSet += "'balanced_accuracy',";
+					break;
+				case RECALL:
+					scoringSet += "'recall_micro',";
+					break;
+				case PRECISION:
+					scoringSet += "'precision_micro',";
+					break;
+				case F1:
+					scoringSet += "'f1_micro',";
+					break;
+				case ACCURACY:
+					scoringSet += "'accuracy',";
+					break;
+				case MACRO_RECALL:
+					scoringSet += "'recall_macro',";
+					break;
+				case MACRO_PRECISION:
+					scoringSet += "'precision_macro',";
+					break;
+				case MACRO_F1:
+					scoringSet += "'f1_macro',";
+					break;
+				case MACRO_ACCURACY:
+					scoringSet += "'accuracy',";
+					break;
+				default:
+					break;
+				}
+			}
+			scoringSet += "]";
+		}
+		
+
+		return scoringSet;
+	}
+
+	/**
+	 * Traitement algo SVM
+	 * 
+	 * @param algo
+	 * @param model
+	 * @return
+	 */
+
+	private static String svmTraitement(MLAlgorithm algo, MMLModel model) {
+		return "";
 	}
 
 	private static String genBodypartForValidation(Validation validation) {
@@ -150,7 +256,6 @@ public class SciKitCompiler {
 		} else if (stratification instanceof TrainingTest) {
 			int test_size = 1 - stratification.getNumber() / 100;
 			validationPart += "test_size = " + test_size + "\n";
-			
 
 		}
 
@@ -159,96 +264,92 @@ public class SciKitCompiler {
 
 	private static String genBodypartForPredictiveRFormula(RFormula formula) {
 		String rFormulaPart = "";
-		
-		//Si une variable cible est défini 
+
+		// Si une variable cible est défini
 		if (formula.getPredictive() != null) {
 			rFormulaPart += splitingDataSet(formula.getPredictive(), formula.getPredictors());
 		}
-		// Si une variable cible n'est pas définis par l'utilisateur on choisi la derniere colonne 
+		// Si une variable cible n'est pas définis par l'utilisateur on choisi la
+		// derniere colonne
 		else {
-			if(formula.getPredictors() instanceof AllVariables) {
-				//TODO : deplacer ce traitement dans la fonction splitingDataSet
+			if (formula.getPredictors() instanceof AllVariables) {
+				// TODO : deplacer ce traitement dans la fonction splitingDataSet
 				rFormulaPart += "y = df.iloc[:,-1]\n";
 				rFormulaPart += "X = df.drop(df.columns[-1],axis=1)\n";
-			}
-			else if (formula.getPredictors() instanceof PredictorVariables) {
+			} else if (formula.getPredictors() instanceof PredictorVariables) {
 				PredictorVariables predictors = (PredictorVariables) formula.getPredictors();
-				FormulaItem predictive = predictors.getVars().get(predictors.getVars().size()-1);
-				predictors.getVars().remove(predictors.getVars().size()-1);
-				
+				FormulaItem predictive = predictors.getVars().get(predictors.getVars().size() - 1);
+				predictors.getVars().remove(predictors.getVars().size() - 1);
+
 				rFormulaPart += splitingDataSet(predictive, predictors);
 			}
 		}
-		
+
 		return rFormulaPart;
 	}
-	
-	private static String splitingDataSet (FormulaItem predictive, XFormula predictors) {
-		
-		String rFormulaPart ="";
-		
-		if(predictive.getColName() != null) {
-			rFormulaPart += "y = df[\""+predictive.getColName()+"\"]\n";
+
+	private static String splitingDataSet(FormulaItem predictive, XFormula predictors) {
+
+		String rFormulaPart = "";
+
+		if (predictive.getColName() != null) {
+			rFormulaPart += "y = df[\"" + predictive.getColName() + "\"]\n";
+		} else {
+			rFormulaPart += "y = df.iloc[:," + predictive.getColumn() + "]\n";
 		}
-		else{
-			rFormulaPart += "y = df.iloc[:,"+predictive.getColumn()+"]\n";					
-		}
-		
-		//Si tout le fichier est selectionner, couper la variable cible de l'ensemble
+
+		// Si tout le fichier est selectionner, couper la variable cible de l'ensemble
 		if (predictors instanceof AllVariables) {
-			//Si la vaiable cible est donné en nom de colonne
-			if(predictive.getColName() != null) {
-				rFormulaPart += "X = df.drop(columns=[\""+predictive.getColName()+"\"])\n";
+			// Si la vaiable cible est donné en nom de colonne
+			if (predictive.getColName() != null) {
+				rFormulaPart += "X = df.drop(columns=[\"" + predictive.getColName() + "\"])\n";
 			}
 			// colonne cible donner par position int
-			else{
-				rFormulaPart += "X = df.drop(df.columns["+predictive.getColumn()+"],axis=1)\n";					
+			else {
+				rFormulaPart += "X = df.drop(df.columns[" + predictive.getColumn() + "],axis=1)\n";
 			}
-			
+
 		}
-		//Si j'ai des colonnes spécifique pour l'ensemble des predictors
-		else if(predictors instanceof PredictorVariables) {
+		// Si j'ai des colonnes spécifique pour l'ensemble des predictors
+		else if (predictors instanceof PredictorVariables) {
 			List<String> predictorWithColumnName = new ArrayList<>();
-			List<Integer>  predictorWithColumnIndex = new ArrayList<>();
-			
-			//TODO : verifier si la list de predictors est vide 
-			for(FormulaItem current : ((PredictorVariables) predictors).getVars()) {
-				if(current.getColName() != null) {
+			List<Integer> predictorWithColumnIndex = new ArrayList<>();
+
+			// TODO : verifier si la list de predictors est vide
+			for (FormulaItem current : ((PredictorVariables) predictors).getVars()) {
+				if (current.getColName() != null) {
 					predictorWithColumnName.add(current.getColName());
-				}
-				else {
+				} else {
 					predictorWithColumnIndex.add(current.getColumn());
 				}
 			}
-			
-			if(!predictorWithColumnName.isEmpty()) {
+
+			if (!predictorWithColumnName.isEmpty()) {
 				rFormulaPart += "withColumName = df[[";
-				for(String colname : predictorWithColumnName) {
-					rFormulaPart += "\""+colname+"\",";
-				}					
-				rFormulaPart += "]]";
-				rFormulaPart += "\n";
-			}
-			
-			if(!predictorWithColumnIndex.isEmpty()) {
-				rFormulaPart += "withColumIndex = df.iloc[:,[";
-				for(Integer col : predictorWithColumnIndex) {
-					rFormulaPart += col+",";
+				for (String colname : predictorWithColumnName) {
+					rFormulaPart += "\"" + colname + "\",";
 				}
 				rFormulaPart += "]]";
 				rFormulaPart += "\n";
 			}
-			
-			if(!predictorWithColumnName.isEmpty() && !predictorWithColumnIndex.isEmpty()) {
+
+			if (!predictorWithColumnIndex.isEmpty()) {
+				rFormulaPart += "withColumIndex = df.iloc[:,[";
+				for (Integer col : predictorWithColumnIndex) {
+					rFormulaPart += col + ",";
+				}
+				rFormulaPart += "]]";
+				rFormulaPart += "\n";
+			}
+
+			if (!predictorWithColumnName.isEmpty() && !predictorWithColumnIndex.isEmpty()) {
 				rFormulaPart += "X = pd.concat([withColumName,withColumIndex],axis = 1)\n";
-			}
-			else if(!predictorWithColumnName.isEmpty()) {
+			} else if (!predictorWithColumnName.isEmpty()) {
 				rFormulaPart += "X = withColumName\n";
-			}
-			else if(!predictorWithColumnIndex.isEmpty()) {
+			} else if (!predictorWithColumnIndex.isEmpty()) {
 				rFormulaPart += "X = withColumIndex\n";
 			}
-			
+
 		}
 		return rFormulaPart;
 	}
