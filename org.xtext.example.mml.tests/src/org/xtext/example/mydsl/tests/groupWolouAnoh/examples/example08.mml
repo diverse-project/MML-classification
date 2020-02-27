@@ -1,5 +1,7 @@
 datainput "foo.csv"
 mlframework scikit-learn
 algorithm DT
+mlframework scikit-learn
+algorithm SVM gamma=1.0 kernel=radial
 TrainingTest { percentageTraining 50 }
-accuracy
+recall

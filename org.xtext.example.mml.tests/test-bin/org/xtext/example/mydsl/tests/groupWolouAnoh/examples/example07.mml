@@ -2,4 +2,4 @@ datainput "foo.csv" separator ;
 mlframework scikit-learn
 algorithm RF
 CrossValidation { numRepetitionCross 5 }
-precision
+recall

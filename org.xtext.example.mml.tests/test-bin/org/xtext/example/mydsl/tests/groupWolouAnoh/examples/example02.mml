@@ -1,5 +1,7 @@
-datainput foo2.csv separator ;
+datainput "iris.csv"
 mlframework scikit-learn
-algorithm DT
-TrainingTest { percentageTraining 50 }
-precision
+algorithm DecisionTree
+mlframework scikit-learn
+algorithm LogisticRegression
+CrossValidation { numRepetitionCross 4 }
+recall

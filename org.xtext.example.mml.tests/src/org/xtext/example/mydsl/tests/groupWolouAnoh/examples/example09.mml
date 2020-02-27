@@ -1,5 +1,5 @@
 datainput "iris.csv" separator ,
 mlframework scikit-learn
-algorithm SVM gamma 1.0 kernel polynomial classification C-classification
+algorithm SVM gamma= 1.0 kernel=polynomial classification C-classification
 CrossValidation { numRepetitionCross 7 }
-macro_precision
+recall
