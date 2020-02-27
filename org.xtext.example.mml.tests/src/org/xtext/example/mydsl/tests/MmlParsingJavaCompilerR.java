@@ -135,8 +135,8 @@ public class MmlParsingJavaCompilerR {
 		
 
 		String methode = "";
-		String parametres = "";
 		String ecrireAlgo = "";
+		Boolean nonSupporte = false;
 		
 		if (al instanceof DT) {
 			DT defAlg = (DT) al;
@@ -166,7 +166,7 @@ public class MmlParsingJavaCompilerR {
 			if (defAlg.isKernelSpecified()) {
 				kernel = defAlg.getKernel().getLiteral();
 				switch (kernel) {
-					case "radial" 		: kernel = "'radial basis'"; 		break;
+					case "radial" 		: kernel = "'radial'"; 		break;
 					case "polynomial" 	: kernel = "'polynomial'"; 		break;
 					case "linear" 		: kernel = "'linear'"; 		break;
 				}	
@@ -191,21 +191,23 @@ public class MmlParsingJavaCompilerR {
 						break;
 						
 					case "nu-classification" :
-						ecrireAlgo	= "model <- svm(formula=formula, data=data_train, type=\"" + classification + "\"";
+						/*ecrireAlgo	= "model <- svm(formula=formula, data=data_train, type=\"" + classification + "\"";
 						if (gamma != null) ecrireAlgo += ", gamma=" + gamma;
 						ecrireAlgo += ", kernel=" + kernel;
 						ecrireAlgo += ", cost=" + c;
 						ecrireAlgo += ", nu=" + c;
-						ecrireAlgo += ")";
+						ecrireAlgo += ")";*/
+						nonSupporte = true;
 						break;
 						
 					case "one-classification" : 
-						ecrireAlgo	= "model <- svm(formula=formula, data=data_train, type=\"" + classification + "\"";
+						/*ecrireAlgo	= "model <- svm(formula=formula, data=data_train, type=\"" + classification + "\"";
 						if (gamma != null) ecrireAlgo += ", gamma=" + gamma;
 						ecrireAlgo += ", kernel=" + kernel;
 						ecrireAlgo += ", cost=" + c;
 						ecrireAlgo += ", nu=" + c;
-						ecrireAlgo += ")";
+						ecrireAlgo += ")";*/
+						nonSupporte = true;
 						break;
 				}
 			}
@@ -219,13 +221,16 @@ public class MmlParsingJavaCompilerR {
 			
 		}
 		else if (al instanceof RandomForest) {
-			methode = "rf";
-			ecrireAlgo += "model <- train(formula, data=data_train,method=\"" + methode + "\",trControl=fitControl)";
+			ecrireAlgo += "data_train[[predictive]] <- as.character(data_train[[predictive]])\n";
+			ecrireAlgo += "data_train[[predictive]] <- as.factor(data_train[[predictive]])\n";
+			ecrireAlgo += "model <- randomForest(formula, data=data_train, na.action = na.omit)";
 		}
 		else if (al instanceof LogisticRegression) {
-			methode = "logreg";
-			ecrireAlgo += "model <- train(formula, data=data_train,method=\"" + methode + "\",trControl=fitControl)";
-		
+			//methode = "logreg";
+			//ecrireAlgo += "model <- train(formula, data=data_train,method=\"" + methode + "\",trControl=fitControl)";
+			ecrireAlgo += "data_train[[predictive]] <- as.character(data_train[[predictive]])\n";
+			ecrireAlgo += "data_train[[predictive]] <- as.factor(data_train[[predictive]])\n";
+			ecrireAlgo += "model <- glm(formula, family = binomial(logit), data=data_train)";
 		}
 		ecrireAlgo += "\n";
 		
@@ -266,7 +271,12 @@ public class MmlParsingJavaCompilerR {
 		for(int i = 0; i < metriquesArray.length; i++) {
 			metrique = metriquesArray[i].getLiteral();
 			if(metrique == "accuracy") {
+<<<<<<< HEAD
 				metriques +="print(paste(\"Accuracy___\",as.double(mat$overall[\"Accuracy\"]),sep=\"\"))\n";
+=======
+				metriques += "print(\"Accuracy\")\n";
+				metriques +="print(as.double(mat$overall[\"Accuracy\"]))\n";
+>>>>>>> 1444d7834062f3e30d88bcf966d5ec02b5f26f68
 			}else if(metrique == "balanced_accuracy") {
 				metriques += "if (!is.null(dim(mat$byClass)[1])) { print(paste(\"Balanced Accuracy___\",mean(mat$byClass[,\"Balanced Accuracy\"]),sep=\"\")) } ";
 				metriques += "else { print(paste(\"Balanced Accuracy___\",mean(mat$byClass[\"Balanced Accuracy\"]),sep=\"\")) }\n";
@@ -291,17 +301,22 @@ public class MmlParsingJavaCompilerR {
 			}
 		}
 		
-		
-		String writeProgram = addProgramText("", installPackages);
-		writeProgram += addProgramText("", importPackages);
-		writeProgram += addProgramText("", readCsv);
-		writeProgram += addProgramText("", predictive);
-		writeProgram += addProgramText("", predictors);
-		writeProgram += addProgramText("", formula);
-		writeProgram += addProgramText("", stratification);
-		writeProgram += addProgramText("", ecrireAlgo);
-		writeProgram += addProgramText("", prediction);
-		writeProgram += addProgramText("", metriques);
+		String writeProgram = "";
+		if (nonSupporte) {
+			writeProgram = "print(\"Les classifications nu et one de SVM ne sont pas supportées\")";
+		} 
+		else {
+			writeProgram = addProgramText("", installPackages);
+			writeProgram += addProgramText("", importPackages);
+			writeProgram += addProgramText("", readCsv);
+			writeProgram += addProgramText("", predictive);
+			writeProgram += addProgramText("", predictors);
+			writeProgram += addProgramText("", formula);
+			writeProgram += addProgramText("", stratification);
+			writeProgram += addProgramText("", ecrireAlgo);
+			writeProgram += addProgramText("", prediction);
+			writeProgram += addProgramText("", metriques);
+		}
 	
 
 		

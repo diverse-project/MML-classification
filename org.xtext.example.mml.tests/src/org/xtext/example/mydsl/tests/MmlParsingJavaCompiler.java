@@ -52,6 +52,8 @@ public class MmlParsingJavaCompiler {
 	public void compileDataInput() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
 				+ "mlframework R\n"
+				+ "algorithm LogisticRegression\n"
+				+ "TrainingTest { percentageTraining 65 }\n"
 				+ "algorithm SVM\n"
 				+ "mlframework scikit-learn\n"
 				+ "algorithm DT\n"
