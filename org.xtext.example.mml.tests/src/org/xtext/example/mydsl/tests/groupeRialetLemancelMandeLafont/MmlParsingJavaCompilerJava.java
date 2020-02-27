@@ -16,6 +16,7 @@ public class MmlParsingJavaCompilerJava extends Compiler {
 	String strategy = "";
 	StratificationMethod strat ;
 	int number;
+	String algoName;
 	
 	public List<String> compileDataInput(MMLModel model, MLAlgorithm al, int numAlgo) throws Exception {
 		
@@ -80,9 +81,9 @@ public class MmlParsingJavaCompilerJava extends Compiler {
 		/* Execution program */
 		try {
             System.out.println("**********");
-            runProcess("javac -cp output_LAFONT_LEMANCEL_MANDE_RIALET/weka.jar output_LAFONT_LEMANCEL_MANDE_RIALET/Mml_" + numAlgo + ".java", "Weka");
+            runProcess("javac -cp output_LAFONT_LEMANCEL_MANDE_RIALET/weka.jar output_LAFONT_LEMANCEL_MANDE_RIALET/Mml_" + numAlgo + ".java",algoName, "Weka");
             System.out.println("**********");
-            results = runProcess("java -cp .;output_LAFONT_LEMANCEL_MANDE_RIALET/weka.jar output_LAFONT_LEMANCEL_MANDE_RIALET.Mml_" + numAlgo, "Weka");
+            results = runProcess("java -cp .;output_LAFONT_LEMANCEL_MANDE_RIALET/weka.jar output_LAFONT_LEMANCEL_MANDE_RIALET.Mml_" + numAlgo, algoName, "Weka");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -95,18 +96,22 @@ public class MmlParsingJavaCompilerJava extends Compiler {
 		String dataSetName = algorithm == "tt" ? "train" : "data";
 		
 		if (al instanceof DT) {
+			algoName = "DT";
 			algorithm = addInstruction(algorithm, "\t\tClassifier cls = new J48();"); 
 			algorithm = addInstruction(algorithm, "\t\tcls.buildClassifier(" + dataSetName + ");");
 		}
 		else if (al instanceof SVM) {
+			algoName = "SVM";
 			stop = true;
 			algorithm = addInstruction(algorithm, "\t\tSystem.out.println(\"Impossible d'utiliser SVM avec Weka\");");
 		}
 		else if (al instanceof RandomForest) {
+			algoName = "RandomForest";
 			algorithm = addInstruction(algorithm, "\t\tClassifier cls = new RandomForest();");
 			algorithm =	addInstruction(algorithm, "\t\tcls.buildClassifier(" + dataSetName + ");");
 		}
 		else if (al instanceof LogisticRegression) {
+			algoName = "LogisticRegression";
 			algorithm = addInstruction(algorithm, "\t\tClassifier cls = new Logistic();"); 
 			algorithm = addInstruction(algorithm, "\t\tcls.buildClassifier(" + dataSetName + ");");
 		}

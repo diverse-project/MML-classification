@@ -13,6 +13,7 @@ public class MmlParsingJavaCompilerR extends Compiler {
 
 	List<String> results = new ArrayList<String>();
 	Boolean nonSupporte = false;
+	String algoName;
 	
 	public List<String> compileDataInput(MMLModel model, MLAlgorithm al, int numAlgo) throws Exception {
 		
@@ -82,7 +83,7 @@ public class MmlParsingJavaCompilerR extends Compiler {
 		/* Execution program */
 		try {
             System.out.println("**********");
-            results = runProcess("Rscript output_LAFONT_LEMANCEL_MANDE_RIALET/Mml_" + numAlgo + ".r", "R");
+            results = runProcess("Rscript output_LAFONT_LEMANCEL_MANDE_RIALET/Mml_" + numAlgo + ".r",algoName, "R");
             System.out.println("**********");
         } catch (Exception e) {
             e.printStackTrace();
@@ -142,6 +143,7 @@ public class MmlParsingJavaCompilerR extends Compiler {
 	public void algorithmTreatment(MLAlgorithm al) {
 		
 		if (al instanceof DT) {
+			algoName = "DT";
 			DT defAlg = (DT) al;
 			int maxDepth = defAlg.getMax_depth();
 			
@@ -155,6 +157,7 @@ public class MmlParsingJavaCompilerR extends Compiler {
 			
 		}
 		else if (al instanceof SVM) {
+			algoName = "SVM";
 			SVM defAlg = (SVM) al;
 			
 			/* Si absence de gamma dans le programme, on aura null comme valeur */
@@ -226,11 +229,13 @@ public class MmlParsingJavaCompilerR extends Compiler {
 			}
 		}
 		else if (al instanceof RandomForest) {
+			algoName="RandomForest";
 			algorithm = addInstruction(algorithm, "data_train[[x]] <- as.character(data_train[[x]])");
 			algorithm = addInstruction(algorithm, "data_train[[x]] <- as.factor(data_train[[x]])");
 			algorithm = addInstruction(algorithm, "model <- randomForest(formula, data=data_train, na.action = na.omit)");
 		}
 		else if (al instanceof LogisticRegression) {
+			algoName="LogisticRegression";
 			algorithm = addInstruction(algorithm, "data_train[[x]] <- as.character(data_train[[x]])");
 			algorithm = addInstruction(algorithm, "data_train[[x]] <- as.factor(data_train[[x]])");
 			algorithm = addInstruction(algorithm, "model <- glm(formula, family = binomial(logit), data=data_train)");

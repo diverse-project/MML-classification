@@ -11,6 +11,7 @@ import com.google.common.io.Files;
 
 public class MmlParsingJavaCompilerPython extends Compiler {
 	
+	String algoName;
 	
 	public List<String> compileDataInput(MMLModel model, MLAlgorithm al, int numAlgo) throws Exception {
 		
@@ -57,7 +58,7 @@ public class MmlParsingJavaCompilerPython extends Compiler {
 		/* Execution program */
 		try {
             System.out.println("**********");
-            results = runProcess("python output_LAFONT_LEMANCEL_MANDE_RIALET/Mml_" + numAlgo + ".py", "scikit-learn");
+            results = runProcess("python output_LAFONT_LEMANCEL_MANDE_RIALET/Mml_" + numAlgo + ".py",algoName, "scikit-learn");
             System.out.println("**********");
         } catch (Exception e) {
             e.printStackTrace();
@@ -123,6 +124,7 @@ public class MmlParsingJavaCompilerPython extends Compiler {
 	public void algorithmTreatment(MLAlgorithm al) {
 		
 		if (al instanceof DT) {
+			algoName = "DT";
 			DT defAlg = (DT) al;
 			int maxDepth = defAlg.getMax_depth();
 			if(maxDepth == 0)
@@ -131,6 +133,7 @@ public class MmlParsingJavaCompilerPython extends Compiler {
 				algorithm = addInstruction(algorithm, "clf = tree.DecisionTreeClassifier(max_depth="+maxDepth+")");
 		}
 		else if (al instanceof SVM) {
+			algoName = "SVM";
 			SVM defAlg = (SVM) al;
 			
 			/* Si absence de gamma dans le programme, on aura null comme valeur */
@@ -189,10 +192,12 @@ public class MmlParsingJavaCompilerPython extends Compiler {
 			}
 		}
 		else if (al instanceof RandomForest) {
+			algoName="RandomForest";
 			imports = addInstruction(imports, "from sklearn.ensemble import RandomForestClassifier");
 			algorithm = addInstruction(algorithm, "clf = RandomForestClassifier(n_estimators=100)");
 		}
 		else if (al instanceof LogisticRegression) {
+			algoName = "LogisticRegression";
 			imports = addInstruction(imports, "from sklearn.linear_model import LogisticRegression");
 			algorithm = addInstruction(algorithm, "clf = LogisticRegression(solver='lbfgs', multi_class='auto')");
 		}

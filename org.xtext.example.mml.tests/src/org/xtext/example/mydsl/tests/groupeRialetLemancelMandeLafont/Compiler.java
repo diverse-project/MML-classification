@@ -71,7 +71,7 @@ public class Compiler {
 		formula = "";
 	}
 	
-	public static List<String> printLines(String cmd, InputStream ins, String framework) throws Exception {
+	public static List<String> printLines(String cmd, InputStream ins, String framework, String algo) throws Exception {
     	String line = null;
     	BufferedReader in = new BufferedReader(new InputStreamReader(ins));
     	List<String> results = new ArrayList<String>();
@@ -84,7 +84,7 @@ public class Compiler {
     			line = line.replace("\"","").toLowerCase();
     			try {
     			    double d = Double.parseDouble(line.split("___")[1]);
-    			    results.add(framework + "___" + line);
+    			    results.add(framework + "___"+algo+"___" + line);
     			} catch (NumberFormatException e) {
     			    
     			}
@@ -93,10 +93,10 @@ public class Compiler {
     	return results;
     }
 	
-    public static List<String> runProcess(String command, String framework) throws Exception {
+    public static List<String> runProcess(String command, String algo, String framework) throws Exception {
 	    Process pro = Runtime.getRuntime().exec(command);
-	    List<String> results = printLines(command + " stdout:", pro.getInputStream(), framework);
-    	printLines(command + " stderr:", pro.getErrorStream(), framework);
+	    List<String> results = printLines(command + " stdout:", pro.getInputStream(), framework,algo);
+    	printLines(command + " stderr:", pro.getErrorStream(), framework,algo);
 	    pro.waitFor();
 	    System.out.println(command + " exitValue() " + pro.exitValue());
 	    return results;
