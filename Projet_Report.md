@@ -5,7 +5,7 @@
 
 Repository Git : [https://github.com/Youlounn/MML-classification.git](https://github.com/Youlounn/MML-classification.git)
 
-  
+  This project allowed us to discover and understand better how some algorithms and frameworks works. Even if many frameworks means many documentations and long research, this project is still very interesting for us and we are thankful to Mr ACHER for that.
   
 
 ### R Language (Robin)
@@ -79,7 +79,7 @@ But we use these values printing them in the java System console and creating tw
   
   
 
-**1.  Sur vos jeux de données, quel framework+algorithme est le mieux classé (en comparaison d’autres frameworks) en termes de temps d’exécution? de précision?**
+**1.  On your datasets, which framework + algorithm are the best ranked (compared to other frameworks) in terms of execution time? Precision ?**
     
 
 Regarding the classification score, we can see that the algorithm “RandomForest” used by “Weka” is the one giving us the highest precision scores (100%).
@@ -96,7 +96,7 @@ Regarding execution time, the algorithm “Logistic Regression” from “Weka�
 
   
 
-**2.  Parmi les frameworks et algorithmes de machine learning, y a-t-il des implémentations significativement plus lentes/précises que d’autres?**
+**2.  Among machine learning frameworks and algorithms, are some implementations significantly slower/precise than others ?**
     
 
   
@@ -115,7 +115,7 @@ End of run-time classification
 
   
 
-**3.  Etant donné un algorithme de machine learning (e.g., decision tree), est-ce qu’on observe des différences (temps d’exécution/précision) entre les frameworks?**
+**3.  Given a machine learning algorithm (e.g., decision tree), are there any differences (execution time/precision) between those frameworks ?**
     
 
   
@@ -133,7 +133,7 @@ Regarding precision, Weka is getting the best precision scores, and holds all fi
 
   
 
-**4.  Y a-t-il des jeux de données plus difficiles à traiter (en termes de précision/temps d’exécution)?**
+**4.  Are there datasets that are more difficult to process with (in terms of accuracy/time) ?**
     
 
   
@@ -146,7 +146,7 @@ We did not succeed in making the datasets modular throughout our testing.
   
   
 
-**5.  Au vu des résultats, quel framework de machine learning recommanderiez-vous?**
+**5.  Based on the results, which machine learning framework would you recommend ?**
     
 
   
