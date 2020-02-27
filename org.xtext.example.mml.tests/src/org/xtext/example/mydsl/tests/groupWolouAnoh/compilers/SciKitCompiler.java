@@ -119,9 +119,9 @@ public class SciKitCompiler {
 
 		// Import pour la validation
 		String importValidate = "";
-		if (validation instanceof CrossValidation) {
+		if (validation.getStratification() instanceof CrossValidation) {
 			importValidate = "from sklearn.model_selection import cross_validate\n";
-		} else if (validation instanceof TrainingTest) {
+		} else if (validation.getStratification() instanceof TrainingTest) {
 			importValidate = "from sklearn.model_selection import train_test_split\n";
 		}
 
@@ -168,7 +168,6 @@ public class SciKitCompiler {
 	private static String genBodyPartValidation(Validation validation, MMLModel model) {
 
 		String algopart = "";
-		System.out.println(model.getValidation().getStratification());
 		if (model.getValidation().getStratification() instanceof TrainingTest) {
 			algopart += "train_size = " + model.getValidation().getStratification().getNumber() + "/100 \n";
 			algopart += "X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=train_size)\n";
@@ -184,8 +183,8 @@ public class SciKitCompiler {
 			// Set scoring setting for cross_validation operation
 			algopart += "scoring_metrics = " + cross_validation_scoring_part(model.getValidation().getMetric()) + "\n";
 
-			algopart += "\n" + "cv_results = cross_validation(clf, X, y, cv= "
-					+ model.getValidation().getStratification().getNumber() + " , scoring = scoring_metrics)\n";
+			algopart += "\n" + "cv_results = cross_validate(clf, X, y, cv= "
+					+ model.getValidation().getStratification().getNumber() + ", scoring = scoring_metrics)\n";
 
 			// Recuperation des resultats en fonction des metrics de validation définies
 			// pour le cross validation la moyenne de tableau mean() est utilisé
