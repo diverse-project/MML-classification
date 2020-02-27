@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Classifier {
+	
 	private static String fileName = "output_LAFONT_LEMANCEL_MANDE_RIALET\\scores.txt";
 	
 	public static void reset() throws IOException {
@@ -21,9 +22,9 @@ public class Classifier {
 	}
 	
 	public static void addScores(List<String> results) throws IOException {
-		for(String score : results) {
+		for (String score : results) {
 			Writer w = new BufferedWriter(new FileWriter(fileName, true));
-			w.append(score+"\n");
+			w.append(score + "\n");
 			w.close();
 		}
 	}
@@ -32,12 +33,12 @@ public class Classifier {
 		List<String[]> tmp = new ArrayList<String[]>();
 		String[][] scores = new String[1][3];
 		String[] score; 
-		try{  
-			File file=new File(fileName);    
-			FileReader fr=new FileReader(file);   
-			BufferedReader br=new BufferedReader(fr);  
+		try {  
+			File file = new File(fileName);    
+			FileReader fr = new FileReader(file);   
+			BufferedReader br = new BufferedReader(fr);  
 			String line;  
-			while((line=br.readLine())!=null){  
+			while ((line=br.readLine()) != null) {  
 				score = new String[3];
 				score[0] = line.split("___")[0];
 				score[1] = line.split("___")[1];
@@ -54,8 +55,9 @@ public class Classifier {
 			for(String[] s1 : scores) {
 				System.out.println(s1[0]+"  "+s1[1]+"  "+s1[2]);
 			}
-		}catch(IOException e){  
+		} catch(IOException e) {  
 			e.printStackTrace();  
 		}  
 	}
+	
 }

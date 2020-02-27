@@ -1,7 +1,5 @@
 package org.xtext.example.mydsl.tests;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +9,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
 import org.eclipse.xtext.testing.util.ParseHelper;
-import org.junit.After;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -30,10 +27,10 @@ public class MmlParsingJavaTest {
 	@Inject
 	ParseHelper<MMLModel> parseHelper;
 	
-	String data = "iris.csv";
-	//String data = "new-thyroid.csv";
+	//String data = "iris.csv";
+	String data = "new-thyroid.csv";
 	
-	String framework = "scikit-learn";
+	String framework = "R";
 	
 	private static boolean setUpIsDone = false;
 	
@@ -51,6 +48,7 @@ public class MmlParsingJavaTest {
 		Assertions.assertEquals("foo.csv", result.getInput().getFilelocation());			
 		
 	}
+	
 	public void setUp() throws IOException {
 	    if (setUpIsDone) {
 	        return;
@@ -59,10 +57,8 @@ public class MmlParsingJavaTest {
 	    setUpIsDone = true;
 	}
 	
-		
 	@Test
 	/* Random Forest en CrossValidation - RF */
-	/* Test planté avec R et new-thyroid.csv */
 	public void RandomForest1() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework " + framework + "\n"
@@ -76,7 +72,6 @@ public class MmlParsingJavaTest {
 	
 	@Test
 	/* Random Forest en CrossValidation - RandomForest */
-	/* Test planté avec R et new-thyroid.csv */
 	public void RandomForest2() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework " + framework + "\n"
@@ -90,7 +85,6 @@ public class MmlParsingJavaTest {
 	
 	@Test
 	/* Random Forest en TrainingTest - RF */
-	/* Test planté avec R et new-thyroid.csv */
 	public void RandomForest3() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework " + framework + "\n"
@@ -171,7 +165,6 @@ public class MmlParsingJavaTest {
 	
 	@Test
 	/* Logistic Regression en CrossValidation */
-	/* Test planté avec R */
 	public void logisticRegression1() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework " + framework + "\n"
@@ -185,7 +178,6 @@ public class MmlParsingJavaTest {
 	
 	@Test
 	/* Logistic Regression en Training test */
-	/* Test planté avec R */
 	public void logisticRegression2() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework " + framework + "\n"
@@ -318,7 +310,7 @@ public class MmlParsingJavaTest {
 	}
 	
 	@Test
-	/* SVM avec C */
+	/* SVM avec gamma */
 	public void SVM10() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
 				+ "mlframework " + framework + "\n"
@@ -357,7 +349,7 @@ public class MmlParsingJavaTest {
 	}
 	
 	@Test
-	/* Algo fonctionnant + formula personnalisée ; */
+	/* Algo fonctionnant + formula personnalisée */
 	public void Formula1() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
 				+ "mlframework " + framework + "\n"
@@ -371,7 +363,7 @@ public class MmlParsingJavaTest {
 	}
 	
 	@Test
-	/* Algo fonctionnant + formula personnalisée ; */
+	/* Algo fonctionnant + formula personnalisée */
 	public void Formula2() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
 				+ "mlframework " + framework + "\n"
@@ -385,7 +377,7 @@ public class MmlParsingJavaTest {
 	}
 	
 	@Test
-	/* Algo fonctionnant + formula personnalisée ; */
+	/* Algo fonctionnant + formula personnalisée */
 	public void Formula3() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
 				+ "mlframework " + framework + "\n"
@@ -399,7 +391,7 @@ public class MmlParsingJavaTest {
 	}
 	
 	@Test
-	/* Algo fonctionnant + formula personnalisée ; */
+	/* Algo fonctionnant + formula personnalisée */
 	public void Formula4() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
 				+ "mlframework " + framework + "\n"
@@ -413,7 +405,7 @@ public class MmlParsingJavaTest {
 	}
 	
 	@Test
-	/* Algo fonctionnant + formula personnalisée ; */
+	/* Algo fonctionnant + formula personnalisée */
 	public void Formula5() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
 				+ "mlframework " + framework + "\n"
@@ -430,7 +422,6 @@ public class MmlParsingJavaTest {
 	public static void deleteOutputFile() {
         Classifier.calculateScore();
 	}
-	
 	
 	private void compileDataInput(MMLModel model) throws Exception {
 		setUp();
@@ -454,10 +445,5 @@ public class MmlParsingJavaTest {
 		Classifier.addScores(results);
 		
 	}
-
-	private String mkValueInSingleQuote(String val) {
-		return "'" + val + "'";
-	}
-
-
+	
 }

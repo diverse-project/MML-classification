@@ -2,29 +2,23 @@ package org.xtext.example.mydsl.tests;
 
 import java.io.BufferedReader; 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
 import org.eclipse.xtext.testing.util.ParseHelper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.xtext.example.mydsl.mml.*;
 
-import com.google.common.io.Files;
 import com.google.inject.Inject;
 
 @ExtendWith(InjectionExtension.class)
 @InjectWith(MmlInjectorProvider.class)
 public class MmlParsingJavaCompiler {
+	
 	@Inject
 	ParseHelper<MMLModel> parseHelper;
 	
@@ -41,23 +35,10 @@ public class MmlParsingJavaCompiler {
 	}
 	
 	@Test
-	public void loadModel1() throws Exception {	
-		/*MMLModel model = getModel("prog1.mml");
-		Assertions.assertNotNull(model);
-		EList<Resource.Diagnostic> errors = model.eResource().getErrors();
-		Assertions.assertTrue(errors.isEmpty(), "Unexpected errors");*/			
-	}
-	
-	@Test
 	public void compileDataInput() throws Exception {
 		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
 				+ "mlframework R\n"
-				+ "algorithm LogisticRegression\n"
-				+ "TrainingTest { percentageTraining 65 }\n"
-				+ "algorithm SVM\n"
-				+ "mlframework scikit-learn\n"
-				+ "algorithm DT\n"
-				+ "formula 5 ~1+3+4\n"
+				+ "algorithm RF\n"
 				+ "CrossValidation { numRepetitionCross 10 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
@@ -66,7 +47,6 @@ public class MmlParsingJavaCompiler {
 		
 		//Algorithm
 		MLChoiceAlgorithm[] algos = (MLChoiceAlgorithm[]) model.getAlgorithms().toArray();
-		
 		
 		for(int i = 0; i < algos.length; i++) {
 			MLAlgorithm al = (MLAlgorithm) algos[i].getAlgorithm();
@@ -83,4 +63,5 @@ public class MmlParsingJavaCompiler {
 			}
 		}		
 	}
+	
 }
