@@ -52,7 +52,12 @@ public class SciKitCompiler {
 		codeFinalTexte = importTexte + body;
 
 		try {
-			Files.write(codeFinalTexte.getBytes(), new File(filename+"_"+framework.toString()+"_"+algorithm.getClass().getSimpleName()+".py"));
+			filename = filename.concat("_")
+					.concat(framework.toString())
+					.concat("_")
+					.concat(algorithm.getClass().getSimpleName())
+					.concat(".py");
+			Files.write(codeFinalTexte.getBytes(), new File(filename));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
