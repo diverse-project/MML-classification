@@ -85,7 +85,7 @@ public class SciKitCompiler {
 			System.err.println("parsing instruction..." + parsingInstruction);
 			csv_separator = parsingInstruction.getSep().toString();
 		}
-		datainputpart += "mml_data = pd.read_csv(" + mkValueInSingleQuote(fileLocation) + ", sep="
+		datainputpart += "df = pd.read_csv(" + mkValueInSingleQuote(fileLocation) + ", sep="
 				+ mkValueInSingleQuote(csv_separator) + ")";
 
 		return datainputpart;
@@ -128,7 +128,7 @@ public class SciKitCompiler {
 		importValidate += "from sklearn import metrics\n";
 
 		// Import Code (Algo + Formula + Validate)
-		importCode = importAlgo + "\n" + importFormula + "\n" + importValidate;
+		importCode += importAlgo + "\n" + importFormula + "\n" + importValidate;
 
 		return importCode;
 
