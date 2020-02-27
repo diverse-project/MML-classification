@@ -53,7 +53,7 @@ public class SciKitCompiler {
 
 		body += "\n" + genBodyPartValidation(model.getValidation(), model);
 
-		codeFinalTexte = importTexte + body;
+		codeFinalTexte = importTexte + body+ "\n";
 
 		try {
 			filename = filename.concat("_").concat(framework.getLiteral()).concat("_")
@@ -184,8 +184,8 @@ public class SciKitCompiler {
 			// Set scoring setting for cross_validation operation
 			algopart += "scoring_metrics = " + cross_validation_scoring_part(model.getValidation().getMetric()) + "\n";
 
-			algopart += "\n" + "cv_results = cross_validation(clf, X, y, cv="
-					+ model.getValidation().getStratification().getNumber() + "scoring = scoring_metrics)\n";
+			algopart += "\n" + "cv_results = cross_validation(clf, X, y, cv= "
+					+ model.getValidation().getStratification().getNumber() + " , scoring = scoring_metrics)\n";
 
 			// Recuperation des resultats en fonction des metrics de validation définies
 			// pour le cross validation la moyenne de tableau mean() est utilisé
@@ -204,10 +204,100 @@ public class SciKitCompiler {
 	 * @param model
 	 * @return
 	 */
-	private static String cross_validation_accuracy_part(EList<ValidationMetric> metric, MMLModel model) {
+	private static String cross_validation_accuracy_part(EList<ValidationMetric> metrics, MMLModel model) {
 		// TODO:Recuperer les cv_results en fonction des metrics utilisés et retournés
 		// le mean() sur l'indice du tableau concerné
-		return null;
+		
+		String crossVResultMean ="";
+		
+		// If no metrics are defined use accuracy for scoring result
+				if (metrics.isEmpty()) {
+					crossVResultMean +=
+							"\n "+
+							"#Result of accuracy score use by default for scoring metric \n"
+							+"res_accuracy_score = cv_results['test_accuracy'].mean()\n"
+							+"print(res_accuracy_score)\n";
+
+				} else {
+
+					for (ValidationMetric m : metrics) {
+						switch (m) {
+						case BALANCED_ACCURACY:
+							crossVResultMean +=
+							"\n "+
+							"#Result of balanced_accuracy metric \n"
+							+"res_balanced_accuracy_score = cv_results['test_balanced_accuracy'].mean()\n"
+							+"print(res_balanced_accuracy_score)\n";
+							
+							break;
+						case RECALL:
+							crossVResultMean +=
+							"\n "+
+							"#Result of recall_micro metric \n"
+							+"res_recall_score = cv_results['test_recall_micro'].mean()\n"
+							+"print(res_recall_score)\n";
+							
+							break;
+						case PRECISION:
+							crossVResultMean +=
+							"\n "+
+							"#Result of precision_micro metric \n"
+							+"res_precision_score = cv_results['test_precision_micro'].mean()\n"
+							+"print(res_precision_score)\n";
+
+							break;
+						case F1:
+							crossVResultMean +=
+							"\n "+
+							"#Result of f1_micro metric \n"
+							+"res_f1_score = cv_results['test_f1_micro'].mean()\n"
+							+"print(res_f1_score)\n";
+
+							break;
+						case ACCURACY:
+							crossVResultMean +=
+							"\n "+
+							"#Result of accuracy metric \n"
+							+"res_accuracy_score = cv_results['test_accuracy'].mean()\n"
+							+"print(res_accuracy_score)\n";
+							break;
+						case MACRO_RECALL:
+							crossVResultMean +=
+							"\n "+
+							"#Result of recall_macro metric \n"
+							+"res_recall_macro_score = cv_results['test_recall_macro'].mean()\n"
+							+"print(res_recall_macro_score)\n";
+							break;
+						case MACRO_PRECISION:
+							crossVResultMean +=
+							"\n "+
+							"#Result of precision_macro metric \n"
+							+"res_precision_macro_score = cv_results['test_precision_macro'].mean()\n"
+							+"print(res_precision_macro_score)\n";
+							break;
+						case MACRO_F1:
+							crossVResultMean +=
+							"\n "+
+							"#Result of f1_macro metric \n"
+							+"res_f1_macro_score = cv_results['test_f1_macro'].mean()\n"
+							+"print(res_f1_macro_score)\n";
+							break;
+						case MACRO_ACCURACY:
+							crossVResultMean +=
+							"\n "+
+							"#Result of accuracy metric \n"
+							+"res_accuracy_score = cv_results['test_accuracy'].mean()\n"
+							+"print(res_accuracy_score)\n";
+							break;
+						default:
+							break;
+						}
+					}
+
+				}
+				
+		
+		return crossVResultMean;
 	}
 
 	/**
