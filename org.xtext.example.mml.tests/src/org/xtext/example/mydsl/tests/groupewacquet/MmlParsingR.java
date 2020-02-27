@@ -1,4 +1,4 @@
-package org.xtext.example.mydsl.tests;
+package org.xtext.example.mydsl.tests.groupewacquet;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,12 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.management.loading.MLetMBean;
-
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
 import org.eclipse.xtext.testing.util.ParseHelper;
@@ -31,11 +28,9 @@ import org.xtext.example.mydsl.mml.DataInput;
 import org.xtext.example.mydsl.mml.FormulaItem;
 import org.xtext.example.mydsl.mml.FrameworkLang;
 import org.xtext.example.mydsl.mml.LogisticRegression;
-import org.xtext.example.mydsl.mml.MLAlgorithm;
 import org.xtext.example.mydsl.mml.MLChoiceAlgorithm;
 import org.xtext.example.mydsl.mml.MMLModel;
 import org.xtext.example.mydsl.mml.PredictorVariables;
-import org.xtext.example.mydsl.mml.RFormula;
 import org.xtext.example.mydsl.mml.RandomForest;
 import org.xtext.example.mydsl.mml.SVM;
 import org.xtext.example.mydsl.mml.StratificationMethod;
@@ -43,9 +38,7 @@ import org.xtext.example.mydsl.mml.TrainingTest;
 import org.xtext.example.mydsl.mml.Validation;
 import org.xtext.example.mydsl.mml.ValidationMetric;
 import org.xtext.example.mydsl.mml.XFormula;
-import org.xtext.example.mydsl.mml.impl.MLAlgorithmImpl;
-import org.xtext.example.mydsl.mml.impl.PredictorVariablesImpl;
-import org.xtext.example.mydsl.services.MmlGrammarAccess.MLAlgorithmElements;
+import org.xtext.example.mydsl.tests.MmlInjectorProvider;
 
 import com.google.inject.Inject;
 
@@ -67,6 +60,7 @@ public class MmlParsingR {
 			List<MLChoiceAlgorithm> algos = model.getAlgorithms();
 			for (MLChoiceAlgorithm alg : algos) {
 				if (alg.getFramework() == FrameworkLang.R) {
+					String algName = alg.getAlgorithm().getClass().getInterfaces()[0].getSimpleName();
 					StringBuilder rFileContent = new StringBuilder();
 					DataInput data = model.getInput();
 					String fileLocation = data.getFilelocation();
@@ -74,16 +68,16 @@ public class MmlParsingR {
 					String csvSeparator = (csvConf.getSep() != null ? csvConf.getSep().getLiteral() : ";");
 					
 					// Installation et import des librairies
-					rFileContent.append("install.packages(\"caret\", repos=\"http://cran.rstudio.com/\")").append(System.lineSeparator());
-					rFileContent.append("install.packages(\"e1071\", repos=\"http://cran.rstudio.com/\")").append(System.lineSeparator());
+					rFileContent.append("suppressMessages(install.packages(\"caret\", repos=\"http://cran.rstudio.com/\", quiet=TRUE))").append(System.lineSeparator());
+					rFileContent.append("suppressMessages(install.packages(\"e1071\", repos=\"http://cran.rstudio.com/\", quiet=TRUE))").append(System.lineSeparator());
 					if (alg.getAlgorithm() instanceof DT) {
-						rFileContent.append("install.packages(\"rpart\", repos=\"http://cran.rstudio.com/\")").append(System.lineSeparator());
+						rFileContent.append("suppressMessages(install.packages(\"rpart\", repos=\"http://cran.rstudio.com/\", quiet=TRUE))").append(System.lineSeparator());
 						rFileContent.append("library(rpart)").append(System.lineSeparator());
 					} else if (alg.getAlgorithm() instanceof LogisticRegression) {
-						rFileContent.append("install.packages(\"nnet\", repos=\"http://cran.rstudio.com/\")").append(System.lineSeparator());
+						rFileContent.append("suppressMessages(install.packages(\"nnet\", repos=\"http://cran.rstudio.com/\", quiet=TRUE))").append(System.lineSeparator());
 						rFileContent.append("library(nnet)").append(System.lineSeparator());
 					} else if (alg.getAlgorithm() instanceof RandomForest) {
-						rFileContent.append("install.packages(\"randomForest\", repos=\"http://cran.rstudio.com/\")").append(System.lineSeparator());
+						rFileContent.append("suppressMessages(install.packages(\"randomForest\", repos=\"http://cran.rstudio.com/\", quiet=TRUE))").append(System.lineSeparator());
 						rFileContent.append("library(randomForest)").append(System.lineSeparator());
 					} else if (alg.getAlgorithm() instanceof SVM) {
 						
@@ -93,9 +87,12 @@ public class MmlParsingR {
 					
 					// Lecture du CSV
 					rFileContent.append("data <- read.csv(\"" + fileLocation + "\", header=TRUE, sep=\"" + csvSeparator + "\")").append(System.lineSeparator());
+					// Suppression des lignes avec des données manquantes
+					rFileContent.append("data <- data[complete.cases(data), ]").append(System.lineSeparator());
 					// Mélange les lignes pour éviter les fichiers triés
 					rFileContent.append("shuffleIndex <- sample(1:nrow(data))").append(System.lineSeparator());
 					rFileContent.append("data <- data[shuffleIndex,]").append(System.lineSeparator());
+
 					
 					// Gestion de la colonne à prédire
 					FormulaItem predictive = (model.getFormula() != null ? model.getFormula().getPredictive() : null);
@@ -130,7 +127,7 @@ public class MmlParsingR {
 					if (stratMethod instanceof CrossValidation) {
 						trControlValue = validation.getStratification().getNumber();
 					} else if (stratMethod instanceof TrainingTest) {
-						sampleSize = 1 - validation.getStratification().getNumber() / 100;
+						sampleSize = (float) validation.getStratification().getNumber() / 100;
 					}
 					
 					// Création des jeux de données
@@ -148,7 +145,7 @@ public class MmlParsingR {
 //						> prediction <- predict(model, dataTest, type='class')
 						if (trControlValue != 0) {
 							rFileContent.append("trControl <- trainControl(method=\"cv\", number=" + trControlValue + ")").append(System.lineSeparator());
-							rFileContent.append("model <- train(" + toPredict + "~" + predictorsString + ", data=dataTrain, method=\"rpart\", trControl=trControl, metric=\"Accuracy\")").append(System.lineSeparator());
+							rFileContent.append("model <- train(" + toPredict + "~" + predictorsString + ", data=dataTrain, method=\"rpart\", trControl=trControl, na.action=na.pass, metric=\"Accuracy\")").append(System.lineSeparator());
 						} else {
 							rFileContent.append("model <- rpart(" + toPredict + "~" + predictorsString + ", data=dataTrain, method='class')").append(System.lineSeparator());
 						}
@@ -163,11 +160,10 @@ public class MmlParsingR {
 						// Les ifelse ayant un comportement imprévu pour l'attribution des variables, il est nécessaire de passer par les ifs standards
 						if (trControlValue != 0) {
 							rFileContent.append("trControl <- trainControl(method=\"cv\", number=" + trControlValue + ")").append(System.lineSeparator());
-							rFileContent.append("model <- ").append(System.lineSeparator());
 							rFileContent.append("if (classNb <= 2) {\r\n" + 
-									"    model <- train(" + toPredict + "~" + predictorsString + ", data=dataTrain, method=\"glm\", family=binomial, trControl=trControl)\r\n" + 
+									"    model <- train(" + toPredict + "~" + predictorsString + ", data=dataTrain, method=\"glm\", family=binomial, trControl=trControl, na.action=na.pass)\r\n" + 
 									"} else {\r\n" + 
-									"    model <- train(" + toPredict + "~" + predictorsString + ", data=dataTrain, method=\"multinom\", trControl=trControl)\r\n" + 
+									"    model <- train(" + toPredict + "~" + predictorsString + ", data=dataTrain, method=\"multinom\", trace=FALSE, trControl=trControl, na.action=na.pass)\r\n" + 
 									"}")
 							.append(System.lineSeparator());
 						} else {
@@ -191,7 +187,7 @@ public class MmlParsingR {
 						if (trControlValue != 0) {
 							rFileContent.append("trControl <- trainControl(method=\"cv\", number=" + trControlValue + ")").append(System.lineSeparator());
 						}
-						rFileContent.append("model <- train(" + toPredict + "~" + predictorsString + ", data=dataTrain, method=\"rf\", " + (trControlValue != 0 ? "trControl=trControl, " : "") + "metric=\"Accuracy\")").append(System.lineSeparator());
+						rFileContent.append("model <- train(" + toPredict + "~" + predictorsString + ", data=dataTrain, method=\"rf\", " + (trControlValue != 0 ? "trControl=trControl, na.action=na.pass, " : "") + "metric=\"Accuracy\")").append(System.lineSeparator());
 						rFileContent.append("prediction <- predict(model, dataTest[, 1:ncol(dataTest) - 1])").append(System.lineSeparator());
 					} else if (alg.getAlgorithm() instanceof SVM) {
 //						SVM
@@ -205,7 +201,7 @@ public class MmlParsingR {
 						rFileContent.append("model <- svm(" + toPredict + "~" + predictorsString + ", data=dataTrain"
 								+ (classification.length() > 0 ? ", type=\"" + classification + "\"" : "")
 								+ (kernel.length() > 0 ? ", kernel=\"" + kernel + "\"" : "")
-								+ (gamma.length() > 0 ? ", gamma=" + gamma : "")
+								+ (kernel != "linear" ? (gamma.length() > 0 ? ", gamma=" + gamma : "") : "")
 								+ (cost.length() > 0 ? ", cost=" + cost : "")
 								+ (trControlValue != 0 ? ", cross=" + trControlValue : "")
 								+ ")")
@@ -239,64 +235,64 @@ public class MmlParsingR {
 					rFileContent.append("inPredictTest <- dataTest[,ncol(dataTest)]").append(System.lineSeparator());
 					rFileContent.append("matrix <- confusionMatrix(prediction, inPredictTest, mode=\"everything\")").append(System.lineSeparator());
 					rFileContent.append("classRep <- matrix$byClass").append(System.lineSeparator());
+					rFileContent.append("statsNb <- length(matrix$byClass)").append(System.lineSeparator());
 					for (ValidationMetric valMet : valMetCol) {
 						if (valMet.getName().contains("MACRO")) {
-							rFileContent.append(valMet.getName() + " <- paste(mean(classRep[TRUE,c(\"");
-							switch (valMet.getName()) {
-								case "MACRO_RECALL":
-									rFileContent.append("Recall");
-									break;
-								case "MACRO_PRECISION":
-									rFileContent.append("Precision");
-									break;
-								case "MACRO_F1":
-									rFileContent.append("F1");
-									break;
-								case "MACRO_ACCURACY":
-									rFileContent.append("Balanced Accuracy");
-									break;
-							}
-							rFileContent.append(")]))");
+							rFileContent.append("if (statsNb > 11) {").append(System.lineSeparator());
+							rFileContent.append(valMet.getName() + " <- paste(mean(classRep[TRUE,c(\"" + retrieveMesureName(valMet.getName()) + ")]))").append(System.lineSeparator());
+							rFileContent.append("} else {").append(System.lineSeparator());
+							rFileContent.append(valMet.getName() + " <- paste(mean(classRep[c(\"" + retrieveMesureName(valMet.getName()) + ")]))").append(System.lineSeparator());
+							rFileContent.append("}").append(System.lineSeparator());
 						} else if (valMet.getName() == "ACCURACY") {
 							rFileContent.append("ACCURACY <- matrix$overall[\"Accuracy\"]").append(System.lineSeparator());
 						} else {
-							rFileContent.append(valMet.getName() + " <- classRep[TRUE,c(\"");
-							switch (valMet.getName()) {
-								case "BALANCED_ACCURACY":
-									rFileContent.append("Balanced Accuracy");
-									break;
-								case "RECALL":
-									rFileContent.append("Recall");
-									break;
-								case "PRECISION":
-									rFileContent.append("Precision");
-									break;
-								case "F1":
-									rFileContent.append("F1");
-									break;
-							}
-							rFileContent.append("\")]").append(System.lineSeparator());
+							rFileContent.append("if (statsNb > 11) {").append(System.lineSeparator());
+							rFileContent.append(valMet.getName() + " <- classRep[TRUE,c(\"" + retrieveMesureName(valMet.getName()) + "\")]").append(System.lineSeparator());
+							rFileContent.append("} else {").append(System.lineSeparator());
+							rFileContent.append(valMet.getName() + " <- classRep[c(\"" + retrieveMesureName(valMet.getName()) + "\")]").append(System.lineSeparator());
+							rFileContent.append("}").append(System.lineSeparator());
 						}
 						rFileContent.append("cat(\"" + valMet.getName() + " :\", fill=TRUE)").append(System.lineSeparator());
 						rFileContent.append("print(" + valMet.getName() + ")").append(System.lineSeparator());
+						// Sauvegarde des valeurs dans un fichier pour le classement
+						rFileContent.append("fileToWrite <- file(\"src/" + MmlParsingR.class.getPackage().getName().replace(".", "/") + "/resources/results/rfiles/" + fileName + "." + algName + ".txt\")").append(System.lineSeparator());
+						rFileContent.append("writeLines(capture.output(cat(\"" + valMet.getName() + "=\", " + valMet.getName() + ")), fileToWrite)").append(System.lineSeparator());
+						rFileContent.append("close(fileToWrite)").append(System.lineSeparator());
 					}
 //					}
-					saveFileContent(fileName, alg.getAlgorithm().getClass().getInterfaces()[0].getSimpleName(), rFileContent);
+					saveFileContent(fileName, algName, rFileContent);
 				}
 			}
 		}
 		this.executeGeneratedFiles();
 	}
 	
+	private String retrieveMesureName(String valMetName) {
+		switch (valMetName) {
+			case "MACRO_RECALL":
+			case "RECALL":
+				return "Recall";
+			case "MACRO_PRECISION":
+			case "PRECISION":
+				return "Precision";
+			case "MACRO_F1":
+			case "F1":
+				return "F1";
+			case "MACRO_ACCURACY":
+			case "BALANCED_ACCURACY":
+				return "Balanced Accuracy";
+			default:
+				return valMetName;
+		}
+	}
+	
 	private void executeGeneratedFiles() throws IOException {
 		for (Path path : createdFiles) {
 			File toExecute = path.toFile();
 			Process proc = Runtime.getRuntime().exec("Rscript.exe --vanilla --slave " + toExecute.getAbsolutePath());
-			BufferedReader stdInput = new BufferedReader(new 
-				     InputStreamReader(proc.getInputStream()));
-			BufferedReader stdError = new BufferedReader(new 
-				     InputStreamReader(proc.getErrorStream()));
-			// Read the output from the command
+			BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+			BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+			// Sortie de l'exécution du script R
 			System.out.println();
 			System.out.println("Exécution du fichier '" + toExecute.getName() + "'");
 			System.out.println("Résultat de l'exécution :" + System.lineSeparator());
@@ -304,21 +300,22 @@ public class MmlParsingR {
 			while ((s = stdInput.readLine()) != null) {
 			    System.out.println(s);
 			}
-			// Read any errors from the attempted command
+			// Erreurs survenues lors de l'exécution du script R (souvent des problèmes d'installation de package)
 			System.out.println();
 			System.out.println("Erreurs survenues lors de l'exécution :" + System.lineSeparator());
 			while ((s = stdError.readLine()) != null) {
 			    System.err.println(s);
 			}
-			System.out.println("———————————————————————————————————————");
-			System.out.println("———————————————————————————————————————");
+			System.out.println("——————————————————————————————————————————————————————————————————");
+			System.out.println("——————————————————————————————————————————————————————————————————");
 		}
+
 	}
 	
 	private Map<String, MMLModel> loadModel() throws Exception {
 		HashMap<String, MMLModel> map = new HashMap<>();
 		for (int i = 1; i<11;i++) {
-			File f = new File("src" + File.separator + "test" + File.separator + "resources" + File.separator + "test" + i + ".mml");
+			File f = new File("src" + File.separator + MmlParsingR.class.getPackage().getName().replace(".", File.separator) + File.separator + "resources" + File.separator + "test" + i + ".mml");
 			MMLModel result = parseHelper.parse(FileUtils.readFileToString(f, Charset.defaultCharset()));
 			map.put(f.getName(), result);
 		}
@@ -327,7 +324,7 @@ public class MmlParsingR {
 	
 	private void saveFileContent(String fileName, String algName, StringBuilder sb) {
 		try {
-			Path newFile = Paths.get("src" + File.separator + "test" + File.separator + "resources" + File.separator + "results" + File.separator + fileName + "." + algName + ".r");
+			Path newFile = Paths.get("src" + File.separator + MmlParsingR.class.getPackage().getName().replace(".", File.separator) + File.separator + "resources" + File.separator + "results" + File.separator + fileName + "." + algName + ".r");
 			Files.write(newFile, sb.toString().getBytes());
 			createdFiles.add(newFile);
 		} catch (IOException e) {

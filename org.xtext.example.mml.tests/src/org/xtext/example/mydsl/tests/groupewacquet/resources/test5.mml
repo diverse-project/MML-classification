@@ -1,0 +1,7 @@
+datainput "D:/Donnees/Cours/MIAGE/M2/IDM/MML-classification/org.xtext.example.mml.tests/src/org/xtext/example/mydsl/tests/groupewacquet/resources/hepatitis.csv" separator ,
+mlframework scikit-learn algorithm LogisticRegression
+mlframework R algorithm LogisticRegression
+TrainingTest {
+	percentageTraining 80
+}
+accuracy

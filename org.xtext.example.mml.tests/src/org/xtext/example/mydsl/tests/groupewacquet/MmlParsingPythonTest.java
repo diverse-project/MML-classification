@@ -1,23 +1,20 @@
-package org.xtext.example.mydsl.tests;
+package org.xtext.example.mydsl.tests.groupewacquet;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
 import org.eclipse.xtext.testing.util.ParseHelper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.xtext.example.mydsl.mml.CSVParsingConfiguration;
 import org.xtext.example.mydsl.mml.CrossValidation;
 import org.xtext.example.mydsl.mml.DT;
 import org.xtext.example.mydsl.mml.DataInput;
@@ -29,9 +26,8 @@ import org.xtext.example.mydsl.mml.MMLModel;
 import org.xtext.example.mydsl.mml.RandomForest;
 import org.xtext.example.mydsl.mml.SVM;
 import org.xtext.example.mydsl.mml.TrainingTest;
-import org.xtext.example.mydsl.mml.Validation;
 import org.xtext.example.mydsl.mml.ValidationMetric;
-import org.xtext.example.mydsl.services.MmlGrammarAccess.ValidationMetricElements;
+import org.xtext.example.mydsl.tests.MmlInjectorProvider;
 
 import com.google.common.io.Files;
 import com.google.inject.Inject;
@@ -40,34 +36,32 @@ import org.apache.commons.io.FileUtils;
 @ExtendWith(InjectionExtension.class)
 @InjectWith(MmlInjectorProvider.class)
 public class MmlParsingPythonTest {
-
+	
 	@Inject
 	ParseHelper<MMLModel> parseHelper;
 
-	public List<MMLModel> loadModel() throws Exception {
-		ArrayList<MMLModel> list = new ArrayList<MMLModel>();
-		for (int i = 0; i<10;i++) {
-			MMLModel result = parseHelper.parse(
-					FileUtils.readFileToString(
-							new File(
-									"src" + File.separator + "test" + File.separator + "resources" + File.separator + "test"+i+".mml")
-							, Charset.defaultCharset()));
-			list.add(result);
+	private Map<String, MMLModel> loadModel() throws Exception {
+		HashMap<String, MMLModel> map = new HashMap<>();
+		for (int i = 1; i<11;i++) {
+			File f = new File("src" + File.separator + MmlParsingR.class.getPackage().getName().replace(".", File.separator) + File.separator + "resources" + File.separator + "test" + i + ".mml");
+			MMLModel result = parseHelper.parse(FileUtils.readFileToString(f, Charset.defaultCharset()));
+			map.put(f.getName(), result);
 		}
-		return list;
-	}		
+		return map;
+	}	
 
 	@Test
 	public void compileDataInput() throws Exception {
-		ArrayList<MMLModel> list = (ArrayList<MMLModel>) loadModel();
-		int i = 0;
-		for (MMLModel result : list)
-		{
-			System.out.println("//////////////////////////Début du traitement fichier "+i);
+		HashMap<String, MMLModel> map = (HashMap<String, MMLModel>) loadModel();
+		int i = 1;
+		for (String fileName : map.keySet()) {
+			MMLModel result = map.get(fileName);
+			System.out.println("â–º DÃ©but du traitement du fichier " + fileName);
 			List<MLChoiceAlgorithm> algos = result.getAlgorithms();
 			for(MLChoiceAlgorithm algo : algos) {
 				if (algo.getFramework() == FrameworkLang.SCIKIT)
 				{
+					String algName = algo.getAlgorithm().getClass().getInterfaces()[0].getSimpleName();
 					//imports
 					String pythonImport = "import pandas as pd\r\n" + 
 							"from sklearn.tree import DecisionTreeClassifier\r\n" + 
@@ -96,12 +90,12 @@ public class MmlParsingPythonTest {
 					//						csv_separator = parsingInstruction.getSep().toString();
 					//					}
 					//END CSV SEPARATOR
-					//préparation des x et y
+					//prï¿½paration des x et y
 					String csvReading = "df = pd.read_csv("+mkValueInSingleQuote(fileLocation)+", sep="+mkValueInSingleQuote(csv_separator)+")\r\n" + 
 							"features = list(df.columns[:4])\r\n" + 
 							"X = df.drop('variety', axis=1)\r\n" + 
 							"y = df['variety']\r\n";
-					//fin prépa
+					//fin prï¿½pa
 					//Validation
 					String validation = "";
 					boolean isCrossValidation = false;
@@ -182,11 +176,11 @@ public class MmlParsingPythonTest {
 								diagtype="NuSVC";
 							}
 						}
-						String newdiag = diagtype+"("+(svmAlgo.getGamma() == null ? "":"gamma="+svmAlgo.getGamma())+
-								(svmAlgo.getC() != null && svmAlgo.getGamma() != null ? "," : "")+
-								(svmAlgo.getC() == null ? "":"C="+svmAlgo.getC()+"")+
+						String newdiag = diagtype+"("+(diagtype != "LinearSVC" ? (svmAlgo.getGamma() == null ? "":"gamma="+svmAlgo.getGamma()) : "") +
+								(diagtype != "OneClassSVM" && diagtype != "NuSVC" ? (svmAlgo.getC() != null && svmAlgo.getGamma() != null ? "," : "") : "")+
+								(diagtype != "OneClassSVM" && diagtype != "NuSVC" ? (svmAlgo.getC() == null ? "":"C="+svmAlgo.getC()+"") : "" )+
 								((svmAlgo.getC() != null || svmAlgo.getGamma() != null) && svmAlgo.isKernelSpecified() ? "," : "")+
-								(svmAlgo.isKernelSpecified() ? "kernel='"+svmAlgo.getKernel().getLiteral()+"'":"")+
+								(diagtype != "LinearSVC" ? (svmAlgo.isKernelSpecified() ? "kernel='"+svmAlgo.getKernel().getLiteral()+"'":"") : "") +
 								")";
 						if(isCrossValidation)
 						{
@@ -217,10 +211,10 @@ public class MmlParsingPythonTest {
 								"y_pred = classifier.predict(X_test)\r\n";
 					}
 					//affichage des metrics
-					String metrics = "text_file = open(generated\"result"+i+".txt\", \"w\")\r\n";
+					String metrics = "text_file = open(generated\"result" + fileName + "." + algName + ".txt\", \"w\")\r\n";
 					for(ValidationMetric metric : result.getValidation().getMetric())
 					{
-						metrics = "text_file = open(\"generated/result"+i+".txt\", \"w\")\r\n";
+						metrics = "text_file = open(\"src/" + MmlParsingR.class.getPackage().getName().replace(".", "/") + "/resources/results/pythonfiles/" + fileName + "." + algName + ".txt\", \"w\")\r\n";
 						switch (metric) {
 						case ACCURACY:
 							metrics += "print(\"accuracy_score= \" + str(accuracy_score(y_test, y_pred)),flush=True)\r\n" 									;
@@ -269,7 +263,7 @@ public class MmlParsingPythonTest {
 
 					//					code += "\nprint (mml_data)\n"; 
 
-					Files.write(code.getBytes(), new File("generated/mml"+i+".py"));
+					Files.write(code.getBytes(), new File("src" + File.separator + MmlParsingPythonTest.class.getPackage().getName().replace(".", File.separator) + File.separator + "resources" + File.separator + "results" + File.separator + fileName + "." + algName + ".py"));
 					// end of Python generation
 
 
@@ -277,18 +271,18 @@ public class MmlParsingPythonTest {
 					 * Calling generated Python script (basic solution through systems call)
 					 * we assume that "python" is in the path
 					 */
-										Process p = Runtime.getRuntime().exec("python generated/mml"+i+".py");
-										BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-										String line; 
-										// obligatoire pour laiser le temps au processus de se finir
-										line = in.readLine(); //on ne lit qu'une ligne pour éviter le blocage du code
-//										while ((line = in.readLine()) != null) {
-//											System.out.println(line);
-//										}
-										System.out.println("les résultats se trouves dans le dossier generated !");
+					Process p = Runtime.getRuntime().exec("python src" + File.separator + MmlParsingPythonTest.class.getPackage().getName().replace(".", File.separator) + File.separator + "resources" + File.separator + "results" + File.separator + fileName + "." + algName + ".py");
+					BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+					String line; 
+					// obligatoire pour laiser le temps au processus de se finir
+					line = in.readLine(); //on ne lit qu'une ligne pour ï¿½viter le blocage du code
+					//										while ((line = in.readLine()) != null) {
+					//											System.out.println(line);
+					//										}
+					System.out.println("Les rÃ©sultats se trouvent dans le dossier results");
 				}
 			}
-			System.out.println("//////////////////////////Fin du traitement fichier "+i);
+			System.out.println("â¬› Fin du traitement fichier " + fileName);
 			i++;
 		}
 	}
