@@ -12,6 +12,7 @@ import org.xtext.example.mydsl.mml.CrossValidation;
 import org.xtext.example.mydsl.mml.DT;
 import org.xtext.example.mydsl.mml.DataInput;
 import org.xtext.example.mydsl.mml.FormulaItem;
+import org.xtext.example.mydsl.mml.FrameworkLang;
 import org.xtext.example.mydsl.mml.LogisticRegression;
 import org.xtext.example.mydsl.mml.MLAlgorithm;
 import org.xtext.example.mydsl.mml.MMLModel;
@@ -29,9 +30,8 @@ import com.google.common.io.Files;
 
 public class SciKitCompiler {
 
-	// private static StringBuilder imports = new StringBuilder();
 
-	public static boolean compile(MLAlgorithm algorithm, MMLModel model, String filename) {
+	public static boolean compile(FrameworkLang framework,MLAlgorithm algorithm, MMLModel model, String filename) {
 
 		// Variable principal pour la creation du code final
 		String importTexte = "";
@@ -53,7 +53,7 @@ public class SciKitCompiler {
 		codeFinalTexte = importTexte + body;
 
 		try {
-			Files.write(codeFinalTexte.getBytes(), new File(filename + ".py"));
+			Files.write(codeFinalTexte.getBytes(), new File(filename+"_"+framework.toString()+"_"+algorithm.getClass().getSimpleName()+".py"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -138,7 +138,8 @@ public class SciKitCompiler {
 					: "tree.DecisionTreeClassifier()\n";
 			
 		} else if (algo instanceof SVM) {
-			//algopart += svmTraitement(algo, model);
+			//TODO : set SVM parameters definition
+			
 		} else if (algo instanceof RandomForest) {
 			algopart += "clf = RandomForestClassifier()\n";
 		} else if (algo instanceof LogisticRegression) {
