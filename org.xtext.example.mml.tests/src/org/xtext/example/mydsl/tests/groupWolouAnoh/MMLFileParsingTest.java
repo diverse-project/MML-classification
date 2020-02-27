@@ -39,12 +39,10 @@ public class MMLFileParsingTest {
 		for (MLChoiceAlgorithm algorithm : model.getAlgorithms()) {
 			algorithmFactory(algorithm, model, filename);
 
-			System.out.println(filename);
 			String file = filename.concat("_").concat(algorithm.getFramework().getLiteral()).concat("_")
 					.concat(algorithm.getAlgorithm().getClass().getSimpleName()).concat(".py");
 			assertTrue(new File(file).exists());
 		}
-		System.out.println("after for");
 	}
 
 	private void algorithmFactory(MLChoiceAlgorithm choiceAlgorithm, MMLModel model, String filename) {
@@ -54,7 +52,6 @@ public class MMLFileParsingTest {
 		switch (framework) {
 		case SCIKIT:
 			SciKitCompiler.compile(framework, algorithm, model, filename);
-			System.out.println(filename);
 			break;
 
 		case R:
