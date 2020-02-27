@@ -1,4 +1,4 @@
-package org.xtext.example.mydsl.tests.groupWolouAnnoh;
+package org.xtext.example.mydsl.tests.groupWolouAnoh;
 
 import java.io.InputStream;
 import java.util.Scanner;
@@ -41,7 +41,7 @@ public class MMLFileParsingTest {
 
 		switch (framework) {
 		case SCIKIT:
-			SciKitCompiler.compile(algorithm, model, filename);
+			SciKitCompiler.compile(framework, algorithm, model, filename);
 			break;
 
 		case R:

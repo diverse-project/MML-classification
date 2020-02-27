@@ -1,4 +1,4 @@
-package org.xtext.example.mydsl.tests.groupWolouAnnoh;
+package org.xtext.example.mydsl.tests.groupWolouAnoh;
 
 import java.io.BufferedReader;
 import java.io.File;
