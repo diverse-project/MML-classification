@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.emf.common.util.EList;
 import org.xtext.example.mydsl.mml.AllVariables;
@@ -31,6 +32,10 @@ import com.google.common.io.Files;
 public class SciKitCompiler {
 
 	public static boolean compile(FrameworkLang framework, MLAlgorithm algorithm, MMLModel model, String filename) {
+		Objects.requireNonNull(framework,"Framework can't be null for code generation");
+		Objects.requireNonNull(algorithm,"algorithm can't be null for code generation");
+		Objects.requireNonNull(model.getInput(),"DataInput can't be null for code generation");
+		Objects.requireNonNull(model.getValidation(),"Validation params can't be null for code generation");
 
 		// Variable principal pour la creation du code final
 		String importTexte = "";
