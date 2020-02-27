@@ -30,8 +30,7 @@ import com.google.common.io.Files;
 
 public class SciKitCompiler {
 
-
-	public static boolean compile(FrameworkLang framework,MLAlgorithm algorithm, MMLModel model, String filename) {
+	public static boolean compile(FrameworkLang framework, MLAlgorithm algorithm, MMLModel model, String filename) {
 
 		// Variable principal pour la creation du code final
 		String importTexte = "";
@@ -47,7 +46,7 @@ public class SciKitCompiler {
 		body += "\n" + genBodypartForPredictiveRFormula(model.getFormula());
 
 		body += "\n" + genBodypartForAlgorithm(algorithm, model);
-		
+
 		body += "\n" + genBodyPartValidation(model.getValidation(), model);
 
 		codeFinalTexte = importTexte + body;
@@ -130,30 +129,29 @@ public class SciKitCompiler {
 	private static String genBodypartForAlgorithm(MLAlgorithm algo, MMLModel model) {
 		String algopart = "\n";
 
-		if (algo instanceof DT) {			
+		if (algo instanceof DT) {
 			int maxd = ((DT) algo).getMax_depth();
 			// Définition de l'algorithme à utiliser pour le model
 			algopart += "clf = ";
 			algopart += (maxd != 0) ? "tree.DecisionTreeClassifier(max_depth = " + maxd + ")\n"
 					: "tree.DecisionTreeClassifier()\n";
-			
+
 		} else if (algo instanceof SVM) {
-			//TODO : set SVM parameters definition
-			
+			// TODO : set SVM parameters definition
+
 		} else if (algo instanceof RandomForest) {
 			algopart += "clf = RandomForestClassifier()\n";
 		} else if (algo instanceof LogisticRegression) {
 			algopart += "clf = LogisticRegression()\n";
-			
+
 		}
 
 		return algopart;
 	}
 
-
 	/**
-	 * Validation part generator
-	 * Gen specific part for train-test or Cross-validation specification
+	 * Validation part generator Gen specific part for train-test or
+	 * Cross-validation specification
 	 * 
 	 * @param validation
 	 * @param model
@@ -162,7 +160,6 @@ public class SciKitCompiler {
 	private static String genBodyPartValidation(Validation validation, MMLModel model) {
 
 		String algopart = "";
-		
 
 		if (model.getValidation() instanceof TrainingTest) {
 			algopart += "train_size = " + model.getValidation().getStratification().getNumber() + "/100 \n";
@@ -182,7 +179,8 @@ public class SciKitCompiler {
 			algopart += "\n" + "cv_results = cross_validation(clf, X, y, cv="
 					+ model.getValidation().getStratification().getNumber() + "scoring = scoring_metrics)\n";
 
-			// Recuperation  des resultats en fonction des metrics de validation définies pour le cross validation la moyenne de tableau mean() est utilisé			
+			// Recuperation des resultats en fonction des metrics de validation définies
+			// pour le cross validation la moyenne de tableau mean() est utilisé
 			algopart += cross_validation_accuracy_part(model.getValidation().getMetric(), model);
 
 		}
@@ -191,13 +189,16 @@ public class SciKitCompiler {
 	}
 
 	/**
-	 * Recupere les resultat de cross validation et génère en fonction des metrics utilisé l'accuracy de chaque metrics pour le resultat à imprimer
+	 * Recupere les resultat de cross validation et génère en fonction des metrics
+	 * utilisé l'accuracy de chaque metrics pour le resultat à imprimer
+	 * 
 	 * @param metric
-	 * @param model 
+	 * @param model
 	 * @return
 	 */
 	private static String cross_validation_accuracy_part(EList<ValidationMetric> metric, MMLModel model) {
-		// TODO:Recuperer les cv_results en fonction des metrics utilisés et retournés le mean() sur l'indice du tableau concerné
+		// TODO:Recuperer les cv_results en fonction des metrics utilisés et retournés
+		// le mean() sur l'indice du tableau concerné
 		return null;
 	}
 
@@ -211,58 +212,48 @@ public class SciKitCompiler {
 		for (ValidationMetric m : metrics) {
 			switch (m) {
 			case BALANCED_ACCURACY:
-				accuracy_result+="\n"
-						+"res_balanced_accuracy_score = metrics.balanced_accuracy_score(y_test,clf.predict(X_test))\n"
-						+"print(res_balanced_accuracy_score)\n"
-				;
+				accuracy_result += "\n"
+						+ "res_balanced_accuracy_score = metrics.balanced_accuracy_score(y_test,clf.predict(X_test))\n"
+						+ "print(res_balanced_accuracy_score)\n";
 				break;
 			case RECALL:
-				accuracy_result+="\n"
-						+"res_recall_score = metrics.recall_score(y_test,clf.predict(X_test),average='micro')\n"
-						+"print(res_recall_score)\n"
-				;
+				accuracy_result += "\n"
+						+ "res_recall_score = metrics.recall_score(y_test,clf.predict(X_test),average='micro')\n"
+						+ "print(res_recall_score)\n";
 				break;
 			case PRECISION:
-				accuracy_result+="\n"
-						+"res_precision_score = metrics.precision_score(y_test,clf.predict(X_test),average='micro')\n"
-						+"print(res_precision_score)\n"
-				;
+				accuracy_result += "\n"
+						+ "res_precision_score = metrics.precision_score(y_test,clf.predict(X_test),average='micro')\n"
+						+ "print(res_precision_score)\n";
 				break;
 			case F1:
-				accuracy_result+="\n"
-						+"res_f1_score = metrics.f1_score(y_test,clf.predict(X_test),average='micro')\n"
-						+"print(res_f1_score)\n"
-				;
+				accuracy_result += "\n"
+						+ "res_f1_score = metrics.f1_score(y_test,clf.predict(X_test),average='micro')\n"
+						+ "print(res_f1_score)\n";
 				break;
 			case ACCURACY:
-				accuracy_result+="\n"
-						+"res_accuracy_score = metrics.accuracy_score(y_test,clf.predict(X_test))\n"
-						+"print(res_accuracy_score)\n"
-				;
+				accuracy_result += "\n" + "res_accuracy_score = metrics.accuracy_score(y_test,clf.predict(X_test))\n"
+						+ "print(res_accuracy_score)\n";
 				break;
 			case MACRO_RECALL:
-				accuracy_result+="\n"
-						+"res_recall__macro_score = metrics.recall_score(y_test,clf.predict(X_test),average='macro')\n"
-						+"print(res_recall__macro_score)\n"
-				;
+				accuracy_result += "\n"
+						+ "res_recall__macro_score = metrics.recall_score(y_test,clf.predict(X_test),average='macro')\n"
+						+ "print(res_recall__macro_score)\n";
 				break;
 			case MACRO_PRECISION:
-				accuracy_result+="\n"
-						+"res_precision_macro_score = metrics.precision_score(y_test,clf.predict(X_test),average='macro')\n"
-						+"print(res_precision_macro_score)\n"
-				;
+				accuracy_result += "\n"
+						+ "res_precision_macro_score = metrics.precision_score(y_test,clf.predict(X_test),average='macro')\n"
+						+ "print(res_precision_macro_score)\n";
 				break;
 			case MACRO_F1:
-				accuracy_result+="\n"
-						+"res_f1_macro_score = metrics.f1_score(y_test,clf.predict(X_test),average='macro')\n"
-						+"print(res_f1_macro_score)\n"
-				;
+				accuracy_result += "\n"
+						+ "res_f1_macro_score = metrics.f1_score(y_test,clf.predict(X_test),average='macro')\n"
+						+ "print(res_f1_macro_score)\n";
 				break;
 			case MACRO_ACCURACY:
-				accuracy_result+="\n"
-						+"res_accuracy_macro_score = metrics.accuracy_score(y_test,clf.predict(X_test))\n"
-						+"print(res_accuracy_macro_score)\n"
-				;
+				accuracy_result += "\n"
+						+ "res_accuracy_macro_score = metrics.accuracy_score(y_test,clf.predict(X_test))\n"
+						+ "print(res_accuracy_macro_score)\n";
 				break;
 			default:
 				break;
