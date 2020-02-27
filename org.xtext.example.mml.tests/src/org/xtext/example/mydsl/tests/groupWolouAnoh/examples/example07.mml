@@ -1,5 +1,5 @@
 datainput "ecoli.csv" separator ,
 mlframework scikit-learn
-algorithm RF
+algorithm LogisticRegression
 CrossValidation { numRepetitionCross 5 }
 recall
