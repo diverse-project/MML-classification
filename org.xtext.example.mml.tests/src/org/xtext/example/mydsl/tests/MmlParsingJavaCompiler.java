@@ -50,11 +50,15 @@ public class MmlParsingJavaCompiler {
 	
 	@Test
 	public void compileDataInput() throws Exception {
-		String data="new-thyroid.csv";
-		MMLModel model = parseHelper.parse("datainput \"" + data + "\"\n"
+		MMLModel model = parseHelper.parse("datainput \"iris.csv\"\n"
 				+ "mlframework R\n"
 				+ "algorithm LogisticRegression\n"
 				+ "TrainingTest { percentageTraining 65 }\n"
+				+ "algorithm SVM\n"
+				+ "mlframework scikit-learn\n"
+				+ "algorithm DT\n"
+				+ "formula 5 ~1+3+4\n"
+				+ "CrossValidation { numRepetitionCross 10 }\n"
 				+ "balanced_accuracy recall precision F1 accuracy macro_recall macro_precision macro_F1 macro_accuracy\n" 
 				+ "");	
 	
