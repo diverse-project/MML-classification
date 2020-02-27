@@ -1,4 +1,4 @@
-package org.xtext.example.mydsl.tests;
+package org.xtext.example.mydsl.tests.groupeRialetLemancelMandeLafont;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,6 +17,7 @@ import org.xtext.example.mydsl.mml.FrameworkLang;
 import org.xtext.example.mydsl.mml.MLAlgorithm;
 import org.xtext.example.mydsl.mml.MLChoiceAlgorithm;
 import org.xtext.example.mydsl.mml.MMLModel;
+import org.xtext.example.mydsl.tests.MmlInjectorProvider;
 
 import com.google.inject.Inject;
 

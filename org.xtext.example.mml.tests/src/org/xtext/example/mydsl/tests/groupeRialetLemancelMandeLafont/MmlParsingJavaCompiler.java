@@ -1,4 +1,4 @@
-package org.xtext.example.mydsl.tests;
+package org.xtext.example.mydsl.tests.groupeRialetLemancelMandeLafont;
 
 import java.io.BufferedReader; 
 import java.io.File;
@@ -12,6 +12,7 @@ import org.eclipse.xtext.testing.util.ParseHelper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.xtext.example.mydsl.mml.*;
+import org.xtext.example.mydsl.tests.MmlInjectorProvider;
 
 import com.google.inject.Inject;
 

@@ -1,4 +1,4 @@
-package org.xtext.example.mydsl.tests;
+package org.xtext.example.mydsl.tests.groupeRialetLemancelMandeLafont;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
