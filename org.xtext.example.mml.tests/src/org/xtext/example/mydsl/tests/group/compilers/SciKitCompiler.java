@@ -48,7 +48,7 @@ public class SciKitCompiler {
 
 		body += "\n" + genBodypartForAlgorithm(algorithm, model);
 		
-		body += "\n" + genValidationPart(algorithm, model);
+		body += "\n" + genBodyPartValidation(model.getValidation(), model);
 
 		codeFinalTexte = importTexte + body;
 
@@ -154,11 +154,11 @@ public class SciKitCompiler {
 	 * Validation part generator
 	 * Gen specific part for train-test or Cross-validation specification
 	 * 
-	 * @param algo
+	 * @param validation
 	 * @param model
 	 * @return
 	 */
-	private static String genValidationPart(MLAlgorithm algo, MMLModel model) {
+	private static String genBodyPartValidation(Validation validation, MMLModel model) {
 
 		String algopart = "";
 		
@@ -181,12 +181,23 @@ public class SciKitCompiler {
 			algopart += "\n" + "cv_results = cross_validation(clf, X, y, cv="
 					+ model.getValidation().getStratification().getNumber() + "scoring = scoring_metrics)\n";
 
-			// TODO:Recuperer les cv_results en fonction des metrics utilisés et retournés
-			// le mean() sur l'indice du tableau concerné
+			// Recuperation  des resultats en fonction des metrics de validation définies pour le cross validation la moyenne de tableau mean() est utilisé			
+			algopart += cross_validation_accuracy_part(model.getValidation().getMetric(), model);
 
 		}
 
 		return algopart;
+	}
+
+	/**
+	 * Recupere les resultat de cross validation et génère en fonction des metrics utilisé l'accuracy de chaque metrics pour le resultat à imprimer
+	 * @param metric
+	 * @param model 
+	 * @return
+	 */
+	private static String cross_validation_accuracy_part(EList<ValidationMetric> metric, MMLModel model) {
+		// TODO:Recuperer les cv_results en fonction des metrics utilisés et retournés le mean() sur l'indice du tableau concerné
+		return null;
 	}
 
 	/**
