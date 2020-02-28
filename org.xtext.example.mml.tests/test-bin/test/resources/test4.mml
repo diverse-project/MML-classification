@@ -1,0 +1,6 @@
+datainput "iris.csv" separator ,
+mlframework scikit-learn algorithm RF
+CrossValidation {
+	numRepetitionCross 20
+}
+recall accuracy

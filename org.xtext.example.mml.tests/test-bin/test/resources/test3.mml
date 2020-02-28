@@ -1,0 +1,6 @@
+datainput "iris.csv" separator ,
+mlframework scikit-learn algorithm RandomForest
+CrossValidation {
+	numRepetitionCross 10
+}
+accuracy

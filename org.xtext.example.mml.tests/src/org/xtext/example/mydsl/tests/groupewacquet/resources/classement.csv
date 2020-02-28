@@ -1,0 +1,18 @@
+Data;Algorithme;Framework;Temps d'exécution (secondes);Accuracy;Recall;F1
+hepatitis.csv;DT;scikit-learn;1.009;;;
+hepatitis.csv;DT;R;9.692;;1;
+hepatitis.csv;SVM;R;7.021;;0.1428571;
+iris.csv;SVM;scikit-learn;0.912;;[1.  0.8 1. ];
+iris.csv;SVM;R;6.84;;1 1 1;
+vehicle.csv;DT;scikit-learn;0.897;;;[1.  0.  0.4]
+vehicle.csv;DT;R;8.53;;;
+iris.csv;LogisticRegression;R;8.774;0.9666667;;
+iris.csv;RandomForest;scikit-learn;2.122;1.0;;
+iris.csv;RandomForest;R;9.271;1;;
+iris.csv;RandomForest;scikit-learn;3.142;1.0;;
+hepatitis.csv;LogisticRegression;scikit-learn;0.902;0.975;;
+hepatitis.csv;LogisticRegression;R;7.981;0.8235294;;
+vehicle.csv;SVM;scikit-learn;0.951;0.9666666666666667;;
+vehicle.csv;SVM;R;7.155;0.6647059;;
+iris.csv;DT;scikit-learn;0.918;;;
+iris.csv;SVM;scikit-learn;0.893;;;[1.         0.92592593 0.92      ]

@@ -1,0 +1,5 @@
+datainput "iris.csv" separator ,
+mlframework scikit-learn algorithm SVM
+C=3 classification C-classification
+TrainingTest { percentageTraining 80 }
+recall

@@ -48,11 +48,9 @@ public class MmlParsingTest {
       Assertions.assertNotNull(result);
       final EList<Resource.Diagnostic> errors = result.eResource().getErrors();
       boolean _isEmpty = errors.isEmpty();
-      StringConcatenation _builder_1 = new StringConcatenation();
-      _builder_1.append("Unexpected errors: ");
       String _join = IterableExtensions.join(errors, ", ");
-      _builder_1.append(_join);
-      Assertions.assertTrue(_isEmpty, _builder_1.toString());
+      String _plus = ("Unexpected errors: " + _join);
+      Assertions.assertTrue(_isEmpty, _plus);
       Assertions.assertEquals("foo.csv", result.getInput().getFilelocation());
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);

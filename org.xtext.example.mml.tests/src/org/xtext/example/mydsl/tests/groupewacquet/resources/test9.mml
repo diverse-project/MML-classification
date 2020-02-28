@@ -1,0 +1,1 @@
+datainput "D:/Donnees/Cours/MIAGE/M2/IDM/MML-classification/org.xtext.example.mml.tests/src/org/xtext/example/mydsl/tests/groupewacquet/resources/iris.csv" separator , mlframework scikit-learn algorithm SVM gamma=1.1 C=1.2 kernel=linear classification nu-classification TrainingTest{percentageTraining 80} F1
