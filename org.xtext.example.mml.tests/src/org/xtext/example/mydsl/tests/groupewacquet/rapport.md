@@ -9,8 +9,8 @@ You will need to edit mml files to put the correct path of the data set of your 
 ## Questions
 
 ### Q1
-As we were only 3 (with one person not working...), we didn't have the time to implement every requested compiler.  
-We only implemented the Python (scikit-learn) and the R (too many different librairies).  
+As we were only 3, we didn't have the time to implement every requested compiler.  
+We only implemented the Python (scikit-learn), the R (too many different librairies) and the Java-Weka
 ![Ranking table results](./report/rankingTableAccuracy.png)
 Just by looking at this table, we can suggest that Python seems to be more powerful **for the small size data sets** that we used. As a matter of fact, Scikit-learn is more accurate than R on all tested algorithm which outputs accuracy. It also appears that RandomForest performs perfectly for Scikit-learn, but the other algorithms are close behind.  
 Lastly, we didn't output enough results in other metrics to use them for a comparison.
