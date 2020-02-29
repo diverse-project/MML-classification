@@ -1,0 +1,5 @@
+datainput "bigfoo.csv" separator ,
+mlframework scikit-learn
+algorithm DT
+TrainingTest { percentageTraining 3 }
+recall

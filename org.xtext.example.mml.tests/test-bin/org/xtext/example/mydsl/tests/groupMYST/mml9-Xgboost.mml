@@ -1,0 +1,5 @@
+datainput "foo2.csv" separator ,
+mlframework xgboost
+algorithm LogisticRegression
+CrossValidation { numRepetitionCross 10 }
+accuracy

@@ -1,0 +1,5 @@
+datainput "iris.csv" separator ,
+mlframework R
+algorithm RF
+TrainingTest { percentageTraining 70 }
+F1

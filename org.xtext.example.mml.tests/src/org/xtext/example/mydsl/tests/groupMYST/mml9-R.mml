@@ -1,0 +1,5 @@
+datainput "iris.csv" separator ,
+mlframework R
+algorithm LogisticRegression
+CrossValidation { numRepetitionCross 10 }
+accuracy

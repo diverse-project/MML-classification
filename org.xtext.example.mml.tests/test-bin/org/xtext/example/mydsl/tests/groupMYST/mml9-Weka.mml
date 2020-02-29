@@ -1,0 +1,5 @@
+datainput "bigfoo.csv" separator ,
+mlframework Weka
+algorithm DT
+CrossValidation { numRepetitionCross 2 }
+recall

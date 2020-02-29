@@ -1,0 +1,11 @@
+datainput "bigfoo.csv" separator ,
+mlframework scikit-learn
+algorithm DT
+mlframework scikit-learn
+algorithm RF
+mlframework scikit-learn
+algorithm SVM gamma=3.2 C=1.0 classification nu-classification
+mlframework scikit-learn
+algorithm LogisticRegression
+TrainingTest { percentageTraining 15 }
+recall

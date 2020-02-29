@@ -1,0 +1,5 @@
+datainput "foo2.csv" separator ,
+mlframework xgboost
+algorithm DT
+TrainingTest { percentageTraining 70 }
+accuracy

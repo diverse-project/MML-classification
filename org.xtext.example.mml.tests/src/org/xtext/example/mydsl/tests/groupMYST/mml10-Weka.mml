@@ -1,0 +1,5 @@
+datainput "foo2.csv" separator ,
+mlframework Weka
+algorithm DT
+TrainingTest { percentageTraining 35 }
+precision

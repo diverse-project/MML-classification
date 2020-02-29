@@ -1,0 +1,5 @@
+datainput "bigfoo.csv" separator ,
+mlframework scikit-learn
+algorithm RF
+TrainingTest { percentageTraining 70 }
+F1

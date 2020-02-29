@@ -1,0 +1,9 @@
+datainput "iris.csv" separator ,
+mlframework Weka
+algorithm DT
+mlframework Weka
+algorithm RF
+mlframework Weka
+algorithm LogisticRegression
+CrossValidation { numRepetitionCross 10 }
+recall

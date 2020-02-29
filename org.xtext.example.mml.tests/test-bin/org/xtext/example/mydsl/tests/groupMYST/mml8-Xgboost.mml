@@ -1,0 +1,5 @@
+datainput "foo2.csv" separator ,
+mlframework xgboost
+algorithm RF
+TrainingTest { percentageTraining 70 }
+F1

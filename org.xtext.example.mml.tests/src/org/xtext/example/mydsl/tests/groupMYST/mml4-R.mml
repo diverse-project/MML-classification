@@ -1,0 +1,5 @@
+datainput "iris.csv" separator ,
+mlframework R
+algorithm DT
+TrainingTest { percentageTraining 70 }
+accuracy

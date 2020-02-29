@@ -1,0 +1,5 @@
+datainput "iris.csv" separator ,
+mlframework R
+algorithm DT
+CrossValidation  { numRepetitionCross 25 }
+recall

@@ -1,0 +1,5 @@
+datainput "foo2.csv" separator ,
+mlframework Weka
+algorithm DT
+CrossValidation { numRepetitionCross 70 }
+precision

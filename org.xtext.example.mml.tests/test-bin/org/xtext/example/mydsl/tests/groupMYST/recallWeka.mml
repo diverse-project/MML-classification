@@ -1,0 +1,9 @@
+datainput "bigfoo.csv" separator ,
+mlframework Weka
+algorithm DT
+mlframework Weka
+algorithm RF
+mlframework Weka
+algorithm LogisticRegression
+TrainingTest { percentageTraining 15 }
+recall

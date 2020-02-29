@@ -1,0 +1,11 @@
+datainput "bigfoo.csv" separator ,
+mlframework R
+algorithm DT
+mlframework R
+algorithm RF
+mlframework R
+algorithm SVM gamma=3.2 C=1.0 classification nu-classification
+mlframework R
+algorithm LogisticRegression
+TrainingTest { percentageTraining 15 }
+recall

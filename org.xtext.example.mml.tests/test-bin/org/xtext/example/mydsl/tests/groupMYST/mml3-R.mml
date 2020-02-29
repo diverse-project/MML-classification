@@ -1,0 +1,5 @@
+datainput "foo2.csv" separator ,
+mlframework R
+algorithm RF
+TrainingTest { percentageTraining 50 }
+recall

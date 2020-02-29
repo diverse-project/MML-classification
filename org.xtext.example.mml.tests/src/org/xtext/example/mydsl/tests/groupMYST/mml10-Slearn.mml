@@ -1,0 +1,5 @@
+datainput "bigfoo.csv" separator ,
+mlframework scikit-learn
+algorithm SVM gamma=3.2 C=0.2 classification nu-classification
+TrainingTest { percentageTraining 35 }
+precision
