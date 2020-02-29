@@ -1,0 +1,11 @@
+datainput "iris.cvs" separator ,
+
+mlframework scikit-learn
+
+algorithm RandomForest
+
+TrainingTest {
+	percentageTraining 20
+}
+
+accuracy macro_recall

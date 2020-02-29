@@ -1,0 +1,37 @@
+/*
+ * Import the dataset
+ * (Des données au format CSV)
+ */
+datainput "iris.cvs" separator ;
+
+/*
+ *  * Spliting dataset between features and label
+ * (Par défaut, toutes les variables sont prédictives sauf la dernière colonne) 
+ */
+ 
+/*
+ * Use of framework
+ * (2 implémentations pour l’instant)
+ */
+mlframework scikit-learn
+
+/*
+ * Set algorithm to use: Decision Tree
+ * (Algorithmes supervisés de classification) 
+ */
+algorithm DecisionTree
+
+/*
+ * Spliting dataset into training set and test set
+ * (Stratégie d’évaluation)
+ */
+TrainingTest {
+	percentageTraining 30
+}
+
+/*
+ * Use of the algorithm to create a model with the training set
+ * Compute and display the accuracy
+ * (En sortie, on calcule la précision et/ou le recall et/ou f1...)
+ */
+balanced_accuracy

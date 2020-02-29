@@ -1,0 +1,11 @@
+datainput "iris.cvs" separator ,
+
+mlframework R
+
+algorithm LogisticRegression
+
+TrainingTest {
+	percentageTraining 60
+}
+
+F1 macro_F1 macro_recall

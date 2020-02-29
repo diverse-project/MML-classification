@@ -1,0 +1,11 @@
+datainput "iris.cvs" separator ,
+
+mlframework Weka
+
+algorithm DecisionTree
+
+CrossValidation {
+	numRepetitionCross 3
+}
+
+recall

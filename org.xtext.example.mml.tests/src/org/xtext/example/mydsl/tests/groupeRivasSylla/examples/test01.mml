@@ -1,0 +1,11 @@
+datainput "iris.cvs" separator ,
+
+mlframework scikit-learn
+
+algorithm SVM
+
+CrossValidation {
+	numRepetitionCross 3
+}
+
+balanced_accuracy

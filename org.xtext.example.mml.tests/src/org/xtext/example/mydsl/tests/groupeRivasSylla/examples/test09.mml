@@ -1,0 +1,11 @@
+datainput "iris.cvs" separator ,
+
+mlframework R
+
+algorithm RandomForest
+
+TrainingTest {
+	percentageTraining 30
+}
+
+accuracy macro_accuracy

@@ -1,0 +1,11 @@
+datainput "iris.cvs" separator ,
+
+mlframework scikit-learn
+
+algorithm LogisticRegression
+
+TrainingTest {
+	percentageTraining 20
+}
+
+balanced_accuracy macro_accuracy macro_F1

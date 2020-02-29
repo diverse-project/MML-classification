@@ -1,0 +1,11 @@
+datainput "iris.cvs" separator ,
+
+mlframework scikit-learn
+
+algorithm DecisionTree 2
+
+CrossValidation {
+	numRepetitionCross 3
+}
+
+F1
