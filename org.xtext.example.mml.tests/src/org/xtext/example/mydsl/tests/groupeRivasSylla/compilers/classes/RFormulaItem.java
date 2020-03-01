@@ -13,7 +13,7 @@ public class RFormulaItem {
 
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
-		return false;
+		return this.predictive == null;
 	}
 
 	public String compile() {

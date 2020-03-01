@@ -11,17 +11,18 @@ public class RSVMKernel {
 	}
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
-		return false;
+		return this.kernel == null;
 	}
 
 	public String compile() {
 		// TODO Auto-generated method stub
+		String result = "";
 		switch (kernel.toString()) {
 			case "linear" : break;
 			case "polynomial" : break;
 			case "radial" : break;
 		};
-		return "";
+		return result;
 	}
 
 }

@@ -15,4 +15,9 @@ public class RCSVParsingConfiguration {
 		RCSVSeparator sep = new RCSVSeparator(mml.getSep());
 		return sep.compile();
 	}
+
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return this.mml == null;
+	}
 }

@@ -13,12 +13,13 @@ public class RFrameworkLang {
 
 	public String compile() {
 		// TODO Auto-generated method stub
+		String result = "";
 		switch (mml.toString()) {
 			case "scikit-learn" : break;
 			case "R" : break;
 			case "Weka" : break;
 		};
-		return "";
+		return result;
 	}
 
 }

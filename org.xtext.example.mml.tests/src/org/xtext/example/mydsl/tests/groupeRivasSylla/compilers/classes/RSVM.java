@@ -17,6 +17,12 @@ public class RSVM {
 		RSVMKernel kernel = new RSVMKernel(mml.getKernel());
 		RSVMClassification svmclassification = new RSVMClassification(mml.getSvmclassification());
 		
+		if(mml.getGamma() != null) {
+			result += mml.getGamma();
+		}
+		if(mml.getC() != null) {
+			result += mml.getC();
+		}
 		if (!kernel.isEmpty()) {
 			result += kernel.compile();
 		}

@@ -12,11 +12,12 @@ public class RCSVSeparator {
 	}
 	
 	public String compile() {
+		String result = "";
 		switch (mml.toString()) {
-			case "," : break;
-			case ";" : break;
+			case "," : result = " , "; break;
+			case ";" : result = " ; "; break;
 		};
-		return "";
+		return result;
 	}
 
 }

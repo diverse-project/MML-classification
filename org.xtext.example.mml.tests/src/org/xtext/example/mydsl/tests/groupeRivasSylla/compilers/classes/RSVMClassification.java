@@ -12,16 +12,17 @@ public class RSVMClassification {
 	}
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
-		return false;
+		return this.svmclassification == null;
 	}
 	public String compile() {
 		// TODO Auto-generated method stub
+		String result = "";
 		switch (svmclassification.toString()) {
 			case "C-classification" : break;
 			case "nu-classification" : break;
 			case "one-classification" : break;
 		};
-		return "";
+		return result;
 	}
 
 }

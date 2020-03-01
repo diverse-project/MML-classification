@@ -17,7 +17,8 @@ public class RDataImput {
 		
 		String result = "";
 		result += filelocation;
-		result += parsingInstruction.compile();
+		if (!parsingInstruction.isEmpty())
+			result += parsingInstruction.compile();
 		
 		return result;
 	}

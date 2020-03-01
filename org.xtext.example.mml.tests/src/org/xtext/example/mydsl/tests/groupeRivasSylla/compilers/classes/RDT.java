@@ -13,7 +13,10 @@ public class RDT {
 
 	public String compile() {
 		// TODO Auto-generated method stub
-		return "" + mml.getMax_depth();
+		String result = "";
+		if (this.mml.getMax_depth() != 0)
+			result += mml.getMax_depth();
+		return result;
 	}
 
 }
